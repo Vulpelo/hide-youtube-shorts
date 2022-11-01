@@ -1,0 +1,32 @@
+{
+    "manifest_version": 2,
+    "version": "1.0",
+
+    "name": "__MSG_extensionName__",
+    "description": "__MSG_extensionDescription__",
+  
+    "icons": {
+      "32": "icons/hideshort-64.png"
+    },
+    "permissions" : [
+      "storage" 
+    ],
+
+    "content_scripts": [
+      {
+        "matches": ["*://*.youtube.com/*"],
+        "js": ["./src/main.js"],
+        "all_frames": true
+      }
+    ],
+
+    "default_locale": "en",
+
+    "browser_action": {
+      "default_icon":{
+          "32":"icons/hideshort-64.png"
+      },
+      "default_title": "Hide Youtube Shorts",
+      "default_popup": "./src/popup.html"
+  }
+}

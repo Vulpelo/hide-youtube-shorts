@@ -1,0 +1,11 @@
+
+.bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 5px;
+    height: 20px;
+}
+.right {
+    text-align: right;
+}
+    

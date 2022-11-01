@@ -1,0 +1,8 @@
+{
+    "extensionName": {"message": "Hide Youtube-Shorts"},
+    "extensionDescription": {"message": "Hides YouTube-shorts videos from home page, subscriptions, search results and channels."},
+    
+    "cfg_hide_videos": {"message": "Hide Shorts videos"},
+    "cfg_hide_tab": {"message": "Hide Shorts tab"},
+    "setting_text": {"message": "Options"}
+}
