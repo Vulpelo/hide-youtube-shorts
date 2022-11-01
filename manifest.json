@@ -6,7 +6,7 @@
     "description": "__MSG_extensionDescription__",
   
     "icons": {
-      "32": "icons/hideshort-64.png"
+      "64": "icons/hideshort-64.png"
     },
     "permissions" : [
       "storage" 
@@ -24,7 +24,7 @@
 
     "browser_action": {
       "default_icon":{
-          "32":"icons/hideshort-64.png"
+          "64":"icons/hideshort-64.png"
       },
       "default_title": "Hide Youtube Shorts",
       "default_popup": "./src/popup.html"
