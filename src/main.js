@@ -1,15 +1,9 @@
 let observer = null;
-let hideYTShortsVideos = true;
-
+let hideYTShortsVideos = false;
 
 function setup() {
   chrome.storage.local.get(null, function(value){
-    if (value.hideYTShortsVideos !== false) {
-      hideYTShortsVideos = true;
-    }
-    else {
-      hideYTShortsVideos = false;
-    }
+    hideYTShortsVideos = value.hideYTShortsVideos == undefined ? false : value.hideYTShortsVideos;
     
     hideShortsTab(value.hideYTShortsTab);
 

@@ -1,24 +1,19 @@
 window.onload = function() {
 
-    chrome.storage.local.get(null, function(value){
-        document.getElementById("hideYTShortsVideosInput").checked = value.hideYTShortsVideos;
-        document.getElementById("hideYTShortsTabInput").checked = value.hideYTShortsTab;
+    chrome.storage.local.get(null, function(value)
+    {
+        let hideYTShortsInput = document.getElementById("hideYTShortsVideosInput");
+        hideYTShortsInput.checked = value.hideYTShortsVideos;
+        hideYTShortsInput.addEventListener("input", function(e) {
+            chrome.storage.local.set({hideYTShortsVideos: e.target.checked});
+        })
+
+        let hideYTShortsTabInput = document.getElementById("hideYTShortsTabInput");
+        hideYTShortsTabInput.checked = value.hideYTShortsTab;
+        hideYTShortsTabInput.addEventListener("input", function(e) {
+            chrome.storage.local.set({hideYTShortsTab: e.target.checked});
+        })
     });
-
-    document.querySelectorAll(".setting>input").forEach(function(element){
-        element.addEventListener("input", function(e){
-            switch(e.target.id){
-                case "hideYTShortsVideosInput":
-                    chrome.storage.local.set({hideYTShortsVideos:e.target.checked});
-                    break;
-
-                case "hideYTShortsTabInput":
-                    chrome.storage.local.set({hideYTShortsTab:e.target.checked});
-                    break;
-            }
-        });
-    });
-
 
     // Set language
     document.getElementById("hide_videos_text").textContent=chrome.i18n.getMessage("cfg_hide_videos");
