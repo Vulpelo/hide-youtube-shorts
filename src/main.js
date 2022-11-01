@@ -13,7 +13,7 @@ function setup() {
 
 
 function hideShorts(hide = true) {
-  let elements = document.querySelectorAll("ytd-grid-video-renderer");
+  let elements = document.querySelectorAll("ytd-grid-video-renderer, ytd-video-renderer, ytd-compact-video-renderer");
   elements.forEach(element => {
     if (element.innerHTML.search("href=\"/shorts/") != -1) {
       if (hide) {
@@ -30,7 +30,7 @@ function hideShortsTab(hide) {
   let elements = document.querySelectorAll("ytd-guide-entry-renderer");
   let miniElements = document.querySelectorAll("ytd-mini-guide-entry-renderer");
 
-  // I am only assuming that shorts tab is always on second position (between Home and Subscription button)
+  // Assuming that shorts tab is always on second position (between Home and Subscription button)
   if (hide) {
     if (elements.length > 0) {
       elements[1].setAttribute("hidden", true);
