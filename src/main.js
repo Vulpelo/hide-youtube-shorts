@@ -1,16 +1,27 @@
 let observer = null;
-let hideYTShortsVideos = false;
+let hideYTShortsVideos = true;
+let hideYTShortsTab = false;
 
 function setup() {
   chrome.storage.local.get(null, function(value){
-    hideYTShortsVideos = value.hideYTShortsVideos == undefined ? false : value.hideYTShortsVideos;
-    
-    hideShortsTab(value.hideYTShortsTab);
+    if (value.hideYTShortsVideos == undefined) {
+      chrome.storage.local.set({hideYTShortsVideos: hideYTShortsVideos});
+    }
+    else {
+      hideYTShortsVideos = value.hideYTShortsVideos;
+    }
 
+    if (value.hideYTShortsTab == undefined) {
+      chrome.storage.local.set({hideYTShortsTab: hideYTShortsTab});
+    }
+    else {
+      hideYTShortsTab = value.hideYTShortsTab;
+    }
+
+    hideShortsTab(value.hideYTShortsTab);
     addObserver();
   });
 }
-
 
 function hideShorts(hide = true) {
   let elements = document.querySelectorAll("ytd-grid-video-renderer, ytd-video-renderer, ytd-compact-video-renderer");
@@ -27,16 +38,15 @@ function hideShorts(hide = true) {
 }
 
 function hideShortsTab(hide) {
-  let elements = document.querySelectorAll("ytd-guide-entry-renderer");
-  let miniElements = document.querySelectorAll("ytd-mini-guide-entry-renderer");
+  let elements = document.querySelector('ytd-guide-entry-renderer>a:not([href])');
+  let miniElements = document.querySelector("ytd-mini-guide-entry-renderer>a:not([href])");
 
-  // Assuming that shorts tab is always on second position (between Home and Subscription button)
   if (hide) {
-    if (elements.length > 0) {
-      elements[1].setAttribute("hidden", true);
+    if (elements !== null) {
+      elements.setAttribute("hidden", true);
     }
-    if (miniElements.length > 0) {
-      miniElements[1].setAttribute("hidden", true);
+    if (miniElements !== null) {
+      miniElements.setAttribute("hidden", true);
     }
   }
   else {
@@ -62,17 +72,10 @@ function addObserver() {
   }
 }
 
-// when settings in popup have changed, then update webpage
 chrome.storage.onChanged.addListener(function() {
   setup();
 });
 
-window.addEventListener('yt-page-data-updated', (event) => { 
-  addObserver();
-});
-
-window.onfocus = function() {
+window.addEventListener('yt-rendererstamper-finished', (event) => { 
   setup();
-}
-
-setup();
+});
