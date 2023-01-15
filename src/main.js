@@ -2,6 +2,10 @@ let observer = null;
 let hideYTShortsVideos = true;
 let hideYTShortsTab = false;
 
+const SHORTS_CONTAINERS_TAG = "ytd-grid-video-renderer, ytd-video-renderer, ytd-compact-video-renderer"
+const SHELF_TAG = "ytd-reel-shelf-renderer"
+
+
 function setup() {
   chrome.storage.local.get(null, function(value){
     if (value.hideYTShortsVideos == undefined) {
@@ -24,9 +28,13 @@ function setup() {
 }
 
 function hideShorts(hide = true) {
-  let elements = document.querySelectorAll("ytd-grid-video-renderer, ytd-video-renderer, ytd-compact-video-renderer");
+  let elements = document.querySelectorAll(SHORTS_CONTAINERS_TAG + ", " + SHELF_TAG);
   elements.forEach(element => {
-    if (element.innerHTML.search("href=\"/shorts/") != -1) {
+    // hide whole shelf if just contains "ytd-reel-item-renderer" tag. For now seems to be only used for yt-shorts videos
+    // and hide any video container that contains a ref link to shorts
+    if ((element.tagName.toLowerCase() === SHELF_TAG.toLowerCase() && element.innerHTML.search("ytd-reel-item-renderer") != -1) 
+    || element.innerHTML.search("href=\"/shorts/") != -1) 
+    {
       if (hide) {
         element.setAttribute("hidden", true);
       }
@@ -38,32 +46,33 @@ function hideShorts(hide = true) {
 }
 
 function hideShortsTab(hide) {
-  let elements = document.querySelector('ytd-guide-entry-renderer>a:not([href])');
-  let miniElements = document.querySelector("ytd-mini-guide-entry-renderer>a:not([href])");
+  let tabElement = document.querySelector('ytd-guide-entry-renderer>a:not([href])');
+  let miniTabElement = document.querySelector("ytd-mini-guide-entry-renderer>a:not([href])");
 
   if (hide) {
-    if (elements !== null) {
-      elements.setAttribute("hidden", true);
+    if (tabElement !== null) {
+      tabElement.setAttribute("hidden", true);
     }
-    if (miniElements !== null) {
-      miniElements.setAttribute("hidden", true);
+    if (miniTabElement !== null) {
+      miniTabElement.setAttribute("hidden", true);
     }
   }
   else {
-    if (elements.length > 0 && elements[1].hasAttribute("hidden")) {
-      elements[1].removeAttribute("hidden");
+    if (tabElement.hasAttribute("hidden")) {
+      tabElement.removeAttribute("hidden");
     }
-    if (miniElements.length > 0 && miniElements[1].hasAttribute("hidden")) {
-      miniElements[1].removeAttribute("hidden");
+    if (miniTabElement.hasAttribute("hidden")) {
+      miniTabElement.removeAttribute("hidden");
     }
   }
 }
+
 
 function addObserver() {
   if (observer === null && hideYTShortsVideos) {
     observer = new MutationObserver(hideShorts);
     observer.observe(document.getElementById("content"), {childList:true, subtree:true});
-    hideShorts();
+    hideShorts(true);
   }
   else if (observer !== null && !hideYTShortsVideos) {
     observer.disconnect();
