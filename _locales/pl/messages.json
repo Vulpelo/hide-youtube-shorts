@@ -1,6 +1,6 @@
 {
     "extensionName": {"message": "Ukryj Youtube-Shorts"},
-    "extensionDescription": {"message": "Ukrywa filmiki YouTube-shorts z listy filmów na stronie głównej, subskrypcji, wyników wyszukiwania i kanałów."},
+    "extensionDescription": {"message": "Ukrywa filmiki YouTube-shorts z listy filmów na stronie głównej, subskrypcji i wyników wyszukiwania."},
     
     "cfg_hide_videos": {"message": "Ukryj filmiki Shorts"},
     "cfg_hide_tab": {"message": "Ukryj zakładkę Shorts"},
