@@ -14,6 +14,8 @@ const DESKTOP_SHORTS_CONTAINERS_TAG = [
   ["ytd-compact-video-renderer"],
 ].join(",")
 const DESKTOP_SHELF_TAG = "ytd-reel-shelf-renderer"
+const DESKTOP_SHORTS_TAB_SELECTOR = "ytd-guide-entry-renderer>a:not([href])"
+const DESKTOP_SHORTS_MINI_TAB_SELECTOR = "ytd-mini-guide-entry-renderer>a:not([href])"
 
 /* ON MOBILE */
 let isMobile = location.hostname == "m.youtube.com";
@@ -33,15 +35,21 @@ const SHELF_TAG_REGEX = /yt[dm]-reel-shelf-renderer/gm
 const SHELF_ITEM_TAG_REGEX = /yt[dm]-reel-item-renderer/gm
 
 
-function waitForElement(selector) {
+function waitForElement(selector, timeout_ms = 5000) {
   return new Promise(resolve => {
+    const timer = setTimeout(() => {
+      resolve(null);
+    }, timeout_ms);
+
     let element = document.querySelector(selector);
     if (element) {
+      clearTimeout(timer);
       return resolve(document.querySelector(selector));
     }
     const observer = new MutationObserver(() => {
       element = document.querySelector(selector);
       if (element) {
+        clearTimeout(timer);
         resolve(element);
         observer.disconnect();
       }
@@ -52,14 +60,10 @@ function waitForElement(selector) {
 
 function hideElement(hide, element) {
   if (hide) {
-    if (element !== null) {
-      element.setAttribute("hidden", true);
-    }
+    element.setAttribute("hidden", true);
   }
-  else {
-    if (element.hasAttribute("hidden")) {
-      element.removeAttribute("hidden");
-    }
+  else if (element.hasAttribute("hidden")) {
+    element.removeAttribute("hidden");
   }
 }
 
@@ -79,9 +83,17 @@ function setup() {
     else {
       hideYTShortsTab = value.hideYTShortsTab;
     }
-    
-    hideShortsTab(value.hideYTShortsTab);
-    addObserver();
+
+    hideShorts(hideYTShortsVideos); 
+    hideShortsTab(hideYTShortsTab)
+
+    observer = manageObserver(isMobile ? "#app" : "#content", 
+      hideYTShortsTab || hideYTShortsVideos, 
+      () => {
+        hideShorts(hideYTShortsVideos); 
+        hideShortsTab(hideYTShortsTab);
+      }, 
+      observer);
   });
 }
 
@@ -110,31 +122,32 @@ function hideShorts(hide = true) {
 function hideShortsTab(hide) {
   if (isMobile) {
     waitForElement(MOBILE_SHORTS_TAB_SELECTOR).then((element) => {
-      hideElement(hide, element.parentElement)
+      if (element != null)
+        hideElement(hide, element.parentElement)
     });
   }
   else {
-    waitForElement("ytd-guide-entry-renderer>a:not([href])").then((element) => {
-      hideElement(hide, element)
+    waitForElement(DESKTOP_SHORTS_TAB_SELECTOR).then((element) => {
+      if (element != null)
+        hideElement(hide, element)
     });
-    waitForElement("ytd-mini-guide-entry-renderer>a:not([href])").then((element) => {
-      hideElement(hide, element)
+    waitForElement(DESKTOP_SHORTS_MINI_TAB_SELECTOR).then((element) => {
+      if (element != null)
+        hideElement(hide, element)
     });
   }
 }
 
-
-function addObserver() {
-  if (observer === null && hideYTShortsVideos) {
-    observer = new MutationObserver(hideShorts);
-    observer.observe(document.getElementById(isMobile ? "app" : "content"), {childList:true, subtree:true});
-    hideShorts(true);
+function manageObserver(selector, active, callback, aObserver = null) {
+  if (aObserver === null && active) {
+    aObserver = new MutationObserver(callback);
+    aObserver.observe(document.querySelector(selector), {childList:true, subtree:true});
   }
-  else if (observer !== null && !hideYTShortsVideos) {
-    observer.disconnect();
-    observer = null;
-    hideShorts(false);
+  else if (aObserver !== null && !active) {
+    aObserver.disconnect();
+    aObserver = null;
   }
+  return aObserver;
 }
 
 chrome.storage.onChanged.addListener(function() {
