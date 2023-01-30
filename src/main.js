@@ -37,24 +37,24 @@ const SHELF_ITEM_TAG_REGEX = /yt[dm]-reel-item-renderer/gm
 
 function waitForElement(selector, timeout_ms = 50) {
   return new Promise(resolve => {
-    const timer = setTimeout(() => {
-      resolve(null);
-    }, timeout_ms);
-
     let element = document.querySelector(selector);
     if (element) {
-      clearTimeout(timer);
       return resolve(document.querySelector(selector));
     }
-    const observer = new MutationObserver(() => {
+    let timer = null;
+    const elementObserver = new MutationObserver(() => {
       element = document.querySelector(selector);
       if (element) {
         clearTimeout(timer);
         resolve(element);
-        observer.disconnect();
+        elementObserver.disconnect();
       }
     });
-    observer.observe(document.body, {childList: true, subtree: true});
+    elementObserver.observe(document.body, {childList: true, subtree: true});
+    timer = setTimeout(() => {
+      resolve(null);
+      elementObserver.disconnect();
+    }, timeout_ms);
   });
 }
 
