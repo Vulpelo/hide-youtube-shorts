@@ -35,7 +35,7 @@ const SHELF_TAG_REGEX = /yt[dm]-reel-shelf-renderer/gm
 const SHELF_ITEM_TAG_REGEX = /yt[dm]-reel-item-renderer/gm
 
 
-function waitForElement(selector, timeout_ms = 5000) {
+function waitForElement(selector, timeout_ms = 50) {
   return new Promise(resolve => {
     const timer = setTimeout(() => {
       resolve(null);
@@ -87,13 +87,24 @@ function setup() {
     hideShorts(hideYTShortsVideos); 
     hideShortsTab(hideYTShortsTab)
 
-    observer = manageObserver(isMobile ? "#app" : "#content", 
-      hideYTShortsTab || hideYTShortsVideos, 
+    if (isMobile) {
+      observer = manageObserver("#app", 
+        hideYTShortsTab || hideYTShortsVideos, 
+        () => {
+          hideShorts(hideYTShortsVideos); 
+          hideShortsTab(hideYTShortsTab);
+        }, 
+        observer);
+    }
+    else {
+      observer = manageObserver("#content", 
+      hideYTShortsVideos, 
       () => {
         hideShorts(hideYTShortsVideos); 
-        hideShortsTab(hideYTShortsTab);
       }, 
       observer);
+    }
+
   });
 }
 
@@ -121,17 +132,17 @@ function hideShorts(hide = true) {
 
 function hideShortsTab(hide) {
   if (isMobile) {
-    waitForElement(MOBILE_SHORTS_TAB_SELECTOR).then((element) => {
+    waitForElement(MOBILE_SHORTS_TAB_SELECTOR, 50).then((element) => {
       if (element != null)
         hideElement(hide, element.parentElement)
     });
   }
   else {
-    waitForElement(DESKTOP_SHORTS_TAB_SELECTOR).then((element) => {
+    waitForElement(DESKTOP_SHORTS_TAB_SELECTOR, 10000).then((element) => {
       if (element != null)
         hideElement(hide, element)
     });
-    waitForElement(DESKTOP_SHORTS_MINI_TAB_SELECTOR).then((element) => {
+    waitForElement(DESKTOP_SHORTS_MINI_TAB_SELECTOR, 10000).then((element) => {
       if (element != null)
         hideElement(hide, element)
     });
