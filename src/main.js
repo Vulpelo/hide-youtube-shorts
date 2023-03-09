@@ -16,7 +16,8 @@ const DESKTOP_SHORTS_CONTAINERS_TAG = [
 const DESKTOP_SHELF_TAG = "ytd-reel-shelf-renderer"
 const DESKTOP_SHORTS_TAB_SELECTOR = "ytd-guide-entry-renderer>a:not([href])"
 const DESKTOP_SHORTS_MINI_TAB_SELECTOR = "ytd-mini-guide-entry-renderer>a:not([href])"
-
+const DESKTOP_GUIDE_WRAPPER_SELECTOR = "div[id='guide-wrapper']";
+const DESKTOP_GUIDE_WRAPPER_MINI_SELECTOR = "ytd-mini-guide-renderer";
 /* ON MOBILE */
 let isMobile = location.hostname == "m.youtube.com";
 const MOBILE_SHORTS_CONTAINERS_TAG = [
@@ -35,7 +36,7 @@ const SHELF_TAG_REGEX = /yt[dm]-reel-shelf-renderer/gm
 const SHELF_ITEM_TAG_REGEX = /yt[dm]-reel-item-renderer/gm
 
 
-function waitForElement(selector, timeout_ms = 50) {
+function waitForElement(selector, timeout_ms = 50, observeElement = document.body) {
   return new Promise(resolve => {
     let element = document.querySelector(selector);
     if (element) {
@@ -43,18 +44,21 @@ function waitForElement(selector, timeout_ms = 50) {
     }
     let timer = null;
     const elementObserver = new MutationObserver(() => {
+      console.log("observing: " + observeElement);
       element = document.querySelector(selector);
       if (element) {
+        console.log("observing foundEnd: " + observeElement);
         clearTimeout(timer);
         resolve(element);
         elementObserver.disconnect();
       }
     });
-    elementObserver.observe(document.body, {childList: true, subtree: true});
-    timer = setTimeout(() => {
-      resolve(null);
-      elementObserver.disconnect();
-    }, timeout_ms);
+    elementObserver.observe(observeElement, {childList: true, subtree: true});
+    if (timeout_ms > 0)
+      timer = setTimeout(() => {
+        resolve(null);
+        elementObserver.disconnect();
+      }, timeout_ms);
   });
 }
 
@@ -138,11 +142,13 @@ function hideShortsTab(hide) {
     });
   }
   else {
-    waitForElement(DESKTOP_SHORTS_TAB_SELECTOR, 10000).then((element) => {
+    let wrapperElement = document.querySelector(DESKTOP_GUIDE_WRAPPER_SELECTOR);
+    waitForElement(DESKTOP_SHORTS_TAB_SELECTOR, -1, wrapperElement).then((element) => {
       if (element != null)
         hideElement(hide, element)
     });
-    waitForElement(DESKTOP_SHORTS_MINI_TAB_SELECTOR, 10000).then((element) => {
+    let miniWrapperElement = document.querySelector(DESKTOP_GUIDE_WRAPPER_MINI_SELECTOR);
+    waitForElement(DESKTOP_SHORTS_MINI_TAB_SELECTOR, -1, miniWrapperElement).then((element) => {
       if (element != null)
         hideElement(hide, element)
     });
