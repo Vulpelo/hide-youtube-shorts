@@ -44,10 +44,8 @@ function waitForElement(selector, timeout_ms = 50, observeElement = document.bod
     }
     let timer = null;
     const elementObserver = new MutationObserver(() => {
-      console.log("observing: " + observeElement);
       element = document.querySelector(selector);
       if (element) {
-        console.log("observing foundEnd: " + observeElement);
         clearTimeout(timer);
         resolve(element);
         elementObserver.disconnect();
@@ -136,10 +134,9 @@ function hideShorts(hide = true) {
 
 function hideShortsTab(hide) {
   if (isMobile) {
-    waitForElement(MOBILE_SHORTS_TAB_SELECTOR, 50).then((element) => {
-      if (element != null)
+    let element = document.querySelector(MOBILE_SHORTS_TAB_SELECTOR);
+    if (element)
         hideElement(hide, element.parentElement)
-    });
   }
   else {
     let wrapperElement = document.querySelector(DESKTOP_GUIDE_WRAPPER_SELECTOR);
