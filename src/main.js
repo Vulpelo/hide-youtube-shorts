@@ -36,27 +36,20 @@ const SHELF_TAG_REGEX = /yt[dm]-reel-shelf-renderer/gm
 const SHELF_ITEM_TAG_REGEX = /yt[dm]-reel-item-renderer/gm
 
 
-function waitForElement(selector, timeout_ms = 50, observeElement = document.body) {
+function waitForElement(selector, observeElement = document.body) {
   return new Promise(resolve => {
     let element = document.querySelector(selector);
     if (element) {
       return resolve(document.querySelector(selector));
     }
-    let timer = null;
     const elementObserver = new MutationObserver(() => {
       element = document.querySelector(selector);
       if (element) {
-        clearTimeout(timer);
         resolve(element);
         elementObserver.disconnect();
       }
     });
     elementObserver.observe(observeElement, {childList: true, subtree: true});
-    if (timeout_ms > 0)
-      timer = setTimeout(() => {
-        resolve(null);
-        elementObserver.disconnect();
-      }, timeout_ms);
   });
 }
 
@@ -140,12 +133,12 @@ function hideShortsTab(hide) {
   }
   else {
     let wrapperElement = document.querySelector(DESKTOP_GUIDE_WRAPPER_SELECTOR);
-    waitForElement(DESKTOP_SHORTS_TAB_SELECTOR, -1, wrapperElement).then((element) => {
+    waitForElement(DESKTOP_SHORTS_TAB_SELECTOR, wrapperElement).then((element) => {
       if (element != null)
         hideElement(hide, element)
     });
     let miniWrapperElement = document.querySelector(DESKTOP_GUIDE_WRAPPER_MINI_SELECTOR);
-    waitForElement(DESKTOP_SHORTS_MINI_TAB_SELECTOR, -1, miniWrapperElement).then((element) => {
+    waitForElement(DESKTOP_SHORTS_MINI_TAB_SELECTOR, miniWrapperElement).then((element) => {
       if (element != null)
         hideElement(hide, element)
     });
