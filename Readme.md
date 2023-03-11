@@ -1,7 +1,7 @@
 # Hide YouTube-Shorts
 
-[![Extension Rating](https://img.shields.io/amo/rating/hide-youtube-shorts?color=green&label=Rating&logo=Firefox)](https://addons.mozilla.org/en-US/firefox/addon/hide-youtube-shorts/)
-[![Extension's Firefox users](https://img.shields.io/amo/users/hide-youtube-shorts?label=Users&logo=Firefox)](https://addons.mozilla.org/en-US/firefox/addon/hide-youtube-shorts/)
+[![Extension Rating](https://img.shields.io/amo/rating/hide-youtube-shorts?color=green&label=Rating&logo=FirefoxBrowser)](https://addons.mozilla.org/en-US/firefox/addon/hide-youtube-shorts/)
+[![Extension's Firefox users](https://img.shields.io/amo/users/hide-youtube-shorts?label=Users&logo=FirefoxBrowser)](https://addons.mozilla.org/en-US/firefox/addon/hide-youtube-shorts/)
 [![Licence](https://img.shields.io/github/license/Vulpelo/hide-youtube-shorts)](https://github.com/Vulpelo/hide-youtube-shorts/blob/master/LICENCE.md)
 
 Firefox add-on that hides YouTube-shorts videos from home page, subscriptions and search results. 
