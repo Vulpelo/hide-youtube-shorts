@@ -2,8 +2,13 @@ let observer = null;
 let hideYTShortsVideos = true;
 let hideYTShortsTab = false;
 
-/* ON DESKTROP */
+/* ON DESKTOP */
 const DESKTOP_SHORTS_CONTAINERS_TAG = [
+  // shelf containing multiple shorts on Search page
+  ["ytd-reel-shelf-renderer"],
+  // shelf containing multiple shorts on Home page 
+  ["ytd-rich-shelf-renderer"],
+
   // videos on Home page
   ["ytd-rich-item-renderer"],
   // videos on Subscription page
@@ -13,7 +18,6 @@ const DESKTOP_SHORTS_CONTAINERS_TAG = [
   // videos on Video page
   ["ytd-compact-video-renderer"],
 ].join(",")
-const DESKTOP_SHELF_TAG = "ytd-reel-shelf-renderer"
 const DESKTOP_SHORTS_TAB_SELECTOR = "ytd-guide-entry-renderer>a:not([href])"
 const DESKTOP_SHORTS_MINI_TAB_SELECTOR = "ytd-mini-guide-entry-renderer>a:not([href])"
 const DESKTOP_GUIDE_WRAPPER_SELECTOR = "div[id='guide-wrapper']";
@@ -21,6 +25,9 @@ const DESKTOP_GUIDE_WRAPPER_MINI_SELECTOR = "ytd-mini-guide-renderer";
 /* ON MOBILE */
 let isMobile = location.hostname == "m.youtube.com";
 const MOBILE_SHORTS_CONTAINERS_TAG = [
+  // shelf containing multiple shorts on Search page
+  ["ytm-reel-shelf-renderer"],
+
   // videos on Home page
   ["ytm-rich-item-renderer"], 
   // videos on Subscription page
@@ -28,7 +35,6 @@ const MOBILE_SHORTS_CONTAINERS_TAG = [
   // videos on Search page and Video page
   ["ytm-video-with-context-renderer"],
 ].join(",")
-const MOBILE_SHELF_TAG = "ytm-reel-shelf-renderer"
 const MOBILE_SHORTS_TAB_SELECTOR = "ytm-pivot-bar-item-renderer>div[class='pivot-bar-item-tab pivot-shorts']"
 
 /* on desktop and mobile */
@@ -105,8 +111,8 @@ function setup() {
 
 function hideShorts(hide = true) {
   let selectorString = isMobile ? 
-    MOBILE_SHORTS_CONTAINERS_TAG + "," + MOBILE_SHELF_TAG 
-    : DESKTOP_SHORTS_CONTAINERS_TAG + "," + DESKTOP_SHELF_TAG;
+    MOBILE_SHORTS_CONTAINERS_TAG 
+    : DESKTOP_SHORTS_CONTAINERS_TAG;
   elements = document.querySelectorAll(selectorString);
   elements.forEach(element => {
     // hide whole shelf if just contains "ytd-reel-item-renderer" tag. For now seems to be only used for yt-shorts videos
