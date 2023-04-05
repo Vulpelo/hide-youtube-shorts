@@ -1,6 +1,7 @@
 let observer = null;
 let hideYTShortsVideos = true;
 let hideYTShortsTab = false;
+let rearrangeVideosAfterHidingAShort = false;
 
 /* ON DESKTOP */
 const DESKTOP_SHORTS_CONTAINERS_TAG = [
@@ -85,6 +86,13 @@ function setup() {
       hideYTShortsTab = value.hideYTShortsTab;
     }
 
+    if (value.rearrangeVideosAfterHidingAShort == undefined) {
+      chrome.storage.local.set({rearrangeVideosAfterHidingAShort: rearrangeVideosAfterHidingAShort});
+    }
+    else {
+      rearrangeVideosAfterHidingAShort = value.rearrangeVideosAfterHidingAShort;
+    }
+
     hideShorts(hideYTShortsVideos); 
     hideShortsTab(hideYTShortsTab)
 
@@ -109,6 +117,43 @@ function setup() {
   });
 }
 
+/* re-arranging video elements in richGridRows */
+function countVisibleElementsInRow(row) {
+  let visibleCount = 0;
+  for (const child of row.children) {
+    if (!element.hasAttribute("hidden")) {
+      visibleCount++;
+    }
+  }
+  return visibleCount;
+}
+
+function rearrangeVideosInRichGridRows(startFromRowElement, elementsPerRow) {
+  // each rich_grid_row has a div element inside, and IT contains list of videos
+  const richGridRows = startFromRowElement.parentElement.parentElement.querySelectorAll("ytd-rich-grid-row");
+  const startIndex = Array.from(richGridRows).indexOf(startFromRowElement.parentElement);
+
+  const amountOfVisibleElements = countVisibleElementsInRow(startFromRowElement);
+  const elementsToMove = elementsPerRow - amountOfVisibleElements;
+  
+  for (let j = 0; j < elementsToMove; j++) {
+    // for each next row, move one element to previous row
+    for (let i = startIndex; i < richGridRows.length - 1; i++) {
+      // assuming next row always has child and is visible.
+      richGridRows[i].querySelector("div").appendChild(richGridRows[i + 1].querySelector("div").childNodes[0]);
+    }
+  }
+}
+/*!rearranging video elements in richGridRows */
+
+function operationsAfterHidingShortElement(element) {
+  if (rearrangeVideosAfterHidingAShort && element.parentElement.parentElement.tagName == "YTD-RICH-GRID-ROW") {
+    if (element.hasAttribute("items-per-row")) {
+      rearrangeVideosInRichGridRows(element.parentElement, element.getAttribute("items-per-row"));
+    }
+  }
+}
+
 function hideShorts(hide = true) {
   let selectorString = isMobile ? 
     MOBILE_SHORTS_CONTAINERS_TAG 
@@ -123,6 +168,7 @@ function hideShorts(hide = true) {
     {
       if (hide) {
         element.setAttribute("hidden", true);
+        operationsAfterHidingShortElement(element);
       }
       else if (element.hasAttribute("hidden")) {
         element.removeAttribute("hidden");
