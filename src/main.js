@@ -37,6 +37,7 @@ const MOBILE_SHORTS_CONTAINERS_TAG = [
   ["ytm-video-with-context-renderer"],
 ].join(",")
 const MOBILE_SHORTS_TAB_SELECTOR = "ytm-pivot-bar-item-renderer>div[class='pivot-bar-item-tab pivot-shorts']"
+const RICH_GRID_ROW = "ytd-rich-grid-row";
 
 /* on desktop and mobile */
 const SHELF_TAG_REGEX = /yt[dm]-reel-shelf-renderer/gm
@@ -140,14 +141,17 @@ function rearrangeVideosInRichGridRows(startFromRowElement, elementsPerRow) {
     // for each next row, move one element to previous row
     for (let i = startIndex; i < richGridRows.length - 1; i++) {
       // assuming next row always has child and is visible.
-      richGridRows[i].querySelector("div").appendChild(richGridRows[i + 1].querySelector("div").childNodes[0]);
+      const nextRitchRowDiv = richGridRows[i + 1].querySelector("div");
+      if (nextRitchRowDiv.childElementCount <= 0) 
+        break;
+      richGridRows[i].querySelector("div").appendChild(nextRitchRowDiv.childNodes[0]);
     }
   }
 }
 /*!rearranging video elements in richGridRows */
 
 function operationsAfterHidingShortElement(element) {
-  if (rearrangeVideosAfterHidingAShort && element.parentElement.parentElement.tagName == "YTD-RICH-GRID-ROW") {
+  if (rearrangeVideosAfterHidingAShort && element.parentElement.parentElement.tagName.toLowerCase().match(RICH_GRID_ROW)) {
     if (element.hasAttribute("items-per-row")) {
       rearrangeVideosInRichGridRows(element.parentElement, element.getAttribute("items-per-row"));
     }
