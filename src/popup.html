@@ -21,15 +21,29 @@
     
             <label class="setting">
                 <input type="checkbox" id="hideYTShortsVideosInput">
-                <span class="slider"></span>
                 <span id="hide_videos_text" class="switchLabel" title="">
                     Hide Youtube Shorts videos
                 </span>
+                <div class="rearrangeVideosContent">
+                    <br>
+                    <label class="sub_setting">
+                        <input type="checkbox" id="rearrangeVideosAfterHidingAShortInput">
+                        <span id="fill_gaps_text" class="switchLabel">
+                            (experimental) Fill gaps after removing shorts
+                        </span>
+                        <span class="tooltip">
+                            <span id="fill_gaps_tooltip_text" class="tooltiptext">Rearrange videos when hiding shorts, this should remove gaps.</span>
+                            <svg  width="13px" height="13px" stroke-width="1.2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000">
+                                <path d="M12 11.5v5M12 7.51l.01-.011M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </span>
+                    </label>
+                    <br>
+                </div>
             </label>
             <br>
             <label class="setting">
                 <input type="checkbox" id="hideYTShortsTabInput">
-                <span class="slider"></span>
                 <span id="hide_tab_text" class="switchLabel">
                     Hide Youtube Shorts tab
                 </span>
@@ -43,7 +57,7 @@
             </a>
             <!-- Version -->
             <a class="right">
-            <span style="text-align: right;" id="ext-version"></span>
+                <span style="text-align: right;" id="ext-version"></span>
             </a>
         </div>
         <script src="popup.js"></script>

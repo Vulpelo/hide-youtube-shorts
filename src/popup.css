@@ -11,4 +11,57 @@ body {
 .right {
     text-align: right;
 }
-    
+
+.sub_setting {
+    padding-left: 10px;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+}
+
+.rearrangeVideosContent {
+    height: 5%;
+    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    display: none;
+    cursor: pointer;
+}
+
+#hideYTShortsVideosInput:checked + span + .rearrangeVideosContent {
+    display: inline;
+    height: 5%;
+    width: 100%;
+    opacity: 1;
+    pointer-events: auto;
+    cursor: auto;
+    visibility: visible;
+}
+
+.tooltip {
+    position: relative;
+    display: inline;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+visibility: hidden;
+width: 150px;
+background-color: black;
+color: #fff;
+text-align: center;
+border-radius: 6px;
+padding: 5px 0;
+
+/* Position the tooltip */
+position: absolute;
+z-index: 0;
+
+}
+
+.tooltiptext {
+    display: block;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
