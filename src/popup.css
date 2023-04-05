@@ -1,5 +1,7 @@
 body {
-    min-width: 12rem;
+    width: 12rem;
+    height: 100%;
+    overflow: hidden;
 }
 
 .bottom {
@@ -12,10 +14,15 @@ body {
     text-align: right;
 }
 
+.setting {
+    user-select: none;
+}
+
 .sub_setting {
     padding-left: 10px;
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
+    user-select: none;
 }
 
 .rearrangeVideosContent {
@@ -44,18 +51,21 @@ body {
 }
 
 .tooltip .tooltiptext {
-visibility: hidden;
-width: 150px;
-background-color: black;
-color: #fff;
-text-align: center;
-border-radius: 6px;
-padding: 5px 0;
+    width: 120px;
+    bottom: 100%;
+    left: 50%; 
+    right: 50%;
+    margin-left: -60px; 
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
 
-/* Position the tooltip */
-position: absolute;
-z-index: 0;
-
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 0;
 }
 
 .tooltiptext {
@@ -64,4 +74,5 @@ z-index: 0;
 
 .tooltip:hover .tooltiptext {
     visibility: visible;
+    transition-delay: 1s;
 }
