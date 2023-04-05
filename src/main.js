@@ -121,7 +121,7 @@ function setup() {
 function countVisibleElementsInRow(row) {
   let visibleCount = 0;
   for (const child of row.children) {
-    if (!element.hasAttribute("hidden")) {
+    if (!child.hasAttribute("hidden")) {
       visibleCount++;
     }
   }
