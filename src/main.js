@@ -138,23 +138,27 @@ function hideShortsTab(hide) {
         hideElement(hide, element.parentElement)
   }
   else {
-    let wrapperElement = document.querySelector(DESKTOP_GUIDE_WRAPPER_SELECTOR);
-    waitForElement(DESKTOP_SHORTS_TAB_SELECTOR, wrapperElement).then((element) => {
-      if (element != null)
-        hideElement(hide, element)
+    waitForElement(DESKTOP_GUIDE_WRAPPER_SELECTOR, document.body).then((wrapperElement) => {
+      waitForElement(DESKTOP_SHORTS_TAB_SELECTOR, wrapperElement).then((element) => {
+        if (element != null)
+          hideElement(hide, element)
+      });
     });
-    let miniWrapperElement = document.querySelector(DESKTOP_GUIDE_WRAPPER_MINI_SELECTOR);
-    waitForElement(DESKTOP_SHORTS_MINI_TAB_SELECTOR, miniWrapperElement).then((element) => {
-      if (element != null)
-        hideElement(hide, element)
+    waitForElement(DESKTOP_GUIDE_WRAPPER_MINI_SELECTOR, document.body).then((wrapperElement) => {
+      waitForElement(DESKTOP_SHORTS_MINI_TAB_SELECTOR, wrapperElement).then((element) => {
+        if (element != null)
+          hideElement(hide, element)
+      });
     });
   }
 }
 
 function manageObserver(selector, active, callback, aObserver = null) {
   if (aObserver === null && active) {
-    aObserver = new MutationObserver(callback);
-    aObserver.observe(document.querySelector(selector), {childList:true, subtree:true});
+    waitForElement(selector, document.body).then((node) => {
+      aObserver = new MutationObserver(callback);
+      aObserver.observe(node, {childList:true, subtree:true});
+    });
   }
   else if (aObserver !== null && !active) {
     aObserver.disconnect();
