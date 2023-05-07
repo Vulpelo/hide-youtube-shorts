@@ -15,7 +15,7 @@
     "content_scripts": [
       {
         "matches": ["*://*.youtube.com/*"],
-        "js": ["./src/main.js"],
+        "js": ["./src/HidingShortsWithContainer.js", "./src/main.js"],
         "run_at": "document_idle"
       }
     ],
