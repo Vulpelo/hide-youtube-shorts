@@ -62,51 +62,33 @@ body {
     transition-delay: 700ms;
 }
 
+
 details {
 	width: 100%;
 	background: #ffffff;
 	border-radius: 8px;
 	position: relative;
-
-	.summary-title {
-		user-select: none;
-	}
-
-	&:hover {
-		cursor: pointer;
-	}
-
-	.summary-content {
-		border-top: 1px solid #e2e8f0;
-		cursor: default;
-		line-height: 1.5;
-	}
-
-	.summary {
-		list-style: none;
-
-		&:focus {
-			outline: none;
-		}
-
-		&:hover .summary-chevron-up svg {
-			opacity: 1;
-		}
-	}
-
-	.summary-chevron-up svg {
-		opacity: 0.5;
-	}
-
-	.summary-chevron-up,
-	.summary-chevron-down {
-		pointer-events: none;
-		position: absolute;
-		top: 0.75em;
-		background: #ffffff;
-	}
-
-	.summary::-webkit-details-marker {
-		display: none;
-	}
 }
+
+.summary-title.details {
+	user-select: none;
+}
+
+summary:hover, .details {
+	cursor: pointer;
+}
+
+.summary-content.details {
+	border-top: 1px solid #e2e8f0;
+	cursor: default;
+	line-height: 1.5;
+}
+
+.summary-chevron-up,
+.summary-chevron-down {
+	pointer-events: none;
+	position: absolute;
+	top: 0.75em;
+	background: #ffffff;
+}
+
