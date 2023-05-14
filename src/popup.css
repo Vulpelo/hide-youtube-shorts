@@ -18,22 +18,6 @@ body {
     user-select: none;
 }
 
-.sub_setting {
-    padding-left: 10px;
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
-    user-select: none;
-}
-
-.rearrangeVideosContent {
-    height: 5%;
-    width: 100%;
-    opacity: 0;
-    visibility: hidden;
-    display: none;
-    cursor: pointer;
-}
-
 #hideYTShortsVideosInput:checked + span + .rearrangeVideosContent {
     display: inline;
     height: 5%;
