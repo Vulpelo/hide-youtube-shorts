@@ -39,7 +39,6 @@ const MOBILE_SHORTS_CONTAINERS_TAG = [
   ["ytm-video-with-context-renderer"],
 ].join(",")
 const MOBILE_SHORTS_TAB_SELECTOR = "ytm-pivot-bar-item-renderer>div[class='pivot-bar-item-tab pivot-shorts']"
-const RICH_GRID_ROW = "ytd-rich-grid-row";
 
 /* on desktop and mobile */
 const SHELF_TAG_REGEX = /yt[dm]-reel-shelf-renderer/gm

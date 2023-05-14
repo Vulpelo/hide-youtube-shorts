@@ -75,10 +75,10 @@ class OperationsAfterHidingElement {
 
   rearrangeVideosInRichGridRows(startFromRowElement, elementsPerRow) {
     // each rich_grid_row has a div element inside, and IT contains list of videos
-    const richGridRows = startFromRowElement.parentElement.parentElement.querySelectorAll(RICH_GRID_ROW);
+    const richGridRows = startFromRowElement.parentElement.parentElement.querySelectorAll(this.RICH_GRID_ROW);
     const startIndex = Array.from(richGridRows).indexOf(startFromRowElement.parentElement);
 
-    const amountOfVisibleElements = countVisibleElementsInRow(startFromRowElement);
+    const amountOfVisibleElements = this.countVisibleElementsInRow(startFromRowElement);
     const elementsToMove = elementsPerRow - amountOfVisibleElements;
 
     for (let j = 0; j < elementsToMove; j++) {
@@ -96,9 +96,10 @@ class OperationsAfterHidingElement {
 
   doOperations(element) {
     if (this.rearrangeVideosAfterHidingAShort) {
-      if (element.parentElement.parentElement.tagName.toLowerCase().match(RICH_GRID_ROW) &&
+      if (element.parentElement.parentElement.tagName.toLowerCase().match(this.RICH_GRID_ROW) &&
         element.hasAttribute("items-per-row")) {
-        rearrangeVideosInRichGridRows(element.parentElement, element.getAttribute("items-per-row"));
+          console.log("Rearranging videos in rich grid rows");
+        this.rearrangeVideosInRichGridRows(element.parentElement, element.getAttribute("items-per-row"));
       }
     }
   }
