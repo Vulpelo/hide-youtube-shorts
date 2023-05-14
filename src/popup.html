@@ -15,13 +15,12 @@
 
         <!-- Options -->
         <fieldset id="settings" style="transform: scale(1); pointer-events: auto; opacity: 1;">
-            <legend id="settingsText">
+            <legend id="settings_text">
                 Options
             </legend>
     
             <label class="setting">
                 <input type="checkbox" id="hideYTShortsVideosInput">
-                <span class="slider"></span>
                 <span id="hide_videos_text" class="switchLabel" title="">
                     Hide Youtube Shorts videos
                 </span>
@@ -29,12 +28,34 @@
             <br>
             <label class="setting">
                 <input type="checkbox" id="hideYTShortsTabInput">
-                <span class="slider"></span>
                 <span id="hide_tab_text" class="switchLabel">
                     Hide Youtube Shorts tab
                 </span>
             </label>
         </fieldset>
+
+        <details>
+            <summary>
+                <span id="more_dropdown_text" class="summary-title">More</span>
+            </summary>
+            <div class="summary-content">
+                <fieldset id="settings_more" style="transform: scale(1); pointer-events: auto; opacity: 1;">
+                    <legend id="settings_experimental_text">
+                        Experimental
+                    </legend>
+            
+                    <label class="setting">
+                        <input type="checkbox" id="rearrangeVideosAfterHidingAShortInput">
+                        <label class="tooltip">
+                            <span id="fill_gaps_tooltip_text" class="tooltiptext">Rearrange videos when hiding shorts, this should remove gaps.</span>
+                            <span id="fill_gaps_text" class="switchLabel">
+                                Rearrange videos on the grid
+                            </span>
+                        </label>
+                    </label>
+                </fieldset>
+            </div>
+        </details>
 
         <div class="bottom">
             <!-- Links -->
@@ -43,7 +64,7 @@
             </a>
             <!-- Version -->
             <a class="right">
-            <span style="text-align: right;" id="ext-version"></span>
+                <span style="text-align: right;" id="ext-version"></span>
             </a>
         </div>
         <script src="popup.js"></script>

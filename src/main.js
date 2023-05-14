@@ -3,6 +3,7 @@ let hideYTShortsVideos = true;
 let hideYTShortsTab = false;
 
 /* ON DESKTOP */
+let dOperationsAfterHidingElement = new OperationsAfterHidingElement();
 // hiding videos on Search page, videos in list mode on subscription page 
 let dHideVideoRenderer = new HidingShortsWithContainer("ytd-video-renderer", "ytd-shelf-renderer");
 // to hide videos/containers on Home page, Subscription page, Search page, Video page
@@ -87,6 +88,13 @@ function setup() {
       hideYTShortsTab = value.hideYTShortsTab;
     }
 
+    if (value.rearrangeVideosAfterHidingAShort == undefined) {
+      chrome.storage.local.set({rearrangeVideosAfterHidingAShort: dOperationsAfterHidingElement.rearrangeVideosAfterHidingAShort});
+    }
+    else {
+      dOperationsAfterHidingElement.rearrangeVideosAfterHidingAShort = value.rearrangeVideosAfterHidingAShort;
+    }
+
     if (isMobile) {
       const mHideShorts = () => {
         hideShorts(hideYTShortsVideos);
@@ -134,6 +142,7 @@ function hideShorts(hide = true) {
       || element.innerHTML.search("href=\"/shorts/") != -1) {
       if (hide) {
         element.setAttribute("hidden", true);
+        dOperationsAfterHidingElement.doOperations(element);
       }
       else if (element.hasAttribute("hidden")) {
         element.removeAttribute("hidden");

@@ -16,7 +16,7 @@ class HidingShortsWithContainer {
     return true;
   }
 
-  findParentWithShelfTag(element) { 
+  findParentWithShelfTag(element) {
     while (element.tagName.toLowerCase() != this.shelfWithVideosTag && element.parentElement != null) {
       element = element.parentElement;
     }
@@ -28,7 +28,7 @@ class HidingShortsWithContainer {
     elements.forEach(element => {
       // hide whole shelf if just contains "ytd-reel-item-renderer" tag. For now seems to be only used for yt-shorts videos
       // and hide any video container that contains a ref link to shorts
-      if (element.innerHTML.search("href=\"/shorts/") == -1) return; 
+      if (element.innerHTML.search("href=\"/shorts/") == -1) return;
       element.setAttribute("hidden", true);
 
       // check if all children are hidden, if yes then find parent with tag "ytd-shelf-renderer" and hide that too
@@ -55,5 +55,52 @@ class HidingShortsWithContainer {
         }
       }
     });
+  }
+}
+
+class OperationsAfterHidingElement {
+  rearrangeVideosAfterHidingAShort = false;
+  // for elements with ytd-rich-item-renderer
+  RICH_GRID_ROW = "ytd-rich-grid-row";
+
+  countVisibleElementsInRow(row) {
+    let visibleCount = 0;
+    for (const child of row.children) {
+      if (!child.hasAttribute("hidden")) {
+        visibleCount++;
+      }
+    }
+    return visibleCount;
+  }
+
+  rearrangeVideosInRichGridRows(startFromRowElement, elementsPerRow) {
+    // each rich_grid_row has a div element inside, and IT contains list of videos
+    const richGridRows = startFromRowElement.parentElement.parentElement.querySelectorAll(this.RICH_GRID_ROW);
+    const startIndex = Array.from(richGridRows).indexOf(startFromRowElement.parentElement);
+
+    const amountOfVisibleElements = this.countVisibleElementsInRow(startFromRowElement);
+    const elementsToMove = elementsPerRow - amountOfVisibleElements;
+
+    for (let j = 0; j < elementsToMove; j++) {
+      // for each next row, move one element to previous row
+      for (let i = startIndex; i < richGridRows.length - 1; i++) {
+        // assuming next row always has child and is visible.
+        const nextRitchRowDiv = richGridRows[i + 1].querySelector("div");
+        if (nextRitchRowDiv.childElementCount <= 0)
+          break;
+        richGridRows[i].querySelector("div").appendChild(nextRitchRowDiv.childNodes[0]);
+      }
+    }
+  }
+  /*!rearranging video elements in richGridRows */
+
+  doOperations(element) {
+    if (this.rearrangeVideosAfterHidingAShort) {
+      if (element.parentElement.parentElement.tagName.toLowerCase().match(this.RICH_GRID_ROW) &&
+        element.hasAttribute("items-per-row")) {
+          console.log("Rearranging videos in rich grid rows");
+        this.rearrangeVideosInRichGridRows(element.parentElement, element.getAttribute("items-per-row"));
+      }
+    }
   }
 }

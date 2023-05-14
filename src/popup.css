@@ -1,5 +1,8 @@
 body {
-    min-width: 12rem;
+	max-width: 14rem;
+	min-width: 12rem;
+    height: 100%;
+    overflow: hidden;
 }
 
 .bottom {
@@ -11,4 +14,99 @@ body {
 .right {
     text-align: right;
 }
-    
+
+.setting {
+    user-select: none;
+}
+
+#hideYTShortsVideosInput:checked + span + .rearrangeVideosContent {
+    display: inline;
+    height: 5%;
+    width: 100%;
+    opacity: 1;
+    pointer-events: auto;
+    cursor: auto;
+    visibility: visible;
+}
+
+.tooltip {
+    position: relative;
+    display: inline;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    width: 120px;
+    bottom: 100%;
+    left: 50%; 
+    right: 50%;
+    margin-left: -60px; 
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 0;
+}
+
+.tooltiptext {
+    display: block;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    transition-delay: 700ms;
+}
+
+details {
+	width: 100%;
+	background: #ffffff;
+	border-radius: 8px;
+	position: relative;
+
+	.summary-title {
+		user-select: none;
+	}
+
+	&:hover {
+		cursor: pointer;
+	}
+
+	.summary-content {
+		border-top: 1px solid #e2e8f0;
+		cursor: default;
+		line-height: 1.5;
+	}
+
+	.summary {
+		list-style: none;
+
+		&:focus {
+			outline: none;
+		}
+
+		&:hover .summary-chevron-up svg {
+			opacity: 1;
+		}
+	}
+
+	.summary-chevron-up svg {
+		opacity: 0.5;
+	}
+
+	.summary-chevron-up,
+	.summary-chevron-down {
+		pointer-events: none;
+		position: absolute;
+		top: 0.75em;
+		background: #ffffff;
+	}
+
+	.summary::-webkit-details-marker {
+		display: none;
+	}
+}
