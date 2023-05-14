@@ -24,20 +24,6 @@
                 <span id="hide_videos_text" class="switchLabel" title="">
                     Hide Youtube Shorts videos
                 </span>
-                <div class="rearrangeVideosContent">
-                    <br>
-                    <label class="sub_setting">
-                        
-                        <input type="checkbox" id="rearrangeVideosAfterHidingAShortInput">
-                        <label class="tooltip">
-                            <span id="fill_gaps_tooltip_text" class="tooltiptext">Rearrange videos when hiding shorts, this should remove gaps.</span>
-                            <span id="fill_gaps_text" class="switchLabel">
-                                (experimental) Fill gaps after removing shorts
-                            </span>
-                        </label>
-                    </label>
-                    <br>
-                </div>
             </label>
             <br>
             <label class="setting">
@@ -47,6 +33,29 @@
                 </span>
             </label>
         </fieldset>
+
+        <details>
+            <summary>
+                <span class="summary-title">More</span>
+            </summary>
+            <div class="summary-content">
+                <fieldset id="settings_more" style="transform: scale(1); pointer-events: auto; opacity: 1;">
+                    <legend id="settingsText">
+                        Experimental (unstable)
+                    </legend>
+            
+                    <label class="setting">
+                        <input type="checkbox" id="rearrangeVideosAfterHidingAShortInput">
+                        <label class="tooltip">
+                            <span id="fill_gaps_tooltip_text" class="tooltiptext">Rearrange videos when hiding shorts, this should remove gaps.</span>
+                            <span id="fill_gaps_text" class="switchLabel">
+                                Rearrange videos on the grid
+                            </span>
+                        </label>
+                    </label>
+                </fieldset>
+            </div>
+        </details>
 
         <div class="bottom">
             <!-- Links -->
