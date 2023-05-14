@@ -95,9 +95,6 @@ function setup() {
       dOperationsAfterHidingElement.rearrangeVideosAfterHidingAShort = value.rearrangeVideosAfterHidingAShort;
     }
 
-    hideShorts(hideYTShortsVideos); 
-    hideShortsTab(hideYTShortsTab)
-
     if (isMobile) {
       const mHideShorts = () => {
         hideShorts(hideYTShortsVideos);
