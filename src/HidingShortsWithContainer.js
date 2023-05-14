@@ -57,3 +57,48 @@ class HidingShortsWithContainer {
     });
   }
 }
+
+class OperationsAfterHidingElement {
+  rearrangeVideosAfterHidingAShort = false;
+  RICH_GRID_ROW = "ytd-rich-grid-row";
+  RICH_ITEM_RENDERER = "ytd-rich-item-renderer";
+
+  countVisibleElementsInRow(row) {
+    let visibleCount = 0;
+    for (const child of row.children) {
+      if (!child.hasAttribute("hidden")) {
+        visibleCount++;
+      }
+    }
+    return visibleCount;
+  }
+
+  rearrangeVideosInRichGridRows(startFromRowElement, elementsPerRow) {
+    // each rich_grid_row has a div element inside, and IT contains list of videos
+    const richGridRows = startFromRowElement.parentElement.parentElement.querySelectorAll(RICH_GRID_ROW);
+    const startIndex = Array.from(richGridRows).indexOf(startFromRowElement.parentElement);
+
+    const amountOfVisibleElements = countVisibleElementsInRow(startFromRowElement);
+    const elementsToMove = elementsPerRow - amountOfVisibleElements;
+
+    for (let j = 0; j < elementsToMove; j++) {
+      // for each next row, move one element to previous row
+      for (let i = startIndex; i < richGridRows.length - 1; i++) {
+        // assuming next row always has child and is visible.
+        const nextRitchRowDiv = richGridRows[i + 1].querySelector("div");
+        if (nextRitchRowDiv.childElementCount <= 0) 
+          break;
+        richGridRows[i].querySelector("div").appendChild(nextRitchRowDiv.childNodes[0]);
+      }
+    }
+  }
+  /*!rearranging video elements in richGridRows */
+
+  doOperations(element) {
+    if (rearrangeVideosAfterHidingAShort && element.parentElement.parentElement.tagName.toLowerCase().match(RICH_GRID_ROW)) {
+      if (element.hasAttribute("items-per-row")) {
+        rearrangeVideosInRichGridRows(element.parentElement, element.getAttribute("items-per-row"));
+      }
+    }
+  }
+}
