@@ -15,17 +15,19 @@ Install from [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/hi
 
 or add the Add-on temporarily:
 1. Download the project
-2. In Firefox browser go to the debugging page by typing in url <b>[about:debugging#/runtime/this-firefox](about:debugging#/runtime/this-firefox)</b>
-3. Click on <b>Load Temporary Add-on...</b>
-4. Select a file (eg. 'manifest.json' file) inside of downloaded git project. Or you can ZIP contents of the project and select it instead.
+2. Rename 'manifest-firefox.json' file to 'manifest.json'
+3. In Firefox browser go to the debugging page by typing in url <b>[about:debugging#/runtime/this-firefox](about:debugging#/runtime/this-firefox)</b>
+4. Click on <b>Load Temporary Add-on...</b>
+5. Select a file (eg. 'manifest.json' file) inside of downloaded git project. Or you can ZIP contents of the project and select it instead.
 
 ### Google Chrome
 
 1. Download the project
-2. In Chrome browser go to the Extensions page (or type in url <b>[chrome://extensions/](chrome://extensions/)</b>)
-3. Enable the <b>Developer Mode</b>
-4. Click the <b>Load unpacked</b> button
-5. Select the directory of downloaded git project.
+2. Rename 'manifest-chrome.json' file to 'manifest.json'
+3. In Chrome browser go to the Extensions page (or type in url <b>[chrome://extensions/](chrome://extensions/)</b>)
+4. Enable the <b>Developer Mode</b>
+5. Click the <b>Load unpacked</b> button
+6. Select the directory of downloaded git project.
 
 ## License
 
