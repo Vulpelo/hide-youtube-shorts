@@ -1,7 +1,9 @@
 # Hide YouTube-Shorts
 
-[![Extension Rating](https://img.shields.io/amo/rating/hide-youtube-shorts?color=green&label=Rating&logo=FirefoxBrowser)](https://addons.mozilla.org/en-US/firefox/addon/hide-youtube-shorts/)
-[![Extension's Firefox users](https://img.shields.io/amo/users/hide-youtube-shorts?label=Users&logo=FirefoxBrowser)](https://addons.mozilla.org/en-US/firefox/addon/hide-youtube-shorts/)
+[![Extension's Mozilla Rating](https://img.shields.io/amo/rating/hide-youtube-shorts?color=green&label=Mozilla%20Rating&logo=FirefoxBrowser)](https://addons.mozilla.org/en-US/firefox/addon/hide-youtube-shorts/)
+[![Extension's Mozilla users](https://img.shields.io/amo/users/hide-youtube-shorts?label=Mozilla%20Users&logo=FirefoxBrowser)](https://addons.mozilla.org/en-US/firefox/addon/hide-youtube-shorts/)
+[![Extension's Chrome Web Store rating](https://img.shields.io/chrome-web-store/rating/epgdblohfbmigelolmilnjhaoikmjdan?label=Chrome%20Rating&logo=google%20chrome)](https://chrome.google.com/webstore/detail/hide-youtube-shorts/epgdblohfbmigelolmilnjhaoikmjdan)
+[![Extension's Chrome Web Store users](https://img.shields.io/chrome-web-store/users/epgdblohfbmigelolmilnjhaoikmjdan?label=Chrome%20Users&logo=google%20chrome)](https://chrome.google.com/webstore/detail/hide-youtube-shorts/epgdblohfbmigelolmilnjhaoikmjdan)
 [![Licence](https://img.shields.io/github/license/Vulpelo/hide-youtube-shorts)](https://github.com/Vulpelo/hide-youtube-shorts/blob/master/LICENCE.md)
 
 Firefox add-on that hides YouTube-shorts videos from home page, subscriptions and search results. 
@@ -11,7 +13,7 @@ Also allows you to hide "Shorts" tab.
 
 ### Firefox 
 
-Install from [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/hide-youtube-shorts/) webpage
+Install from [Mozilla Add-ons](https://addons.mozilla.org/en-US/firefox/addon/hide-youtube-shorts/) webpage
 
 or add the Add-on temporarily:
 1. Download the project
@@ -22,6 +24,9 @@ or add the Add-on temporarily:
 
 ### Google Chrome
 
+Install from [Chrome web store](https://chrome.google.com/webstore/detail/hide-youtube-shorts/epgdblohfbmigelolmilnjhaoikmjdan) webpage
+
+or add the Add-on manually:
 1. Download the project
 2. Rename 'manifest-chrome.json' file to 'manifest.json'
 3. In Chrome browser go to the Extensions page (or type in url <b>[chrome://extensions/](chrome://extensions/)</b>)
