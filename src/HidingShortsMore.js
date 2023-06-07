@@ -97,9 +97,12 @@ class OperationsAfterHidingElement {
   doOperations(element) {
     if (this.rearrangeVideosAfterHidingAShort) {
       if (element.parentElement.parentElement.tagName.toLowerCase().match(this.RICH_GRID_ROW) &&
-        element.hasAttribute("items-per-row")) {
-          console.log("Rearranging videos in rich grid rows");
-        this.rearrangeVideosInRichGridRows(element.parentElement, element.getAttribute("items-per-row"));
+        element.hasAttribute("items-per-row")) 
+      {
+        const pElement = element.parentElement;
+        const itemsPerRow = element.getAttribute("items-per-row");
+        element.remove();
+        this.rearrangeVideosInRichGridRows(pElement, itemsPerRow);
       }
     }
   }
