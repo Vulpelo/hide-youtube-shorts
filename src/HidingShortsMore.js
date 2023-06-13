@@ -53,7 +53,7 @@ class HidingShortsWithContainer {
 }
 
 class OperationsAfterHidingElement {
-  rearrangeVideosAfterHidingAShort = false;
+  rearrangeVideosAfterHidingAShort = true;
   // for elements with ytd-rich-item-renderer
   RICH_GRID_ROW = "ytd-rich-grid-row";
 
