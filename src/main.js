@@ -109,16 +109,10 @@ function setup() {
     }
     else {
       const dHidingShorts = () => {
-        if (hideYTShortsVideos) {
-          dHideVideoRenderer.hideShorts();
-        }
-        else {
-          dHideVideoRenderer.showShorts();
-        }
         hideShorts(hideYTShortsVideos);
       }
       dHidingShorts();
-      hideShortsTab(hideYTShortsTab)
+      hideShortsTab(hideYTShortsTab);
 
       observer = manageObserver("#content",
         hideYTShortsVideos,
@@ -132,17 +126,28 @@ function setup() {
 function hideShorts(hide = true) {
   let selectorString = isMobile ?
     MOBILE_SHORTS_CONTAINERS_TAG
-    : REST_DESKTOP_SHORTS_CONTAINERS_TAG;
+    : REST_DESKTOP_SHORTS_CONTAINERS_TAG + "," + dHideVideoRenderer.elementTagName;
   elements = document.querySelectorAll(selectorString);
   elements.forEach(element => {
+
+    if (element.tagName.toLowerCase().match(dHideVideoRenderer.elementTagName)) {
+      if (hide) {
+        dHideVideoRenderer.hideShort(element);
+      }
+      else {
+        dHideVideoRenderer.showShort(element);
+      }
+    }
     // hide whole shelf if just contains "ytd-reel-item-renderer" tag. For now seems to be only used for yt-shorts videos
     // and hide any video container that contains a ref link to shorts
-    if ((element.tagName.toLowerCase().match(SHELF_TAG_REGEX)
+    else if ((element.tagName.toLowerCase().match(SHELF_TAG_REGEX)
       && element.innerHTML.search(SHELF_ITEM_TAG_REGEX) != -1)
       || element.innerHTML.search("href=\"/shorts/") != -1) {
       if (hide) {
-        element.setAttribute("hidden", true);
-        dOperationsAfterHidingElement.doOperations(element);
+        if (!element.hasAttribute("hidden")) {
+          element.setAttribute("hidden", true);
+          dOperationsAfterHidingElement.doOperations(element);
+        }
       }
       else if (element.hasAttribute("hidden")) {
         element.removeAttribute("hidden");
