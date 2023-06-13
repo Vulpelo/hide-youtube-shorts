@@ -5,7 +5,7 @@
     "cfg_hide_videos": {"message": "Ukryj filmiki Shorts"},
     "cfg_hide_tab": {"message": "Ukryj zakładkę Shorts"},
     "cfg_fill_gaps": {"message": "Przestaw kolejność filmów"},
-    "cfg_fill_gaps_tooltip": {"message": "Zmieniaj kolejność filmików podczas ukrywania short'ów. Powinno zniwelować dziury po short'ach."},
+    "cfg_fill_gaps_tooltip": {"message": "Zmieniaj kolejność filmików podczas ukrywania short'ów. Powinno zniwelować dziury po short'ach. (może działać wolno)"},
     "setting_text": {"message": "Opcje"},
     "more_dropdown_text": {"message": "Więcej"},
     "setting_experimental_text": {"message": "Eksperymentalne"}

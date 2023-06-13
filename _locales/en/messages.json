@@ -5,7 +5,7 @@
     "cfg_hide_videos": {"message": "Hide Shorts videos"},
     "cfg_hide_tab": {"message": "Hide Shorts tab"},
     "cfg_fill_gaps": {"message": "Rearrange videos on the grid"},
-    "cfg_fill_gaps_tooltip": {"message": "Rearrange videos when hiding shorts, this should remove gaps."},
+    "cfg_fill_gaps_tooltip": {"message": "Rearrange videos when hiding shorts, this should remove gaps. (might be slow)"},
     "setting_text": {"message": "Options"},
     "more_dropdown_text": {"message": "More"},
     "setting_experimental_text": {"message": "Experimental"}
