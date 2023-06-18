@@ -149,7 +149,7 @@ function setup() {
       dHidingShorts();
       hideShortsTab(hideYTShortsTab);
 
-      observer = manageObserver("#primary",
+      observer = manageObserver("#content",
         hideYTShortsVideos,
         dHidingShorts,
         observer);
