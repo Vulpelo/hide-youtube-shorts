@@ -11,5 +11,5 @@
     "setting_experimental_text": {"message": "Eksperymentalne"},
 
     "cfg_hide_shorts_timeout": {"message": "Limit czasu przed ponownym szukaniem short'ów (ms)"},
-    "cfg_hide_shorts_timeout_tooltip": {"message": "Nie zezwalaj na szukanie short'ów częściej niż określony czas. Wysoki limit poprawia wydajność, ale short'y mogą nie zostać natychmiast ukryte."}
+    "cfg_hide_shorts_timeout_tooltip": {"message": "Nie zezwalaj na szukanie short'ów częściej niż określony czas. Wysoki limit zmniejsza obciążenie strony, ale short'y mogą być ukrywanie z opóźnieniem."}
 }
