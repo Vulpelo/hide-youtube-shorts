@@ -3,6 +3,7 @@ let hideYTShortsVideos = true;
 let hideYTShortsTab = false;
 let isHidingShortsTimeoutActive = false;
 
+let timeoutId = -1;
 let hidingShortsTimeoutActive = false;
 let hidingShortsTimeoutTimeMs = 500;
 
@@ -78,12 +79,19 @@ function hideElement(hide, element) {
 function hidingShortsTimeout(callback, timeMs) {
   if (isHidingShortsTimeoutActive) return;
   isHidingShortsTimeoutActive = true;
-  setTimeout(() => {
+  timeoutId = setTimeout(() => {
     callback();
     isHidingShortsTimeoutActive = false;
   }, timeMs);
 }
 
+function clearShortsTimeout() {
+  clearTimeout(timeoutId);
+  isHidingShortsTimeoutActive = false;
+}
+
+let hideShortsCallbackInner = () => {};
+function hideShortsCallback() { hideShortsCallbackInner(); };
 
 function setup() {
   chrome.storage.local.get(null, function (value) {
@@ -104,17 +112,21 @@ function setup() {
 
     if (value.hidingShortsTimeoutTimeMs == undefined)
       chrome.storage.local.set({ hidingShortsTimeoutTimeMs: hidingShortsTimeoutTimeMs });
-    else
+    else if (hidingShortsTimeoutTimeMs != value.hidingShortsTimeoutTimeMs) {
+      clearShortsTimeout();
       hidingShortsTimeoutTimeMs = value.hidingShortsTimeoutTimeMs;
+    }
 
     if (value.hidingShortsTimeoutActive == undefined)
       chrome.storage.local.set({ hidingShortsTimeoutActive: hidingShortsTimeoutActive });
-    else
+    else if (hidingShortsTimeoutActive != value.hidingShortsTimeoutActive) {
+      clearShortsTimeout();
       hidingShortsTimeoutActive = value.hidingShortsTimeoutActive;
+    }
 
 
     if (isMobile) {
-      const mHideShorts =
+      hideShortsCallbackInner =
         hidingShortsTimeoutActive ?
           () => {
             hidingShortsTimeout(() => {
@@ -126,16 +138,16 @@ function setup() {
           () => {
             hideShorts(hideYTShortsVideos);
             hideShortsTab(hideYTShortsTab);
-          }
-      mHideShorts();
+          };
+      hideShortsCallbackInner();
 
       observer = manageObserver("#app",
         hideYTShortsTab || hideYTShortsVideos,
-        mHideShorts,
+        hideShortsCallback,
         observer);
     }
     else {
-      const dHidingShorts =
+      hideShortsCallbackInner =
         hidingShortsTimeoutActive ?
           () => {
             hidingShortsTimeout(() => {
@@ -145,13 +157,13 @@ function setup() {
           :
           () => {
             hideShorts(hideYTShortsVideos);
-          }
-      dHidingShorts();
+          };
+      hideShortsCallbackInner();
       hideShortsTab(hideYTShortsTab);
 
       observer = manageObserver("#content",
         hideYTShortsVideos,
-        dHidingShorts,
+        hideShortsCallback,
         observer);
     }
   });
