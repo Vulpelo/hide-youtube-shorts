@@ -4,39 +4,44 @@ window.onload = function() {
     {
         // hide shorts
         let hideYTShortsInput = document.getElementById("hideYTShortsVideosInput");
-        hideYTShortsInput.checked = value.hideYTShortsVideos;
+        if (value.hideYTShortsVideos != undefined)
+            hideYTShortsInput.checked = value.hideYTShortsVideos;
         hideYTShortsInput.addEventListener("input", function(e) {
             chrome.storage.local.set({hideYTShortsVideos: e.target.checked});
         })
 
         // hide tab
         let hideYTShortsTabInput = document.getElementById("hideYTShortsTabInput");
-        hideYTShortsTabInput.checked = value.hideYTShortsTab;
+        if (value.hideYTShortsTab != undefined)
+            hideYTShortsTabInput.checked = value.hideYTShortsTab;
         hideYTShortsTabInput.addEventListener("input", function(e) {
             chrome.storage.local.set({hideYTShortsTab: e.target.checked});
         })
 
         // rearrange
         let rearrangeVideosAfterHidingAShortInput = document.getElementById("rearrangeVideosAfterHidingAShortInput");
-        rearrangeVideosAfterHidingAShortInput.checked = value.rearrangeVideosAfterHidingAShort;
+        if (value.rearrangeVideosAfterHidingAShort != undefined)
+            rearrangeVideosAfterHidingAShortInput.checked = value.rearrangeVideosAfterHidingAShort;
         rearrangeVideosAfterHidingAShortInput.addEventListener("input", function(e) {
             chrome.storage.local.set({rearrangeVideosAfterHidingAShort: e.target.checked});
         })
 
         // timeout
         let hidingShortsTimeoutTimeMsInput = document.getElementById("hidingShortsTimeoutTimeMsInput");
-        hidingShortsTimeoutTimeMsInput.value = value.hidingShortsTimeoutTimeMs;
+        if (value.hidingShortsTimeoutTimeMs != undefined)
+            hidingShortsTimeoutTimeMsInput.value = value.hidingShortsTimeoutTimeMs;
         hidingShortsTimeoutTimeMsInput.addEventListener("input", function(e) {
-            const minAttr = parseInt(hidingShortsTimeoutTimeMsInput.min);
-            const maxAttr = parseInt(hidingShortsTimeoutTimeMsInput.max);
-            if (minAttr > hidingShortsTimeoutTimeMsInput.value)
-                hidingShortsTimeoutTimeMsInput.value = minAttr;
-            else if (maxAttr < hidingShortsTimeoutTimeMsInput.value)
-                hidingShortsTimeoutTimeMsInput.value = maxAttr;
+            const minAttr = parseInt(e.target.min);
+            const maxAttr = parseInt(e.target.max);
+            if (minAttr > e.target.value)
+                e.target.value = minAttr;
+            else if (maxAttr < e.target.value)
+                e.target.value = maxAttr;
             chrome.storage.local.set({hidingShortsTimeoutTimeMs: e.target.value});
         })
         let hidingShortsTimeoutTimeMsInputCheckbox = document.getElementById("hidingShortsTimeoutTimeMsInputCheckbox");
-        hidingShortsTimeoutTimeMsInputCheckbox.checked = value.hidingShortsTimeoutActive;
+        if (value.hidingShortsTimeoutActive != undefined)
+            hidingShortsTimeoutTimeMsInputCheckbox.checked = value.hidingShortsTimeoutActive;
         hidingShortsTimeoutTimeMsInputCheckbox.addEventListener("input", function(e) {
             chrome.storage.local.set({hidingShortsTimeoutActive: e.target.checked});
         })
