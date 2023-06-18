@@ -8,5 +8,8 @@
     "cfg_fill_gaps_tooltip": {"message": "Zmieniaj kolejność filmików podczas ukrywania short'ów. Powinno zniwelować dziury po short'ach. (może działać wolno)"},
     "setting_text": {"message": "Opcje"},
     "more_dropdown_text": {"message": "Więcej"},
-    "setting_experimental_text": {"message": "Eksperymentalne"}
+    "setting_experimental_text": {"message": "Eksperymentalne"},
+
+    "cfg_hide_shorts_timeout": {"message": "Limit czasu przed ponownym szukaniem short'ów (ms)"},
+    "cfg_hide_shorts_timeout_tooltip": {"message": "Nie zezwalaj na szukanie short'ów częściej niż określony czas. Wysoki limit poprawia wydajność, ale short'y mogą nie zostać natychmiast ukryte."}
 }
