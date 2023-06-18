@@ -2,23 +2,39 @@ window.onload = function() {
 
     chrome.storage.local.get(null, function(value)
     {
+        // hide shorts
         let hideYTShortsInput = document.getElementById("hideYTShortsVideosInput");
         hideYTShortsInput.checked = value.hideYTShortsVideos;
         hideYTShortsInput.addEventListener("input", function(e) {
             chrome.storage.local.set({hideYTShortsVideos: e.target.checked});
         })
 
+        // hide tab
         let hideYTShortsTabInput = document.getElementById("hideYTShortsTabInput");
         hideYTShortsTabInput.checked = value.hideYTShortsTab;
         hideYTShortsTabInput.addEventListener("input", function(e) {
             chrome.storage.local.set({hideYTShortsTab: e.target.checked});
         })
 
+        // rearrange
         let rearrangeVideosAfterHidingAShortInput = document.getElementById("rearrangeVideosAfterHidingAShortInput");
         rearrangeVideosAfterHidingAShortInput.checked = value.rearrangeVideosAfterHidingAShort;
         rearrangeVideosAfterHidingAShortInput.addEventListener("input", function(e) {
             chrome.storage.local.set({rearrangeVideosAfterHidingAShort: e.target.checked});
         })
+
+        // timeout
+        let hidingShortsTimeoutTimeMsInput = document.getElementById("hidingShortsTimeoutTimeMsInput");
+        hidingShortsTimeoutTimeMsInput.value = value.hidingShortsTimeoutTimeMs;
+        hidingShortsTimeoutTimeMsInput.addEventListener("input", function(e) {
+            chrome.storage.local.set({hidingShortsTimeoutTimeMs: e.target.value});
+        })
+        let hidingShortsTimeoutTimeMsInputCheckbox = document.getElementById("hidingShortsTimeoutTimeMsInputCheckbox");
+        hidingShortsTimeoutTimeMsInputCheckbox.checked = value.hidingShortsTimeoutActive;
+        hidingShortsTimeoutTimeMsInputCheckbox.addEventListener("input", function(e) {
+            chrome.storage.local.set({hidingShortsTimeoutActive: e.target.checked});
+        })
+        
     });
 
     // Set language

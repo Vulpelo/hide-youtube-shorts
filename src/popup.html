@@ -53,6 +53,17 @@
                             </span>
                         </label>
                     </label>
+                    <br>
+                    <label class="setting">
+                        <label class="tooltip">
+                            <input type="checkbox" id="hidingShortsTimeoutTimeMsInputCheckbox">
+                            <span id="hide_shorts_timeout_tooltip_text" class="tooltiptext">Dont allow checking for shorts more often than specified time. Bigger timeout then  better performance but shorts might not get hidden immediatelly</span>
+                            <span id="hide_shorts_timeout_text" class="switchLabel">
+                                Timeout for rechecking videos (ms)
+                            </span>
+                            <input type="number" id="hidingShortsTimeoutTimeMsInput" min="10" max="10000" style="width: 50px">
+                        </label>
+                    </label>
                 </fieldset>
             </div>
         </details>
