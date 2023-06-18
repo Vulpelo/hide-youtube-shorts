@@ -27,6 +27,12 @@ window.onload = function() {
         let hidingShortsTimeoutTimeMsInput = document.getElementById("hidingShortsTimeoutTimeMsInput");
         hidingShortsTimeoutTimeMsInput.value = value.hidingShortsTimeoutTimeMs;
         hidingShortsTimeoutTimeMsInput.addEventListener("input", function(e) {
+            const minAttr = parseInt(hidingShortsTimeoutTimeMsInput.min);
+            const maxAttr = parseInt(hidingShortsTimeoutTimeMsInput.max);
+            if (minAttr > hidingShortsTimeoutTimeMsInput.value)
+                hidingShortsTimeoutTimeMsInput.value = minAttr;
+            else if (maxAttr < hidingShortsTimeoutTimeMsInput.value)
+                hidingShortsTimeoutTimeMsInput.value = maxAttr;
             chrome.storage.local.set({hidingShortsTimeoutTimeMs: e.target.value});
         })
         let hidingShortsTimeoutTimeMsInputCheckbox = document.getElementById("hidingShortsTimeoutTimeMsInputCheckbox");
