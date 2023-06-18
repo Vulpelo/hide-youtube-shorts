@@ -8,5 +8,8 @@
     "cfg_fill_gaps_tooltip": {"message": "Rearrange videos when hiding shorts, this should remove gaps. (might be slow)"},
     "setting_text": {"message": "Options"},
     "more_dropdown_text": {"message": "More"},
-    "setting_experimental_text": {"message": "Experimental"}
+    "setting_experimental_text": {"message": "Experimental"},
+
+    "cfg_hide_shorts_timeout": {"message": "Timeout before rechecking videos (ms)"},
+    "cfg_hide_shorts_timeout_tooltip": {"message": "Don't allow checking for shorts more often than specified time. Bigger timeout lowers page load but shorts might not get hidden immediately."}
 }

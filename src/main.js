@@ -1,6 +1,10 @@
 let observer = null;
 let hideYTShortsVideos = true;
 let hideYTShortsTab = false;
+let isHidingShortsTimeoutActive = false;
+
+let hidingShortsTimeoutActive = false;
+let hidingShortsTimeoutTimeMs = 500;
 
 /* ON DESKTOP */
 let dOperationsAfterHidingElement = new OperationsAfterHidingElement();
@@ -71,35 +75,58 @@ function hideElement(hide, element) {
   }
 }
 
+function hidingShortsTimeout(callback, timeMs) {
+  if (isHidingShortsTimeoutActive) return;
+  isHidingShortsTimeoutActive = true;
+  setTimeout(() => {
+    callback();
+    isHidingShortsTimeoutActive = false;
+  }, timeMs);
+}
+
 
 function setup() {
   chrome.storage.local.get(null, function (value) {
-    if (value.hideYTShortsVideos == undefined) {
+    if (value.hideYTShortsVideos == undefined)
       chrome.storage.local.set({ hideYTShortsVideos: hideYTShortsVideos });
-    }
-    else {
+    else
       hideYTShortsVideos = value.hideYTShortsVideos;
-    }
 
-    if (value.hideYTShortsTab == undefined) {
+    if (value.hideYTShortsTab == undefined)
       chrome.storage.local.set({ hideYTShortsTab: hideYTShortsTab });
-    }
-    else {
+    else
       hideYTShortsTab = value.hideYTShortsTab;
-    }
 
-    if (value.rearrangeVideosAfterHidingAShort == undefined) {
-      chrome.storage.local.set({rearrangeVideosAfterHidingAShort: dOperationsAfterHidingElement.rearrangeVideosAfterHidingAShort});
-    }
-    else {
+    if (value.rearrangeVideosAfterHidingAShort == undefined)
+      chrome.storage.local.set({ rearrangeVideosAfterHidingAShort: dOperationsAfterHidingElement.rearrangeVideosAfterHidingAShort });
+    else
       dOperationsAfterHidingElement.rearrangeVideosAfterHidingAShort = value.rearrangeVideosAfterHidingAShort;
-    }
+
+    if (value.hidingShortsTimeoutTimeMs == undefined)
+      chrome.storage.local.set({ hidingShortsTimeoutTimeMs: hidingShortsTimeoutTimeMs });
+    else
+      hidingShortsTimeoutTimeMs = value.hidingShortsTimeoutTimeMs;
+
+    if (value.hidingShortsTimeoutActive == undefined)
+      chrome.storage.local.set({ hidingShortsTimeoutActive: hidingShortsTimeoutActive });
+    else
+      hidingShortsTimeoutActive = value.hidingShortsTimeoutActive;
+
 
     if (isMobile) {
-      const mHideShorts = () => {
-        hideShorts(hideYTShortsVideos);
-        hideShortsTab(hideYTShortsTab);
-      }
+      const mHideShorts =
+        hidingShortsTimeoutActive ?
+          () => {
+            hidingShortsTimeout(() => {
+              hideShorts(hideYTShortsVideos);
+              hideShortsTab(hideYTShortsTab);
+            }, hidingShortsTimeoutTimeMs);
+          }
+          :
+          () => {
+            hideShorts(hideYTShortsVideos);
+            hideShortsTab(hideYTShortsTab);
+          }
       mHideShorts();
 
       observer = manageObserver("#app",
@@ -108,22 +135,30 @@ function setup() {
         observer);
     }
     else {
-      const dHidingShorts = () => {
-        hideShorts(hideYTShortsVideos);
-      }
+      const dHidingShorts =
+        hidingShortsTimeoutActive ?
+          () => {
+            hidingShortsTimeout(() => {
+              hideShorts(hideYTShortsVideos);
+            }, hidingShortsTimeoutTimeMs);
+          }
+          :
+          () => {
+            hideShorts(hideYTShortsVideos);
+          }
       dHidingShorts();
       hideShortsTab(hideYTShortsTab);
 
-      observer = manageObserver("#content",
+      observer = manageObserver("#primary",
         hideYTShortsVideos,
         dHidingShorts,
         observer);
     }
-
   });
 }
 
 function hideShorts(hide = true) {
+  console.log("Hiding!");
   let selectorString = isMobile ?
     MOBILE_SHORTS_CONTAINERS_TAG
     : REST_DESKTOP_SHORTS_CONTAINERS_TAG + "," + dHideVideoRenderer.elementTagName;
