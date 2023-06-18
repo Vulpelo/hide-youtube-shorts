@@ -158,7 +158,6 @@ function setup() {
 }
 
 function hideShorts(hide = true) {
-  console.log("Hiding!");
   let selectorString = isMobile ?
     MOBILE_SHORTS_CONTAINERS_TAG
     : REST_DESKTOP_SHORTS_CONTAINERS_TAG + "," + dHideVideoRenderer.elementTagName;
