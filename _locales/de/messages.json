@@ -1,0 +1,15 @@
+{
+    "extensionName": {"message": "Youtube-Shorts ausblenden"},
+    "extensionDescription": {"message": "Blendet YouTube-shorts Videos von der Startseite, den Abonnements und den Suchergebnissen aus."},
+    
+    "cfg_hide_videos": {"message": "YouTube-shorts Videos ausblenden"},
+    "cfg_hide_tab": {"message": "YouTube-shorts Tab ausblenden"},
+    "cfg_fill_gaps": {"message": "Videos neu anordnen"},
+    "cfg_fill_gaps_tooltip": {"message": "Ordnen Sie Videos neu an, nachdem YouTube-shorts Videos ausblenden wurden, um mögliche Lücken zu schließen. (könnte langsam sein)"},
+    "setting_text": {"message": "Optionen"},
+    "more_dropdown_text": {"message": "Mehr"},
+    "setting_experimental_text": {"message": "Experimentell"},
+
+    "cfg_hide_shorts_timeout": {"message": "Zeitintervall bis zur nächsten Prüfung der Videos (ms)"},
+    "cfg_hide_shorts_timeout_tooltip": {"message": "Sucht im Rhythmus des angegebenen Zeitintervalls nach YouTube-shorts Videos. Größere Zeitintervalle verringern die Ladezeit der Seite, aber YouTube-shorts Videos werden möglicherweise nicht sofort entfernt."}
+}
