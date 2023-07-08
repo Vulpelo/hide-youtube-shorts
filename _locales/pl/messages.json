@@ -9,6 +9,12 @@
     "setting_text": {"message": "Opcje"},
     "more_dropdown_text": {"message": "Więcej"},
     "setting_experimental_text": {"message": "Eksperymentalne"},
+    "settings_hiding_on_text": {"message": "Ukrywanie na"},
+
+    "cfg_hide_videos_home": {"message": "Strona główna"},
+    "cfg_hide_videos_subscription": {"message": "Strona subskrypcji"},
+    "cfg_hide_videos_search": {"message": "Strona wyszukiwania"},
+    "cfg_hide_videos_youtubers_shorts_tab": {"message": "Strona kanału"},
 
     "cfg_hide_shorts_timeout": {"message": "Limit czasu przed ponownym szukaniem short'ów (ms)"},
     "cfg_hide_shorts_timeout_tooltip": {"message": "Nie zezwalaj na szukanie short'ów częściej niż określony czas. Wysoki limit zmniejsza obciążenie strony, ale short'y mogą być ukrywanie z opóźnieniem."}
