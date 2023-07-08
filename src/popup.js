@@ -77,6 +77,11 @@ window.onload = function() {
     document.getElementById("more_dropdown_text").textContent=chrome.i18n.getMessage("more_dropdown_text");
     document.getElementById("hide_shorts_timeout_tooltip_text").textContent=chrome.i18n.getMessage("cfg_hide_shorts_timeout_tooltip");
     document.getElementById("hide_shorts_timeout_text").textContent=chrome.i18n.getMessage("cfg_hide_shorts_timeout");
+    document.getElementById("settings_hiding_on_text").textContent=chrome.i18n.getMessage("settings_hiding_on_text");
+    document.getElementById("hide_videos_home_text").textContent=chrome.i18n.getMessage("cfg_hide_videos_home");
+    document.getElementById("hide_videos_subscription_text").textContent=chrome.i18n.getMessage("cfg_hide_videos_subscription");
+    document.getElementById("hide_videos_search_text").textContent=chrome.i18n.getMessage("cfg_hide_videos_search");
+    document.getElementById("hide_videos_youtubers_shorts_tab_text").textContent=chrome.i18n.getMessage("cfg_hide_videos_youtubers_shorts_tab");
     
     // version
     let manifestData = chrome.runtime.getManifest();
