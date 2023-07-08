@@ -18,6 +18,35 @@ window.onload = function() {
             chrome.storage.local.set({hideYTShortsTab: e.target.checked});
         })
 
+        // hide shorts Home
+        let hideYTShortsHomeInput = document.getElementById("hideYTShortsVideosOnHomePageInput");
+        if (value.hideYTShortsHome != undefined)
+            hideYTShortsHomeInput.checked = value.hideYTShortsHome;
+        hideYTShortsHomeInput.addEventListener("input", function(e) {
+            chrome.storage.local.set({hideYTShortsHome: e.target.checked});
+        })
+        // hide shorts Subscription
+        let hideYTShortsVideosOnSubscriptionPageInput = document.getElementById("hideYTShortsVideosOnSubscriptionPageInput");
+        if (value.hideYTShortsVideosOnSubscriptionPage != undefined)
+            hideYTShortsVideosOnSubscriptionPageInput.checked = value.hideYTShortsVideosOnSubscriptionPage;
+        hideYTShortsVideosOnSubscriptionPageInput.addEventListener("input", function(e) {
+            chrome.storage.local.set({hideYTShortsVideosOnSubscriptionPage: e.target.checked});
+        })
+        // hide shorts Search
+        let hideYTShortsVideosOnSearchPageInput = document.getElementById("hideYTShortsVideosOnSearchPageInput");
+        if (value.hideYTShortsVideosOnSearchPage != undefined)
+            hideYTShortsVideosOnSearchPageInput.checked = value.hideYTShortsVideosOnSearchPage;
+        hideYTShortsVideosOnSearchPageInput.addEventListener("input", function(e) {
+            chrome.storage.local.set({hideYTShortsVideosOnSearchPage: e.target.checked});
+        })
+        // hide shorts Youtuber's page
+        let hideYTShortsVideosOnYoutubersPageInput = document.getElementById("hideYTShortsVideosOnYoutubersPageInput");
+        if (value.hideYTShortsVideosOnYoutubersPage != undefined)
+            hideYTShortsVideosOnYoutubersPageInput.checked = value.hideYTShortsVideosOnYoutubersPage;
+        hideYTShortsVideosOnYoutubersPageInput.addEventListener("input", function(e) {
+            chrome.storage.local.set({hideYTShortsVideosOnYoutubersPage: e.target.checked});
+        })
+
         // timeout
         let hidingShortsTimeoutTimeMsInput = document.getElementById("hidingShortsTimeoutTimeMsInput");
         if (value.hidingShortsTimeoutTimeMs != undefined)
