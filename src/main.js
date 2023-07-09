@@ -47,7 +47,7 @@ const MOBILE_SHORTS_TAB_SELECTOR = "ytm-pivot-bar-item-renderer>div[class='pivot
 
 /* on desktop and mobile */
 const SHELF_TAG_REGEX = /yt[dm]-reel-shelf-renderer/gm
-const SHELF_ITEM_TAG_REGEX = /yt[dm]-reel-item-renderer/gm
+const SHELF_ITEM_TAG_SELECTOR = "ytd-reel-item-renderer,ytm-reel-item-renderer";
 
 
 function waitForElement(selector, observeElement = document.body) {
@@ -187,8 +187,8 @@ function hideShorts(hide = true) {
     // hide whole shelf if just contains "ytd-reel-item-renderer" tag. For now seems to be only used for yt-shorts videos
     // and hide any video container that contains a ref link to shorts
     else if ((element.tagName.toLowerCase().match(SHELF_TAG_REGEX)
-      && element.innerHTML.search(SHELF_ITEM_TAG_REGEX) != -1)
-      || element.innerHTML.search("href=\"/shorts/") != -1) {
+      && element.querySelector(SHELF_ITEM_TAG_SELECTOR) != null)
+      || element.querySelector('[href^="/shorts"]') != null) {
       if (hide) {
         if (!element.hasAttribute("hidden")) {
           element.setAttribute("hidden", true);
