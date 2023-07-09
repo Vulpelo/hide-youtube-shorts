@@ -219,7 +219,7 @@ function hideShorts(hide = true) {
     // and hide any video container that contains a ref link to shorts
     else if ((element.tagName.toLowerCase().match(SHELF_TAG_REGEX)
       && element.querySelector(SHELF_ITEM_TAG_SELECTOR) != null)
-      || element.querySelector('[href^="/shorts"]') != null) {
+      || element.querySelector('[href^="/shorts/"]') != null) {
       if (hide) {
         if (!element.hasAttribute("hidden")) {
           element.setAttribute("hidden", true);
