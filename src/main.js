@@ -125,9 +125,9 @@ function setup() {
       chrome.storage.local.set({ hideYTShortsVideosOnSearchPage: true });
     hidingShortsOnPathNames.find(a => a.name == "searchPage").active = value.hideYTShortsVideosOnSearchPage;
 
-    if (value.hideYTShortsVideosOnYoutubersPage == undefined)
-      chrome.storage.local.set({ hideYTShortsVideosOnYoutubersPage: true });
-    hidingShortsOnPathNames.find(a => a.name == "channelPage").active = value.hideYTShortsVideosOnYoutubersPage;
+    if (value.hideYTShortsVideosOnChannelPage == undefined)
+      chrome.storage.local.set({ hideYTShortsVideosOnChannelPage: true });
+    hidingShortsOnPathNames.find(a => a.name == "channelPage").active = value.hideYTShortsVideosOnChannelPage;
 
     if (value.hidingShortsTimeoutTimeMs == undefined)
       chrome.storage.local.set({ hidingShortsTimeoutTimeMs: hidingShortsTimeoutTimeMs });

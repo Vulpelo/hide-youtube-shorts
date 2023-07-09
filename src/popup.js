@@ -39,20 +39,12 @@ window.onload = function() {
         hideYTShortsVideosOnSearchPageInput.addEventListener("input", function(e) {
             chrome.storage.local.set({hideYTShortsVideosOnSearchPage: e.target.checked});
         })
-        // hide shorts Youtuber's page
-        let hideYTShortsVideosOnYoutubersPageInput = document.getElementById("hideYTShortsVideosOnYoutubersPageInput");
-        if (value.hideYTShortsVideosOnYoutubersPage != undefined)
-            hideYTShortsVideosOnYoutubersPageInput.checked = value.hideYTShortsVideosOnYoutubersPage;
-        hideYTShortsVideosOnYoutubersPageInput.addEventListener("input", function(e) {
-            chrome.storage.local.set({hideYTShortsVideosOnYoutubersPage: e.target.checked});
-        })
-
-        // rearrange
-        let rearrangeVideosAfterHidingAShortInput = document.getElementById("rearrangeVideosAfterHidingAShortInput");
-        if (value.rearrangeVideosAfterHidingAShort != undefined)
-            rearrangeVideosAfterHidingAShortInput.checked = value.rearrangeVideosAfterHidingAShort;
-        rearrangeVideosAfterHidingAShortInput.addEventListener("input", function(e) {
-            chrome.storage.local.set({rearrangeVideosAfterHidingAShort: e.target.checked});
+        // hide shorts Channel
+        let hideYTShortsVideosOnChannelPageInput = document.getElementById("hideYTShortsVideosOnChannelPageInput");
+        if (value.hideYTShortsVideosOnChannelPage != undefined)
+            hideYTShortsVideosOnChannelPageInput.checked = value.hideYTShortsVideosOnChannelPage;
+        hideYTShortsVideosOnChannelPageInput.addEventListener("input", function(e) {
+            chrome.storage.local.set({hideYTShortsVideosOnChannelPage: e.target.checked});
         })
 
         // timeout
@@ -89,7 +81,7 @@ window.onload = function() {
     document.getElementById("hide_videos_home_text").textContent=chrome.i18n.getMessage("cfg_hide_videos_home");
     document.getElementById("hide_videos_subscription_text").textContent=chrome.i18n.getMessage("cfg_hide_videos_subscription");
     document.getElementById("hide_videos_search_text").textContent=chrome.i18n.getMessage("cfg_hide_videos_search");
-    document.getElementById("hide_videos_youtubers_shorts_tab_text").textContent=chrome.i18n.getMessage("cfg_hide_videos_youtubers_shorts_tab");
+    document.getElementById("hide_videos_channel_text").textContent=chrome.i18n.getMessage("cfg_hide_videos_channel");
     
     // version
     let manifestData = chrome.runtime.getManifest();

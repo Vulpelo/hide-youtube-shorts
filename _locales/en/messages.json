@@ -14,7 +14,7 @@
     "cfg_hide_videos_home": {"message": "Home page"},
     "cfg_hide_videos_subscription": {"message": "Subscriptions page"},
     "cfg_hide_videos_search": {"message": "Search page"},
-    "cfg_hide_videos_youtubers_shorts_tab": {"message": "Youtuber's page"},
+    "cfg_hide_videos_channel": {"message": "Channel page"},
 
     "cfg_hide_shorts_timeout": {"message": "Timeout before rechecking videos (ms)"},
     "cfg_hide_shorts_timeout_tooltip": {"message": "Don't allow checking for shorts more often than a specified time. Bigger timeout lowers page load but shorts might not get hidden immediately."}
