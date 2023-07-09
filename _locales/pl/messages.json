@@ -4,8 +4,6 @@
     
     "cfg_hide_videos": {"message": "Ukryj filmiki Shorts"},
     "cfg_hide_tab": {"message": "Ukryj zakładkę Shorts"},
-    "cfg_fill_gaps": {"message": "Przestaw kolejność filmów"},
-    "cfg_fill_gaps_tooltip": {"message": "Zmieniaj kolejność filmików podczas ukrywania short'ów. Powinno zniwelować dziury po short'ach. (może działać wolno)"},
     "setting_text": {"message": "Opcje"},
     "more_dropdown_text": {"message": "Więcej"},
     "setting_experimental_text": {"message": "Eksperymentalne"},
@@ -14,7 +12,7 @@
     "cfg_hide_videos_home": {"message": "Strona główna"},
     "cfg_hide_videos_subscription": {"message": "Strona subskrypcji"},
     "cfg_hide_videos_search": {"message": "Strona wyszukiwania"},
-    "cfg_hide_videos_channel": {"message": "Strona kanału"},
+    "cfg_hide_videos_channel": {"message": "Strona główna kanału"},
 
     "cfg_hide_shorts_timeout": {"message": "Limit czasu przed ponownym szukaniem short'ów (ms)"},
     "cfg_hide_shorts_timeout_tooltip": {"message": "Nie zezwalaj na szukanie short'ów częściej niż określony czas. Wysoki limit zmniejsza obciążenie strony, ale short'y mogą być ukrywanie z opóźnieniem."}
