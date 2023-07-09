@@ -8,7 +8,8 @@ let hidingShortsTimeoutActive = false;
 let hidingShortsTimeoutTimeMs = 500;
 
 let hidingShortsOnPathNames = [
-  { name: "ytsPage", active: true, reg: /^\/@[^\/]*\/shorts$/},
+  { name: "channelPage", active: true, reg: /@[^\/]*(\/featured)?$/},
+  { name: "channelShortTabPage", active: false, reg: /^\/@[^\/]*\/shorts$/},
   { name: "searchPage", active: true, reg: /^\/results$/},
   { name: "homePage", active: true, reg: /^$/},
   { name: "subscriptionPage", active: true, reg: /^\/feed\/subscriptions$/}
@@ -126,12 +127,7 @@ function setup() {
 
     if (value.hideYTShortsVideosOnYoutubersPage == undefined)
       chrome.storage.local.set({ hideYTShortsVideosOnYoutubersPage: true });
-    hidingShortsOnPathNames.find(a => a.name == "ytsPage").active = value.hideYTShortsVideosOnYoutubersPage;
-
-    if (value.rearrangeVideosAfterHidingAShort == undefined)
-      chrome.storage.local.set({ rearrangeVideosAfterHidingAShort: dOperationsAfterHidingElement.rearrangeVideosAfterHidingAShort });
-    else
-      dOperationsAfterHidingElement.rearrangeVideosAfterHidingAShort = value.rearrangeVideosAfterHidingAShort;
+    hidingShortsOnPathNames.find(a => a.name == "channelPage").active = value.hideYTShortsVideosOnYoutubersPage;
 
     if (value.hidingShortsTimeoutTimeMs == undefined)
       chrome.storage.local.set({ hidingShortsTimeoutTimeMs: hidingShortsTimeoutTimeMs });
