@@ -11,7 +11,7 @@ let hidingShortsOnPathNames = [
   { name: "channelPage", active: true, reg: /@[^\/]*(\/featured)?$/},
   { name: "channelShortTabPage", active: false, reg: /^\/@[^\/]*\/shorts$/},
   { name: "searchPage", active: true, reg: /^\/results$/},
-  { name: "homePage", active: true, reg: /^$/},
+  { name: "homePage", active: true, reg: /^\/$/},
   { name: "subscriptionPage", active: true, reg: /^\/feed\/subscriptions$/}
 ];
 
