@@ -7,6 +7,14 @@ let timeoutId = -1;
 let hidingShortsTimeoutActive = false;
 let hidingShortsTimeoutTimeMs = 500;
 
+let hidingShortsOnPathNames = [
+  { name: "channelPage", active: true, reg: /@[^\/]*(\/featured)?$/},
+  { name: "channelShortTabPage", active: false, reg: /^\/@[^\/]*\/shorts$/},
+  { name: "searchPage", active: true, reg: /^\/results$/},
+  { name: "homePage", active: true, reg: /^$/},
+  { name: "subscriptionPage", active: true, reg: /^\/feed\/subscriptions$/}
+];
+
 /* ON DESKTOP */
 let dOperationsAfterHidingElement = new OperationsAfterHidingElement();
 // hiding videos on Search page, videos in list mode on subscription page 
@@ -105,10 +113,21 @@ function setup() {
     else
       hideYTShortsTab = value.hideYTShortsTab;
 
-    if (value.rearrangeVideosAfterHidingAShort == undefined)
-      chrome.storage.local.set({ rearrangeVideosAfterHidingAShort: dOperationsAfterHidingElement.rearrangeVideosAfterHidingAShort });
-    else
-      dOperationsAfterHidingElement.rearrangeVideosAfterHidingAShort = value.rearrangeVideosAfterHidingAShort;
+    if (value.hideYTShortsHome == undefined)
+      chrome.storage.local.set({ hideYTShortsHome: true });
+    hidingShortsOnPathNames.find(a => a.name == "homePage").active = value.hideYTShortsHome;
+
+    if (value.hideYTShortsVideosOnSubscriptionPage == undefined)
+      chrome.storage.local.set({ hideYTShortsVideosOnSubscriptionPage: true });
+    hidingShortsOnPathNames.find(a => a.name == "subscriptionPage").active = value.hideYTShortsVideosOnSubscriptionPage;
+
+    if (value.hideYTShortsVideosOnSearchPage == undefined)
+      chrome.storage.local.set({ hideYTShortsVideosOnSearchPage: true });
+    hidingShortsOnPathNames.find(a => a.name == "searchPage").active = value.hideYTShortsVideosOnSearchPage;
+
+    if (value.hideYTShortsVideosOnChannelPage == undefined)
+      chrome.storage.local.set({ hideYTShortsVideosOnChannelPage: true });
+    hidingShortsOnPathNames.find(a => a.name == "channelPage").active = value.hideYTShortsVideosOnChannelPage;
 
     if (value.hidingShortsTimeoutTimeMs == undefined)
       chrome.storage.local.set({ hidingShortsTimeoutTimeMs: hidingShortsTimeoutTimeMs });
@@ -169,7 +188,19 @@ function setup() {
   });
 }
 
+function isLocationPathNameToIgnore() {
+  const pathName = location.pathname;
+  for (let i = 0; i<hidingShortsOnPathNames.length; i++) {
+    if (hidingShortsOnPathNames[i].active == false && pathName.match(hidingShortsOnPathNames[i].reg))
+      return true;
+  }
+  return false;
+}
+
 function hideShorts(hide = true) {
+  if (isLocationPathNameToIgnore())
+    return;
+
   let selectorString = isMobile ?
     MOBILE_SHORTS_CONTAINERS_TAG
     : REST_DESKTOP_SHORTS_CONTAINERS_TAG + "," + dHideVideoRenderer.elementTagName;
