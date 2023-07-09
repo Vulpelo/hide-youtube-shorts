@@ -47,6 +47,14 @@ window.onload = function() {
             chrome.storage.local.set({hideYTShortsVideosOnYoutubersPage: e.target.checked});
         })
 
+        // rearrange
+        let rearrangeVideosAfterHidingAShortInput = document.getElementById("rearrangeVideosAfterHidingAShortInput");
+        if (value.rearrangeVideosAfterHidingAShort != undefined)
+            rearrangeVideosAfterHidingAShortInput.checked = value.rearrangeVideosAfterHidingAShort;
+        rearrangeVideosAfterHidingAShortInput.addEventListener("input", function(e) {
+            chrome.storage.local.set({rearrangeVideosAfterHidingAShort: e.target.checked});
+        })
+
         // timeout
         let hidingShortsTimeoutTimeMsInput = document.getElementById("hidingShortsTimeoutTimeMsInput");
         if (value.hidingShortsTimeoutTimeMs != undefined)
