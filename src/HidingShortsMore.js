@@ -53,7 +53,6 @@ class HidingShortsWithContainer {
 }
 
 class OperationsAfterHidingElement {
-  rearrangeVideosAfterHidingAShort = true;
   // for elements with ytd-rich-item-renderer
   RICH_GRID_ROW = "ytd-rich-grid-row";
 
@@ -88,15 +87,13 @@ class OperationsAfterHidingElement {
   }
 
   doOperations(element) {
-    if (this.rearrangeVideosAfterHidingAShort) {
-      if (element.parentElement.parentElement.tagName.toLowerCase().match(this.RICH_GRID_ROW) &&
-        element.hasAttribute("items-per-row")) 
-      {
-        const pElement = element.parentElement;
-        const itemsPerRow = element.getAttribute("items-per-row");
-        element.remove();
-        this.rearrangeVideosInRichGridRows(pElement, itemsPerRow);
-      }
+    if (element.parentElement.parentElement.tagName.toLowerCase().match(this.RICH_GRID_ROW) &&
+      element.hasAttribute("items-per-row")) 
+    {
+      const pElement = element.parentElement;
+      const itemsPerRow = element.getAttribute("items-per-row");
+      element.remove();
+      this.rearrangeVideosInRichGridRows(pElement, itemsPerRow);
     }
   }
 }
