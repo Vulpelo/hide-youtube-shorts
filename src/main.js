@@ -7,18 +7,21 @@ let timeoutId = -1;
 let hidingShortsTimeoutActive = false;
 let hidingShortsTimeoutTimeMs = 500;
 
-let hidingShortsOnPathNames = [
-  { name: "channelPage", active: true, reg: /@[^\/]*(\/featured)?$/},
-  { name: "channelShortTabPage", active: false, reg: /^\/@[^\/]*\/shorts$/},
-  { name: "searchPage", active: true, reg: /^\/results$/},
-  { name: "homePage", active: true, reg: /^\/$/},
-  { name: "subscriptionPage", active: true, reg: /^\/feed\/subscriptions$/}
-];
+const hidingShortsOnPathNames = {
+  channelPage: { active: true, reg: /@[^\/]*(\/featured)?$/},
+  channelShortTabPage: { active: false, reg: /^\/@[^\/]*\/shorts$/},
+  searchPage: { active: true, reg: /^\/results$/},
+  homePage: { active: true, reg: /^\/$/},
+  subscriptionPage: { active: true, reg: /^\/feed\/subscriptions$/}
+};
 
 /* ON DESKTOP */
 let dOperationsAfterHidingElement = new OperationsAfterHidingElement();
 // hiding videos on Search page, videos in list mode on subscription page 
-let dHideVideoRenderer = new HidingShortsWithContainer("ytd-video-renderer", "ytd-shelf-renderer");
+const dHideVideoRenderer = new HidingShortsWithContainer("ytd-video-renderer", "ytd-shelf-renderer");
+// hiding videos on subscription page in list mode
+const dHideVideoRendererSubscriptionPage = new HidingShortsWithContainer("ytd-video-renderer", "ytd-item-section-renderer");
+
 // to hide videos/containers on Home page, Subscription page, Search page, Video page
 const REST_DESKTOP_SHORTS_CONTAINERS_TAG = [
   // shelf containing multiple shorts on Search page
@@ -26,10 +29,8 @@ const REST_DESKTOP_SHORTS_CONTAINERS_TAG = [
   // shelf containing multiple shorts on Home page 
   ["ytd-rich-shelf-renderer"],
 
-  // videos on Home page
+  // videos on Home page and subscription page
   ["ytd-rich-item-renderer"],
-  // videos in grid mode on Subscription page
-  ["ytd-grid-video-renderer"],
   // videos on Video page
   ["ytd-compact-video-renderer"],
 ].join(",")
@@ -48,6 +49,8 @@ const MOBILE_SHORTS_CONTAINERS_TAG = [
   ["ytm-rich-item-renderer"],
   // videos on Subscription page
   ["div[tab-identifier='FEsubscriptions']>ytm-section-list-renderer>lazy-list>ytm-item-section-renderer"],
+  // (old) videos in grid mode might still be used on some yt pages
+  ["ytd-grid-video-renderer"],
   // videos on Search page and Video page
   ["ytm-video-with-context-renderer"],
 ].join(",")
@@ -115,19 +118,19 @@ function setup() {
 
     if (value.hideYTShortsHome == undefined)
       chrome.storage.local.set({ hideYTShortsHome: true });
-    hidingShortsOnPathNames.find(a => a.name == "homePage").active = value.hideYTShortsHome;
+    hidingShortsOnPathNames.homePage.active = value.hideYTShortsHome;
 
     if (value.hideYTShortsVideosOnSubscriptionPage == undefined)
       chrome.storage.local.set({ hideYTShortsVideosOnSubscriptionPage: true });
-    hidingShortsOnPathNames.find(a => a.name == "subscriptionPage").active = value.hideYTShortsVideosOnSubscriptionPage;
+    hidingShortsOnPathNames.subscriptionPage.active = value.hideYTShortsVideosOnSubscriptionPage;
 
     if (value.hideYTShortsVideosOnSearchPage == undefined)
       chrome.storage.local.set({ hideYTShortsVideosOnSearchPage: true });
-    hidingShortsOnPathNames.find(a => a.name == "searchPage").active = value.hideYTShortsVideosOnSearchPage;
+    hidingShortsOnPathNames.searchPage.active = value.hideYTShortsVideosOnSearchPage;
 
     if (value.hideYTShortsVideosOnChannelPage == undefined)
       chrome.storage.local.set({ hideYTShortsVideosOnChannelPage: true });
-    hidingShortsOnPathNames.find(a => a.name == "channelPage").active = value.hideYTShortsVideosOnChannelPage;
+    hidingShortsOnPathNames.channelPage.active = value.hideYTShortsVideosOnChannelPage;
 
     if (value.hidingShortsTimeoutTimeMs == undefined)
       chrome.storage.local.set({ hidingShortsTimeoutTimeMs: hidingShortsTimeoutTimeMs });
@@ -190,8 +193,8 @@ function setup() {
 
 function isLocationPathNameToIgnore() {
   const pathName = location.pathname;
-  for (let i = 0; i<hidingShortsOnPathNames.length; i++) {
-    if (hidingShortsOnPathNames[i].active == false && pathName.match(hidingShortsOnPathNames[i].reg))
+  for (var key in hidingShortsOnPathNames) {
+    if (hidingShortsOnPathNames[key].active == false && pathName.match(hidingShortsOnPathNames[key].reg))
       return true;
   }
   return false;
@@ -207,7 +210,18 @@ function hideShorts(hide = true) {
   elements = document.querySelectorAll(selectorString);
   elements.forEach(element => {
 
-    if (element.tagName.toLowerCase().match(dHideVideoRenderer.elementTagName)) {
+    const elementTagName = element.tagName.toLowerCase();
+
+    // subscription page in list mode
+    if (location.pathname.match(hidingShortsOnPathNames.subscriptionPage.reg)  
+      && elementTagName.match(dHideVideoRendererSubscriptionPage.elementTagName)) {
+        if (hide)
+          dHideVideoRendererSubscriptionPage.hideShort(element);
+        else
+          dHideVideoRendererSubscriptionPage.showShort(element);
+    }
+    // other pages with containers on search page
+    else if (elementTagName.match(dHideVideoRenderer.elementTagName)) {
       if (hide) {
         dHideVideoRenderer.hideShort(element);
       }
