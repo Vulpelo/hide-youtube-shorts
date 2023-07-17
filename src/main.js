@@ -31,6 +31,8 @@ const REST_DESKTOP_SHORTS_CONTAINERS_TAG = [
 
   // videos on Home page and subscription page
   ["ytd-rich-item-renderer"],
+  // (old) videos in grid mode might still be used
+  ["ytd-grid-video-renderer"],
   // videos on Video page
   ["ytd-compact-video-renderer"],
 ].join(",")
@@ -49,8 +51,6 @@ const MOBILE_SHORTS_CONTAINERS_TAG = [
   ["ytm-rich-item-renderer"],
   // videos on Subscription page
   ["div[tab-identifier='FEsubscriptions']>ytm-section-list-renderer>lazy-list>ytm-item-section-renderer"],
-  // (old) videos in grid mode might still be used on some yt pages
-  ["ytd-grid-video-renderer"],
   // videos on Search page and Video page
   ["ytm-video-with-context-renderer"],
 ].join(",")
