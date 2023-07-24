@@ -172,14 +172,12 @@ function setup() {
         {childList: true, subtree: true, attributes: false});
     }
     else {
-      /* MutationObserver for Subscription page when got opened/closed */
-      waitForElement("ytd-browse[page-subtype='subscriptions']", document.body, true, false).then((wrapperElement) => {
-        addingCloseButtonForShelfOnSubscriptionsPage(wrapperElement);
-        subscriptionPageOpenObserver = manageObserver("ytd-browse[page-subtype='subscriptions']", 
-          true, 
-          () => {addingCloseButtonForShelfOnSubscriptionsPage(wrapperElement);}, 
-          subscriptionPageOpenObserver, 
-          {childList: false, subtree: false, attributes: true});
+
+      waitForElement("#page-manager", document.body, true, true).then((wrapperElement1) => {
+        /* MutationObserver for Subscription page when got opened/closed */
+        waitForElement("ytd-browse[page-subtype='subscriptions']", wrapperElement1, true, false).then((wrapperElement2) => {
+          createOpenCloseSubscriptionPageObserver(wrapperElement2);
+        })
       })
 
       /* Overall MutationObserver for all videos*/
@@ -204,6 +202,15 @@ function setup() {
         {childList: true, subtree: true, attributes: false});
     }
   });
+}
+
+function createOpenCloseSubscriptionPageObserver(node) {
+  addingCloseButtonForShelfOnSubscriptionsPage(node);
+  subscriptionPageOpenObserver = manageObserver("ytd-browse[page-subtype='subscriptions']", 
+    true, 
+    () => {addingCloseButtonForShelfOnSubscriptionsPage(node);}, 
+    subscriptionPageOpenObserver, 
+    {childList: false, subtree: false, attributes: true});
 }
 
 function isLocationPathNameToIgnore() {
