@@ -3,6 +3,8 @@ let hideYTShortsVideos = true;
 let hideYTShortsTab = false;
 let isHidingShortsTimeoutActive = false;
 
+let subscriptionPageOpenObserver = null;
+
 let timeoutId = -1;
 let hidingShortsTimeoutActive = false;
 let hidingShortsTimeoutTimeMs = 500;
@@ -169,6 +171,19 @@ function setup() {
         observer);
     }
     else {
+      /* MutationObserver for Subscription page when got opened/closed */
+      waitForElement("#page-manager", document.body).then((wrapperElement) => {
+        waitForElement("ytd-browse[page-subtype='subscriptions']", wrapperElement, true, false).then((wrapperElement2) => {
+          addingCloseButtonForShelfOnSubscriptionsPage(wrapperElement2);
+          subscriptionPageOpenObserver = manageObserver("ytd-browse[page-subtype='subscriptions']", 
+            true, 
+            () => {addingCloseButtonForShelfOnSubscriptionsPage(wrapperElement2);}, 
+            subscriptionPageOpenObserver, 
+            {childList: false, subtree: false, attributes: true});
+        })
+      });
+
+      /* Overall MutationObserver for all videos*/
       hideShortsCallbackInner =
         hidingShortsTimeoutActive ?
           () => {
@@ -270,22 +285,18 @@ function hideShortsTab(hide) {
 }
 
 // the button will temporarly remove shelf from subscription page till next page reload
-function addingCloseButtonForShelfOnSubscriptionsPage() {
-  waitForElement("#page-manager", document.body).then((wrapperElement) => {
-    waitForElement("ytd-browse[page-subtype='subscriptions']", wrapperElement, true, false).then((wrapperElement2) => {
-      waitForElement("ytd-rich-shelf-renderer", wrapperElement2).then((element) => {
-        if (element != null)
-          insertCloseShelfButton(element.querySelector("[id=flexible-item-buttons]"));
-      });
-    });
+function addingCloseButtonForShelfOnSubscriptionsPage(subscriptionNode) {
+  waitForElement("ytd-rich-shelf-renderer", subscriptionNode).then((element) => {
+    if (element.querySelector("div[id='shelfCloseButton']") == null)
+      insertCloseShelfButton(element.querySelector("[id=flexible-item-buttons]"));
   });
 }
 
-function manageObserver(selector, active, callback, aObserver = null) {
+function manageObserver(selector, active, callback, aObserver = null, {childList = true, subtree = true, attributes = false}) {
   if (aObserver === null && active) {
     waitForElement(selector, document.body).then((node) => {
       aObserver = new MutationObserver(callback);
-      aObserver.observe(node, { childList: true, subtree: true });
+      aObserver.observe(node, { childList: childList, subtree: subtree, attributes: attributes});
     });
   }
   else if (aObserver !== null && !active) {
@@ -300,4 +311,3 @@ chrome.storage.onChanged.addListener(function () {
 });
 
 setup();
-addingCloseButtonForShelfOnSubscriptionsPage();
