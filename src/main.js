@@ -168,20 +168,19 @@ function setup() {
       observer = manageObserver("#app",
         hideYTShortsTab || hideYTShortsVideos,
         hideShortsCallback,
-        observer);
+        observer,
+        {childList: true, subtree: true, attributes: false});
     }
     else {
       /* MutationObserver for Subscription page when got opened/closed */
-      waitForElement("#page-manager", document.body).then((wrapperElement) => {
-        waitForElement("ytd-browse[page-subtype='subscriptions']", wrapperElement, true, false).then((wrapperElement2) => {
-          addingCloseButtonForShelfOnSubscriptionsPage(wrapperElement2);
-          subscriptionPageOpenObserver = manageObserver("ytd-browse[page-subtype='subscriptions']", 
-            true, 
-            () => {addingCloseButtonForShelfOnSubscriptionsPage(wrapperElement2);}, 
-            subscriptionPageOpenObserver, 
-            {childList: false, subtree: false, attributes: true});
-        })
-      });
+      waitForElement("ytd-browse[page-subtype='subscriptions']", document.body, true, false).then((wrapperElement) => {
+        addingCloseButtonForShelfOnSubscriptionsPage(wrapperElement);
+        subscriptionPageOpenObserver = manageObserver("ytd-browse[page-subtype='subscriptions']", 
+          true, 
+          () => {addingCloseButtonForShelfOnSubscriptionsPage(wrapperElement);}, 
+          subscriptionPageOpenObserver, 
+          {childList: false, subtree: false, attributes: true});
+      })
 
       /* Overall MutationObserver for all videos*/
       hideShortsCallbackInner =
@@ -201,7 +200,8 @@ function setup() {
       observer = manageObserver("#content",
         hideYTShortsVideos,
         hideShortsCallback,
-        observer);
+        observer,
+        {childList: true, subtree: true, attributes: false});
     }
   });
 }
@@ -246,7 +246,7 @@ function hideShorts(hide = true) {
     }
     // hide whole shelf if just contains "ytd-reel-item-renderer" tag. For now seems to be only used for yt-shorts videos
     // and hide any video container that contains a ref link to shorts
-    else if ((element.tagName.toLowerCase().match(SHELF_TAG_REGEX)
+    else if ((elementTagName.match(SHELF_TAG_REGEX)
       && element.querySelector(SHELF_ITEM_TAG_SELECTOR) != null)
       || element.querySelector('[href^="/shorts/"]') != null) {
       if (hide) {
