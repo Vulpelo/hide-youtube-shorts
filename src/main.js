@@ -61,7 +61,7 @@ const SHELF_TAG_REGEX = /yt[dm]-reel-shelf-renderer/gm
 const SHELF_ITEM_TAG_SELECTOR = "ytd-reel-item-renderer,ytm-reel-item-renderer";
 
 
-function waitForElement(selector, observeElement = document.body) {
+function waitForElement(selector, observeElement = document.body, childList = true, subtree = true) {
   return new Promise(resolve => {
     let element = document.querySelector(selector);
     if (element) {
@@ -74,7 +74,7 @@ function waitForElement(selector, observeElement = document.body) {
         elementObserver.disconnect();
       }
     });
-    elementObserver.observe(observeElement, { childList: true, subtree: true });
+    elementObserver.observe(observeElement, { childList: childList, subtree: subtree });
   });
 }
 
@@ -269,6 +269,18 @@ function hideShortsTab(hide) {
   }
 }
 
+// the button will temporarly remove shelf from subscription page till next page reload
+function addingCloseButtonForShelfOnSubscriptionsPage() {
+  waitForElement("#page-manager", document.body).then((wrapperElement) => {
+    waitForElement("ytd-browse[page-subtype='subscriptions']", wrapperElement, true, false).then((wrapperElement2) => {
+      waitForElement("ytd-rich-shelf-renderer", wrapperElement2).then((element) => {
+        if (element != null)
+          insertCloseShelfButton(element.querySelector("[id=flexible-item-buttons]"));
+      });
+    });
+  });
+}
+
 function manageObserver(selector, active, callback, aObserver = null) {
   if (aObserver === null && active) {
     waitForElement(selector, document.body).then((node) => {
@@ -288,3 +300,4 @@ chrome.storage.onChanged.addListener(function () {
 });
 
 setup();
+addingCloseButtonForShelfOnSubscriptionsPage();

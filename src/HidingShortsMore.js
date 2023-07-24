@@ -97,3 +97,27 @@ class OperationsAfterHidingElement {
     }
   }
 }
+
+function insertCloseShelfButton(element) {
+  element.insertAdjacentHTML("afterbegin", `
+    <div class="style-scope ytd-menu-renderer">
+        <a class="yt-spec-button-shape-next yt-spec-button-shape-next--text yt-spec-button-shape-next--call-to-action yt-spec-button-shape-next--size-m "
+            aria-label="Close" rel="nofollow" target="" force-new-state="true"
+            style="" onclick="this.closest('ytd-rich-shelf-renderer').remove();">
+            <div class="cbox yt-spec-button-shape-next__button-text-content">
+                <span class="yt-core-attributed-string yt-core-attributed-string--white-space-no-wrap" role="text">
+                    Close
+                </span>
+            </div>
+            <yt-touch-feedback-shape style="border-radius: inherit;">
+                <div class="yt-spec-touch-feedback-shape yt-spec-touch-feedback-shape--touch-response"
+                    aria-hidden="true">
+                    <div class="yt-spec-touch-feedback-shape__stroke" style=""></div>
+                    <div class="yt-spec-touch-feedback-shape__fill" style=""></div>
+                </div>
+            </yt-touch-feedback-shape>
+        </a>
+        <tp-yt-paper-tooltip fit-to-visible-bounds="" offset="8" disable-upgrade=""></tp-yt-paper-tooltip>
+    </div>
+  `);
+}
