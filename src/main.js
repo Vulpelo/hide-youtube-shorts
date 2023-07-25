@@ -3,6 +3,7 @@ let hideYTShortsVideos = true;
 let hideYTShortsTab = false;
 let isHidingShortsTimeoutActive = false;
 
+let pageManager = null;
 let subscriptionPageOpenObserver = null;
 
 let timeoutId = -1;
@@ -174,8 +175,9 @@ function setup() {
     else {
       
       waitForElement("#page-manager", document.body, true, true).then((wrapperElement1) => {
+        pageManager = wrapperElement1;
         /* MutationObserver for Subscription page when got opened/closed */
-        waitForElement("ytd-browse[page-subtype='subscriptions']", wrapperElement1, true, false).then((wrapperElement2) => {
+        waitForElement("ytd-browse[page-subtype='subscriptions']", pageManager, true, false).then((wrapperElement2) => {
           createOpenCloseSubscriptionPageObserver(wrapperElement2);
         });
       });
@@ -221,66 +223,81 @@ function isLocationPathNameToIgnore() {
   return false;
 }
 
-function locationPathNameNode() {
+function childrenInPageManagerWithoutKnownOnes() {
+  if (pageManager == null) return [];
+  let finalNodeList = Array.from(pageManager.children);
+
+  for (var key in hidingShortsOnPathNames) {
+    if (hidingShortsOnPathNames[key].node == null) 
+      continue;
+    let index = finalNodeList.indexOf(hidingShortsOnPathNames[key].node)
+    if (index >= 0)
+      finalNodeList.splice(index, 1);
+  }
+  return finalNodeList;
+}
+
+function locationPathNameNodes() {
   const pathName = location.pathname;
   for (var key in hidingShortsOnPathNames) {
-    if (pathName.match(hidingShortsOnPathNames[key].reg)) {
-      if (hidingShortsOnPathNames[key].node == null)
-        hidingShortsOnPathNames[key].node = document.querySelector(hidingShortsOnPathNames[key].nodeSelector);
-      return hidingShortsOnPathNames[key].node;
-    }
+    if (hidingShortsOnPathNames[key].node == null && hidingShortsOnPathNames[key].nodeSelector != "")
+      hidingShortsOnPathNames[key].node = document.querySelector(hidingShortsOnPathNames[key].nodeSelector);
+    if (pathName.match(hidingShortsOnPathNames[key].reg)) 
+      return [hidingShortsOnPathNames[key].node];
   }
-  return null;
+  
+  return childrenInPageManagerWithoutKnownOnes();
 }
 
 function hideShorts(hide = true) {
   if (isLocationPathNameToIgnore())
     return;
 
-  const node = locationPathNameNode();
-  if (node == null) return;
+  const nodes = locationPathNameNodes();
 
-  let selectorString = isMobile ?
-    MOBILE_SHORTS_CONTAINERS_TAG
-    : REST_DESKTOP_SHORTS_CONTAINERS_TAG + "," + dHideVideoRenderer.elementTagName;
-  elements = node.querySelectorAll(selectorString);
-  elements.forEach(element => {
+  for (let i = 0; i < nodes.length; i++) {
+    let selectorString = isMobile ?
+      MOBILE_SHORTS_CONTAINERS_TAG
+      : REST_DESKTOP_SHORTS_CONTAINERS_TAG + "," + dHideVideoRenderer.elementTagName;
+    elements = nodes[i].querySelectorAll(selectorString);
+    elements.forEach(element => {
 
-    const elementTagName = element.tagName.toLowerCase();
+      const elementTagName = element.tagName.toLowerCase();
 
-    // subscription page in list mode
-    if (location.pathname.match(hidingShortsOnPathNames.subscriptionPage.reg)  
-      && elementTagName.match(dHideVideoRendererSubscriptionPage.elementTagName)) {
-        if (hide)
-          dHideVideoRendererSubscriptionPage.hideShort(element);
-        else
-          dHideVideoRendererSubscriptionPage.showShort(element);
-    }
-    // other pages with containers on search page
-    else if (elementTagName.match(dHideVideoRenderer.elementTagName)) {
-      if (hide) {
-        dHideVideoRenderer.hideShort(element);
+      // subscription page in list mode
+      if (location.pathname.match(hidingShortsOnPathNames.subscriptionPage.reg)  
+        && elementTagName.match(dHideVideoRendererSubscriptionPage.elementTagName)) {
+          if (hide)
+            dHideVideoRendererSubscriptionPage.hideShort(element);
+          else
+            dHideVideoRendererSubscriptionPage.showShort(element);
       }
-      else {
-        dHideVideoRenderer.showShort(element);
-      }
-    }
-    // hide whole shelf if just contains "ytd-reel-item-renderer" tag. For now seems to be only used for yt-shorts videos
-    // and hide any video container that contains a ref link to shorts
-    else if ((elementTagName.match(SHELF_TAG_REGEX)
-      && element.querySelector(SHELF_ITEM_TAG_SELECTOR) != null)
-      || element.querySelector('[href^="/shorts/"]') != null) {
-      if (hide) {
-        if (!element.hasAttribute("hidden")) {
-          element.setAttribute("hidden", true);
-          dOperationsAfterHidingElement.doOperations(element);
+      // other pages with containers on search page
+      else if (elementTagName.match(dHideVideoRenderer.elementTagName)) {
+        if (hide) {
+          dHideVideoRenderer.hideShort(element);
+        }
+        else {
+          dHideVideoRenderer.showShort(element);
         }
       }
-      else if (element.hasAttribute("hidden")) {
-        element.removeAttribute("hidden");
+      // hide whole shelf if just contains "ytd-reel-item-renderer" tag. For now seems to be only used for yt-shorts videos
+      // and hide any video container that contains a ref link to shorts
+      else if ((elementTagName.match(SHELF_TAG_REGEX)
+        && element.querySelector(SHELF_ITEM_TAG_SELECTOR) != null)
+        || element.querySelector('[href^="/shorts/"]') != null) {
+        if (hide) {
+          if (!element.hasAttribute("hidden")) {
+            element.setAttribute("hidden", true);
+            dOperationsAfterHidingElement.doOperations(element);
+          }
+        }
+        else if (element.hasAttribute("hidden")) {
+          element.removeAttribute("hidden");
+        }
       }
-    }
-  });
+    });
+  }
 }
 
 function hideShortsTab(hide) {
