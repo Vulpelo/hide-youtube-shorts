@@ -10,11 +10,11 @@ let hidingShortsTimeoutActive = false;
 let hidingShortsTimeoutTimeMs = 500;
 
 const hidingShortsOnPathNames = {
-  channelPage: { active: true, reg: /@[^\/]*(\/featured)?$/},
-  channelShortTabPage: { active: false, reg: /^\/@[^\/]*\/shorts$/},
-  searchPage: { active: true, reg: /^\/results$/},
-  homePage: { active: true, reg: /^\/$/},
-  subscriptionPage: { active: true, reg: /^\/feed\/subscriptions$/}
+  homePage: { active: true, reg: /^\/$/, nodeSelector: "ytd-browse[page-subtype='home']", node: null},
+  subscriptionPage: { active: true, reg: /^\/feed\/subscriptions$/, nodeSelector: "ytd-browse[page-subtype='subscriptions']", node: null},
+  searchPage: { active: true, reg: /^\/results$/, nodeSelector: "ytd-search", node: null},
+  channelPage: { active: true, reg: /@[^\/]*(\/featured)?$/, nodeSelector: "ytd-browse[page-subtype='channels']", node: null},
+  channelShortTabPage: { active: false, reg: /^\/@[^\/]*\/shorts$/, nodeSelector: "", node: null}
 };
 
 /* ON DESKTOP */
@@ -172,15 +172,14 @@ function setup() {
         {childList: true, subtree: true, attributes: false});
     }
     else {
-
+      
       waitForElement("#page-manager", document.body, true, true).then((wrapperElement1) => {
         /* MutationObserver for Subscription page when got opened/closed */
         waitForElement("ytd-browse[page-subtype='subscriptions']", wrapperElement1, true, false).then((wrapperElement2) => {
           createOpenCloseSubscriptionPageObserver(wrapperElement2);
-        })
-      })
+        });
+      });
 
-      /* Overall MutationObserver for all videos*/
       hideShortsCallbackInner =
         hidingShortsTimeoutActive ?
           () => {
@@ -222,14 +221,29 @@ function isLocationPathNameToIgnore() {
   return false;
 }
 
+function locationPathNameNode() {
+  const pathName = location.pathname;
+  for (var key in hidingShortsOnPathNames) {
+    if (pathName.match(hidingShortsOnPathNames[key].reg)) {
+      if (hidingShortsOnPathNames[key].node == null)
+        hidingShortsOnPathNames[key].node = document.querySelector(hidingShortsOnPathNames[key].nodeSelector);
+      return hidingShortsOnPathNames[key].node;
+    }
+  }
+  return null;
+}
+
 function hideShorts(hide = true) {
   if (isLocationPathNameToIgnore())
     return;
 
+  const node = locationPathNameNode();
+  if (node == null) return;
+
   let selectorString = isMobile ?
     MOBILE_SHORTS_CONTAINERS_TAG
     : REST_DESKTOP_SHORTS_CONTAINERS_TAG + "," + dHideVideoRenderer.elementTagName;
-  elements = document.querySelectorAll(selectorString);
+  elements = node.querySelectorAll(selectorString);
   elements.forEach(element => {
 
     const elementTagName = element.tagName.toLowerCase();
