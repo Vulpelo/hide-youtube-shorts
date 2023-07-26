@@ -242,10 +242,9 @@ function locationPathNameNodes() {
   for (var key in hidingShortsOnPathNames) {
     if (hidingShortsOnPathNames[key].node == null && hidingShortsOnPathNames[key].nodeSelector != "")
       hidingShortsOnPathNames[key].node = document.querySelector(hidingShortsOnPathNames[key].nodeSelector);
-    if (pathName.match(hidingShortsOnPathNames[key].reg)) 
+    if (hidingShortsOnPathNames[key].node != null && pathName.match(hidingShortsOnPathNames[key].reg)) 
       return [hidingShortsOnPathNames[key].node];
   }
-  
   return childrenInPageManagerWithoutKnownOnes();
 }
 
@@ -261,7 +260,7 @@ function hideShorts(hide = true) {
       : REST_DESKTOP_SHORTS_CONTAINERS_TAG + "," + dHideVideoRenderer.elementTagName;
     elements = nodes[i].querySelectorAll(selectorString);
     elements.forEach(element => {
-
+      
       const elementTagName = element.tagName.toLowerCase();
 
       // subscription page in list mode
