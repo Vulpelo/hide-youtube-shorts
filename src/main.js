@@ -64,7 +64,7 @@ const SHELF_TAG_REGEX = /yt[dm]-reel-shelf-renderer/gm
 const SHELF_ITEM_TAG_SELECTOR = "ytd-reel-item-renderer,ytm-reel-item-renderer";
 
 
-function waitForElement(selector, observeElement = document.body, childList = true, subtree = true) {
+function waitForElement(selector, observeElement = document.body, {childList = true, subtree = true} = {}) {
   return new Promise(resolve => {
     let element = document.querySelector(selector);
     if (element) {
@@ -78,6 +78,30 @@ function waitForElement(selector, observeElement = document.body, childList = tr
       }
     });
     elementObserver.observe(observeElement, { childList: childList, subtree: subtree });
+  });
+}
+
+function waitForElementTimeout(selector, observeElement = document.body, {childList = true, subtree = true, timeout_ms = 150}) {
+  return new Promise(resolve => {
+    let element = document.querySelector(selector);
+    if (element) {
+      return resolve(document.querySelector(selector));
+    }
+    let timer = null;
+    const elementObserver = new MutationObserver(() => {
+      element = document.querySelector(selector);
+      if (element) {
+        clearTimeout(timer);
+        resolve(element);
+        elementObserver.disconnect();
+      }
+    });
+    elementObserver.observe(observeElement, {childList: childList, subtree: subtree});
+    if (timeout_ms > 0)
+      timer = setTimeout(() => {
+        resolve(null);
+        elementObserver.disconnect();
+      }, timeout_ms);
   });
 }
 
@@ -170,14 +194,14 @@ function setup() {
         hideYTShortsTab || hideYTShortsVideos,
         hideShortsCallback,
         observer,
-        {childList: true, subtree: true, attributes: false});
+        {childList: true, subtree: true});
     }
     else {
       
-      waitForElement("#page-manager", document.body, true, true).then((wrapperElement1) => {
+      waitForElement("#page-manager", document.body).then((wrapperElement1) => {
         pageManager = wrapperElement1;
         /* MutationObserver for Subscription page when got opened/closed */
-        waitForElement("ytd-browse[page-subtype='subscriptions']", pageManager, true, false).then((wrapperElement2) => {
+        waitForElement("ytd-browse[page-subtype='subscriptions']", pageManager, {childList: true, subtree: false}).then((wrapperElement2) => {
           createOpenCloseSubscriptionPageObserver(wrapperElement2);
         });
       });
@@ -200,7 +224,7 @@ function setup() {
         hideYTShortsVideos,
         hideShortsCallback,
         observer,
-        {childList: true, subtree: true, attributes: false});
+        {childList: true, subtree: true});
     }
   });
 }
@@ -211,7 +235,7 @@ function createOpenCloseSubscriptionPageObserver(node) {
     true, 
     () => {addingCloseButtonForShelfOnSubscriptionsPage(node);}, 
     subscriptionPageOpenObserver, 
-    {childList: false, subtree: false, attributes: true});
+    {attributes: true});
 }
 
 function isLocationPathNameToIgnore() {
@@ -323,13 +347,13 @@ function hideShortsTab(hide) {
 
 // the button will temporarly remove shelf from subscription page till next page reload
 function addingCloseButtonForShelfOnSubscriptionsPage(subscriptionNode) {
-  waitForElement("ytd-rich-shelf-renderer", subscriptionNode).then((element) => {
+  waitForElementTimeout("ytd-rich-shelf-renderer", subscriptionNode).then((element) => {
     if (element.querySelector("div[id='shelfCloseButton']") == null)
       insertCloseShelfButton(element.querySelector("[id=flexible-item-buttons]"));
   });
 }
 
-function manageObserver(selector, active, callback, aObserver = null, {childList = true, subtree = true, attributes = false}) {
+function manageObserver(selector, active, callback, aObserver = null, {childList = false, subtree = false, attributes = false} = {}) {
   if (aObserver === null && active) {
     waitForElement(selector, document.body).then((node) => {
       aObserver = new MutationObserver(callback);
