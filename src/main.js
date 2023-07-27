@@ -81,7 +81,7 @@ function waitForElement(selector, observeElement = document.body, {childList = t
   });
 }
 
-function waitForElementTimeout(selector, observeElement = document.body, {childList = true, subtree = true, timeout_ms = 150}) {
+function waitForElementTimeout(selector, observeElement = document.body, {childList = true, subtree = true, timeout_ms = 150} = {}) {
   return new Promise(resolve => {
     let element = document.querySelector(selector);
     if (element) {
@@ -348,7 +348,7 @@ function hideShortsTab(hide) {
 // the button will temporarly remove shelf from subscription page till next page reload
 function addingCloseButtonForShelfOnSubscriptionsPage(subscriptionNode) {
   waitForElementTimeout("ytd-rich-shelf-renderer", subscriptionNode).then((element) => {
-    if (element.querySelector("div[id='shelfCloseButton']") == null)
+    if (element != null && element.querySelector("div[id='shelfCloseButton']") == null)
       insertCloseShelfButton(element.querySelector("[id=flexible-item-buttons]"));
   });
 }
