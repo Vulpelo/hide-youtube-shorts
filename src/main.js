@@ -347,7 +347,8 @@ function hideShortsTab(hide) {
 
 // the button will temporarly remove shelf from subscription page till next page reload
 function addingCloseButtonForShelfOnSubscriptionsPage(subscriptionNode) {
-  waitForElementTimeout("ytd-rich-shelf-renderer", subscriptionNode).then((element) => {
+  // find one eather on grid mode or list mode
+  waitForElementTimeout("ytd-rich-shelf-renderer, ytd-reel-shelf-renderer", subscriptionNode).then((element) => {
     if (element != null && element.querySelector("div[id='shelfCloseButton']") == null)
       insertCloseShelfButton(element.querySelector("[id=flexible-item-buttons]"));
   });
