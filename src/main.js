@@ -201,7 +201,7 @@ function setup() {
     }
     else {
       
-      waitForElement("#page-manager", document.body).then((wrapperElement1) => {
+      waitForElementTimeout("#page-manager", document.body, {timeout_ms: 5000}).then((wrapperElement1) => {
         pageManagerNode = wrapperElement1;
         /* MutationObserver for Subscription page when got opened/closed */
         waitForElement("ytd-browse[page-subtype='subscriptions']", pageManagerNode, {childList: true, subtree: false}).then((wrapperElement2) => {
@@ -251,7 +251,7 @@ function isLocationPathNameToIgnore() {
 }
 
 function childrenInPageManagerWithoutKnownOnes() {
-  if (pageManagerNode == null) return [];
+  if (pageManagerNode == null) return [document.body];
   let finalNodeList = Array.from(pageManagerNode.children);
 
   for (var key in hidingShortsOnPathNames) {
