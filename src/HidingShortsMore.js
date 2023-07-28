@@ -103,7 +103,7 @@ function insertCloseShelfButton(element) {
     <div id="shelfCloseButton" class="style-scope ytd-menu-renderer">
       <a class="yt-spec-button-shape-next yt-spec-button-shape-next--text yt-spec-button-shape-next--call-to-action yt-spec-button-shape-next--size-m "
         aria-label="Close" rel="nofollow" force-new-state="true"
-        onclick="this.closest('ytd-rich-shelf-renderer, ytd-item-section-renderer').remove();">
+        onclick="this.closest('ytd-rich-shelf-renderer, ytd-item-section-renderer').setAttribute('hidden', true);">
         <div style="width: 24px; height: 24px;">
           <div class="style-scope yt-icon">
             <icon-shape class="yt-spec-icon-shape">
