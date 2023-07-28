@@ -47,6 +47,14 @@ window.onload = function() {
             chrome.storage.local.set({hideYTShortsVideosOnChannelPage: e.target.checked});
         })
 
+        // close button for shelf on subscription page 
+        let subscriptionShelfCloseButtonInputCheckbox = document.getElementById("subscriptionShelfCloseButtonInputCheckbox");
+        if (value.subscriptionShelfCloseButton != undefined)
+            subscriptionShelfCloseButtonInputCheckbox.checked = value.subscriptionShelfCloseButton;
+        subscriptionShelfCloseButtonInputCheckbox.addEventListener("input", function(e) {
+            chrome.storage.local.set({subscriptionShelfCloseButton: e.target.checked});
+        })
+
         // timeout
         let hidingShortsTimeoutTimeMsInput = document.getElementById("hidingShortsTimeoutTimeMsInput");
         if (value.hidingShortsTimeoutTimeMs != undefined)
@@ -83,6 +91,9 @@ window.onload = function() {
     document.getElementById("hide_videos_search_text").textContent=chrome.i18n.getMessage("cfg_hide_videos_search");
     document.getElementById("hide_videos_channel_text").textContent=chrome.i18n.getMessage("cfg_hide_videos_channel");
     
+    document.getElementById("subscription_shelf_close_button_tooltip_text").textContent=chrome.i18n.getMessage("cfg_subscription_shelf_close_button_tooltip");
+    document.getElementById("subscription_shelf_close_button_text").textContent=chrome.i18n.getMessage("cfg_subscription_shelf_close_button");
+
     // version
     let manifestData = chrome.runtime.getManifest();
     document.getElementById("ext-version").textContent = "v" + manifestData.version;

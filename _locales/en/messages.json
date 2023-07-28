@@ -15,5 +15,8 @@
     "cfg_hide_videos_channel": {"message": "Channel's home page"},
 
     "cfg_hide_shorts_timeout": {"message": "Timeout before rechecking videos (ms)"},
-    "cfg_hide_shorts_timeout_tooltip": {"message": "Don't allow checking for shorts more often than a specified time. Bigger timeout lowers page load but shorts might not get hidden immediately."}
+    "cfg_hide_shorts_timeout_tooltip": {"message": "Don't allow checking for shorts more often than a specified time. Bigger timeout lowers page load but shorts might not get hidden immediately."},
+
+    "cfg_subscription_shelf_close_button": {"message": "Shelf close button"},
+    "cfg_subscription_shelf_close_button_tooltip": {"message": "Adds a close button to the shelf with shorts on subscription page"}
 }

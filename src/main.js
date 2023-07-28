@@ -5,6 +5,7 @@ let isHidingShortsTimeoutActive = false;
 
 let pageManagerNode = null;
 let subscriptionPageOpenObserver = null;
+let subscriptionShelfCloseButton = false;
 
 let timeoutId = -1;
 let hidingShortsTimeoutActive = false;
@@ -171,6 +172,11 @@ function loadVariables(value) {
     clearShortsTimeout();
     hidingShortsTimeoutActive = value.hidingShortsTimeoutActive;
   }
+
+  if (value.subscriptionShelfCloseButton == undefined)
+    chrome.storage.local.set({ subscriptionShelfCloseButton: subscriptionShelfCloseButton });
+  else
+    subscriptionShelfCloseButton = value.subscriptionShelfCloseButton;
 }
 
 function setup() {
@@ -203,10 +209,12 @@ function setup() {
       
       waitForElementTimeout("#page-manager", document.body, {timeout_ms: 5000}).then((wrapperElement1) => {
         pageManagerNode = wrapperElement1;
-        /* MutationObserver for Subscription page when got opened/closed */
-        waitForElement("ytd-browse[page-subtype='subscriptions']", pageManagerNode, {childList: true, subtree: false}).then((wrapperElement2) => {
-          createOpenCloseSubscriptionPageObserver(wrapperElement2);
-        });
+        if (subscriptionShelfCloseButton) {
+          /* MutationObserver for Subscription page when got opened/closed */
+          waitForElement("ytd-browse[page-subtype='subscriptions']", pageManagerNode, {childList: true, subtree: false}).then((wrapperElement2) => {
+            createOpenCloseSubscriptionPageObserver(wrapperElement2);
+          });
+        }
       });
 
       hideShortsCallbackInner =
