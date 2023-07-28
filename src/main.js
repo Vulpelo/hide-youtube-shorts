@@ -131,48 +131,51 @@ function clearShortsTimeout() {
 let hideShortsCallbackInner = () => {};
 function hideShortsCallback() { hideShortsCallbackInner(); };
 
+function loadVariables(value) {
+  if (value.hideYTShortsVideos == undefined)
+    chrome.storage.local.set({ hideYTShortsVideos: hideYTShortsVideos });
+  else
+    hideYTShortsVideos = value.hideYTShortsVideos;
+
+  if (value.hideYTShortsTab == undefined)
+    chrome.storage.local.set({ hideYTShortsTab: hideYTShortsTab });
+  else
+    hideYTShortsTab = value.hideYTShortsTab;
+
+  if (value.hideYTShortsHome == undefined)
+    chrome.storage.local.set({ hideYTShortsHome: true });
+  hidingShortsOnPathNames.homePage.active = value.hideYTShortsHome;
+
+  if (value.hideYTShortsVideosOnSubscriptionPage == undefined)
+    chrome.storage.local.set({ hideYTShortsVideosOnSubscriptionPage: true });
+  hidingShortsOnPathNames.subscriptionPage.active = value.hideYTShortsVideosOnSubscriptionPage;
+
+  if (value.hideYTShortsVideosOnSearchPage == undefined)
+    chrome.storage.local.set({ hideYTShortsVideosOnSearchPage: true });
+  hidingShortsOnPathNames.searchPage.active = value.hideYTShortsVideosOnSearchPage;
+
+  if (value.hideYTShortsVideosOnChannelPage == undefined)
+    chrome.storage.local.set({ hideYTShortsVideosOnChannelPage: true });
+  hidingShortsOnPathNames.channelPage.active = value.hideYTShortsVideosOnChannelPage;
+
+  if (value.hidingShortsTimeoutTimeMs == undefined)
+    chrome.storage.local.set({ hidingShortsTimeoutTimeMs: hidingShortsTimeoutTimeMs });
+  else if (hidingShortsTimeoutTimeMs != value.hidingShortsTimeoutTimeMs) {
+    clearShortsTimeout();
+    hidingShortsTimeoutTimeMs = value.hidingShortsTimeoutTimeMs;
+  }
+
+  if (value.hidingShortsTimeoutActive == undefined)
+    chrome.storage.local.set({ hidingShortsTimeoutActive: hidingShortsTimeoutActive });
+  else if (hidingShortsTimeoutActive != value.hidingShortsTimeoutActive) {
+    clearShortsTimeout();
+    hidingShortsTimeoutActive = value.hidingShortsTimeoutActive;
+  }
+}
+
 function setup() {
   chrome.storage.local.get(null, function (value) {
-    if (value.hideYTShortsVideos == undefined)
-      chrome.storage.local.set({ hideYTShortsVideos: hideYTShortsVideos });
-    else
-      hideYTShortsVideos = value.hideYTShortsVideos;
-
-    if (value.hideYTShortsTab == undefined)
-      chrome.storage.local.set({ hideYTShortsTab: hideYTShortsTab });
-    else
-      hideYTShortsTab = value.hideYTShortsTab;
-
-    if (value.hideYTShortsHome == undefined)
-      chrome.storage.local.set({ hideYTShortsHome: true });
-    hidingShortsOnPathNames.homePage.active = value.hideYTShortsHome;
-
-    if (value.hideYTShortsVideosOnSubscriptionPage == undefined)
-      chrome.storage.local.set({ hideYTShortsVideosOnSubscriptionPage: true });
-    hidingShortsOnPathNames.subscriptionPage.active = value.hideYTShortsVideosOnSubscriptionPage;
-
-    if (value.hideYTShortsVideosOnSearchPage == undefined)
-      chrome.storage.local.set({ hideYTShortsVideosOnSearchPage: true });
-    hidingShortsOnPathNames.searchPage.active = value.hideYTShortsVideosOnSearchPage;
-
-    if (value.hideYTShortsVideosOnChannelPage == undefined)
-      chrome.storage.local.set({ hideYTShortsVideosOnChannelPage: true });
-    hidingShortsOnPathNames.channelPage.active = value.hideYTShortsVideosOnChannelPage;
-
-    if (value.hidingShortsTimeoutTimeMs == undefined)
-      chrome.storage.local.set({ hidingShortsTimeoutTimeMs: hidingShortsTimeoutTimeMs });
-    else if (hidingShortsTimeoutTimeMs != value.hidingShortsTimeoutTimeMs) {
-      clearShortsTimeout();
-      hidingShortsTimeoutTimeMs = value.hidingShortsTimeoutTimeMs;
-    }
-
-    if (value.hidingShortsTimeoutActive == undefined)
-      chrome.storage.local.set({ hidingShortsTimeoutActive: hidingShortsTimeoutActive });
-    else if (hidingShortsTimeoutActive != value.hidingShortsTimeoutActive) {
-      clearShortsTimeout();
-      hidingShortsTimeoutActive = value.hidingShortsTimeoutActive;
-    }
-
+    loadVariables(value);
 
     if (isMobile) {
       hideShortsCallbackInner =
