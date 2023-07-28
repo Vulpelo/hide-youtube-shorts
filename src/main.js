@@ -3,7 +3,7 @@ let hideYTShortsVideos = true;
 let hideYTShortsTab = false;
 let isHidingShortsTimeoutActive = false;
 
-let pageManager = null;
+let pageManagerNode = null;
 let subscriptionPageOpenObserver = null;
 
 let timeoutId = -1;
@@ -199,9 +199,9 @@ function setup() {
     else {
       
       waitForElement("#page-manager", document.body).then((wrapperElement1) => {
-        pageManager = wrapperElement1;
+        pageManagerNode = wrapperElement1;
         /* MutationObserver for Subscription page when got opened/closed */
-        waitForElement("ytd-browse[page-subtype='subscriptions']", pageManager, {childList: true, subtree: false}).then((wrapperElement2) => {
+        waitForElement("ytd-browse[page-subtype='subscriptions']", pageManagerNode, {childList: true, subtree: false}).then((wrapperElement2) => {
           createOpenCloseSubscriptionPageObserver(wrapperElement2);
         });
       });
@@ -248,8 +248,8 @@ function isLocationPathNameToIgnore() {
 }
 
 function childrenInPageManagerWithoutKnownOnes() {
-  if (pageManager == null) return [];
-  let finalNodeList = Array.from(pageManager.children);
+  if (pageManagerNode == null) return [];
+  let finalNodeList = Array.from(pageManagerNode.children);
 
   for (var key in hidingShortsOnPathNames) {
     if (hidingShortsOnPathNames[key].node == null) 
@@ -348,7 +348,7 @@ function hideShortsTab(hide) {
 // the button will temporarly remove shelf from subscription page till next page reload
 function addingCloseButtonForShelfOnSubscriptionsPage(subscriptionNode) {
   // find one eather on grid mode or list mode
-  waitForElementTimeout("ytd-rich-shelf-renderer, ytd-reel-shelf-renderer", subscriptionNode).then((element) => {
+  waitForElementTimeout("ytd-rich-shelf-renderer, ytd-reel-shelf-renderer", subscriptionNode, {timeout_ms: 5000}).then((element) => {
     if (element != null && element.querySelector("div[id='shelfCloseButton']") == null)
       insertCloseShelfButton(element.querySelector("[id=flexible-item-buttons]"));
   });
