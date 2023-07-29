@@ -3,16 +3,20 @@ let hideYTShortsVideos = true;
 let hideYTShortsTab = false;
 let isHidingShortsTimeoutActive = false;
 
+let pageManagerNode = null;
+let subscriptionPageOpenObserver = null;
+let subscriptionShelfCloseButton = false;
+
 let timeoutId = -1;
 let hidingShortsTimeoutActive = false;
 let hidingShortsTimeoutTimeMs = 500;
 
 const hidingShortsOnPathNames = {
-  channelPage: { active: true, reg: /@[^\/]*(\/featured)?$/},
-  channelShortTabPage: { active: false, reg: /^\/@[^\/]*\/shorts$/},
-  searchPage: { active: true, reg: /^\/results$/},
-  homePage: { active: true, reg: /^\/$/},
-  subscriptionPage: { active: true, reg: /^\/feed\/subscriptions$/}
+  homePage: { active: true, reg: /^\/$/, nodeSelector: "ytd-browse[page-subtype='home']", node: null},
+  subscriptionPage: { active: true, reg: /^\/feed\/subscriptions$/, nodeSelector: "ytd-browse[page-subtype='subscriptions']", node: null},
+  searchPage: { active: true, reg: /^\/results$/, nodeSelector: "ytd-search", node: null},
+  channelPage: { active: true, reg: /@[^\/]*(\/featured)?$/, nodeSelector: "ytd-browse[page-subtype='channels']", node: null},
+  channelShortTabPage: { active: false, reg: /^\/@[^\/]*\/shorts$/, nodeSelector: "", node: null}
 };
 
 /* ON DESKTOP */
@@ -61,7 +65,7 @@ const SHELF_TAG_REGEX = /yt[dm]-reel-shelf-renderer/gm
 const SHELF_ITEM_TAG_SELECTOR = "ytd-reel-item-renderer,ytm-reel-item-renderer";
 
 
-function waitForElement(selector, observeElement = document.body) {
+function waitForElement(selector, observeElement = document.body, {childList = true, subtree = true} = {}) {
   return new Promise(resolve => {
     let element = document.querySelector(selector);
     if (element) {
@@ -74,7 +78,31 @@ function waitForElement(selector, observeElement = document.body) {
         elementObserver.disconnect();
       }
     });
-    elementObserver.observe(observeElement, { childList: true, subtree: true });
+    elementObserver.observe(observeElement, { childList: childList, subtree: subtree });
+  });
+}
+
+function waitForElementTimeout(selector, observeElement = document.body, {childList = true, subtree = true, timeout_ms = 150} = {}) {
+  return new Promise(resolve => {
+    let element = document.querySelector(selector);
+    if (element) {
+      return resolve(document.querySelector(selector));
+    }
+    let timer = null;
+    const elementObserver = new MutationObserver(() => {
+      element = document.querySelector(selector);
+      if (element) {
+        clearTimeout(timer);
+        resolve(element);
+        elementObserver.disconnect();
+      }
+    });
+    elementObserver.observe(observeElement, {childList: childList, subtree: subtree});
+    if (timeout_ms > 0)
+      timer = setTimeout(() => {
+        resolve(null);
+        elementObserver.disconnect();
+      }, timeout_ms);
   });
 }
 
@@ -104,48 +132,56 @@ function clearShortsTimeout() {
 let hideShortsCallbackInner = () => {};
 function hideShortsCallback() { hideShortsCallbackInner(); };
 
+function loadVariables(value) {
+  if (value.hideYTShortsVideos == undefined)
+    chrome.storage.local.set({ hideYTShortsVideos: hideYTShortsVideos });
+  else
+    hideYTShortsVideos = value.hideYTShortsVideos;
+
+  if (value.hideYTShortsTab == undefined)
+    chrome.storage.local.set({ hideYTShortsTab: hideYTShortsTab });
+  else
+    hideYTShortsTab = value.hideYTShortsTab;
+
+  if (value.hideYTShortsHome == undefined)
+    chrome.storage.local.set({ hideYTShortsHome: true });
+  hidingShortsOnPathNames.homePage.active = value.hideYTShortsHome;
+
+  if (value.hideYTShortsVideosOnSubscriptionPage == undefined)
+    chrome.storage.local.set({ hideYTShortsVideosOnSubscriptionPage: true });
+  hidingShortsOnPathNames.subscriptionPage.active = value.hideYTShortsVideosOnSubscriptionPage;
+
+  if (value.hideYTShortsVideosOnSearchPage == undefined)
+    chrome.storage.local.set({ hideYTShortsVideosOnSearchPage: true });
+  hidingShortsOnPathNames.searchPage.active = value.hideYTShortsVideosOnSearchPage;
+
+  if (value.hideYTShortsVideosOnChannelPage == undefined)
+    chrome.storage.local.set({ hideYTShortsVideosOnChannelPage: true });
+  hidingShortsOnPathNames.channelPage.active = value.hideYTShortsVideosOnChannelPage;
+
+  if (value.hidingShortsTimeoutTimeMs == undefined)
+    chrome.storage.local.set({ hidingShortsTimeoutTimeMs: hidingShortsTimeoutTimeMs });
+  else if (hidingShortsTimeoutTimeMs != value.hidingShortsTimeoutTimeMs) {
+    clearShortsTimeout();
+    hidingShortsTimeoutTimeMs = value.hidingShortsTimeoutTimeMs;
+  }
+
+  if (value.hidingShortsTimeoutActive == undefined)
+    chrome.storage.local.set({ hidingShortsTimeoutActive: hidingShortsTimeoutActive });
+  else if (hidingShortsTimeoutActive != value.hidingShortsTimeoutActive) {
+    clearShortsTimeout();
+    hidingShortsTimeoutActive = value.hidingShortsTimeoutActive;
+  }
+
+  if (value.subscriptionShelfCloseButton == undefined)
+    chrome.storage.local.set({ subscriptionShelfCloseButton: subscriptionShelfCloseButton });
+  else
+    subscriptionShelfCloseButton = value.subscriptionShelfCloseButton;
+}
+
 function setup() {
   chrome.storage.local.get(null, function (value) {
-    if (value.hideYTShortsVideos == undefined)
-      chrome.storage.local.set({ hideYTShortsVideos: hideYTShortsVideos });
-    else
-      hideYTShortsVideos = value.hideYTShortsVideos;
-
-    if (value.hideYTShortsTab == undefined)
-      chrome.storage.local.set({ hideYTShortsTab: hideYTShortsTab });
-    else
-      hideYTShortsTab = value.hideYTShortsTab;
-
-    if (value.hideYTShortsHome == undefined)
-      chrome.storage.local.set({ hideYTShortsHome: true });
-    hidingShortsOnPathNames.homePage.active = value.hideYTShortsHome;
-
-    if (value.hideYTShortsVideosOnSubscriptionPage == undefined)
-      chrome.storage.local.set({ hideYTShortsVideosOnSubscriptionPage: true });
-    hidingShortsOnPathNames.subscriptionPage.active = value.hideYTShortsVideosOnSubscriptionPage;
-
-    if (value.hideYTShortsVideosOnSearchPage == undefined)
-      chrome.storage.local.set({ hideYTShortsVideosOnSearchPage: true });
-    hidingShortsOnPathNames.searchPage.active = value.hideYTShortsVideosOnSearchPage;
-
-    if (value.hideYTShortsVideosOnChannelPage == undefined)
-      chrome.storage.local.set({ hideYTShortsVideosOnChannelPage: true });
-    hidingShortsOnPathNames.channelPage.active = value.hideYTShortsVideosOnChannelPage;
-
-    if (value.hidingShortsTimeoutTimeMs == undefined)
-      chrome.storage.local.set({ hidingShortsTimeoutTimeMs: hidingShortsTimeoutTimeMs });
-    else if (hidingShortsTimeoutTimeMs != value.hidingShortsTimeoutTimeMs) {
-      clearShortsTimeout();
-      hidingShortsTimeoutTimeMs = value.hidingShortsTimeoutTimeMs;
-    }
-
-    if (value.hidingShortsTimeoutActive == undefined)
-      chrome.storage.local.set({ hidingShortsTimeoutActive: hidingShortsTimeoutActive });
-    else if (hidingShortsTimeoutActive != value.hidingShortsTimeoutActive) {
-      clearShortsTimeout();
-      hidingShortsTimeoutActive = value.hidingShortsTimeoutActive;
-    }
-
+    loadVariables(value);
 
     if (isMobile) {
       hideShortsCallbackInner =
@@ -166,9 +202,21 @@ function setup() {
       observer = manageObserver("#app",
         hideYTShortsTab || hideYTShortsVideos,
         hideShortsCallback,
-        observer);
+        observer,
+        {childList: true, subtree: true});
     }
     else {
+      
+      waitForElementTimeout("#page-manager", document.body, {timeout_ms: 5000}).then((wrapperElement1) => {
+        pageManagerNode = wrapperElement1;
+        if (subscriptionShelfCloseButton) {
+          /* MutationObserver for Subscription page when got opened/closed */
+          waitForElement("ytd-browse[page-subtype='subscriptions']", pageManagerNode, {childList: true, subtree: false}).then((wrapperElement2) => {
+            createOpenCloseSubscriptionPageObserver(wrapperElement2);
+          });
+        }
+      });
+
       hideShortsCallbackInner =
         hidingShortsTimeoutActive ?
           () => {
@@ -186,9 +234,19 @@ function setup() {
       observer = manageObserver("#content",
         hideYTShortsVideos,
         hideShortsCallback,
-        observer);
+        observer,
+        {childList: true, subtree: true});
     }
   });
+}
+
+function createOpenCloseSubscriptionPageObserver(node) {
+  addingCloseButtonForShelfOnSubscriptionsPage(node);
+  subscriptionPageOpenObserver = manageObserver("ytd-browse[page-subtype='subscriptions']", 
+    true, 
+    () => {addingCloseButtonForShelfOnSubscriptionsPage(node);}, 
+    subscriptionPageOpenObserver, 
+    {attributes: true});
 }
 
 function isLocationPathNameToIgnore() {
@@ -200,51 +258,80 @@ function isLocationPathNameToIgnore() {
   return false;
 }
 
+function childrenInPageManagerWithoutKnownOnes() {
+  if (pageManagerNode == null) return [document.body];
+  let finalNodeList = Array.from(pageManagerNode.children);
+
+  for (var key in hidingShortsOnPathNames) {
+    if (hidingShortsOnPathNames[key].node == null) 
+      continue;
+    let index = finalNodeList.indexOf(hidingShortsOnPathNames[key].node)
+    if (index >= 0)
+      finalNodeList.splice(index, 1);
+  }
+  return finalNodeList;
+}
+
+function locationPathNameNodes() {
+  const pathName = location.pathname;
+  for (var key in hidingShortsOnPathNames) {
+    if (hidingShortsOnPathNames[key].node == null && hidingShortsOnPathNames[key].nodeSelector != "")
+      hidingShortsOnPathNames[key].node = document.querySelector(hidingShortsOnPathNames[key].nodeSelector);
+    if (hidingShortsOnPathNames[key].node != null && pathName.match(hidingShortsOnPathNames[key].reg)) 
+      return [hidingShortsOnPathNames[key].node];
+  }
+  return childrenInPageManagerWithoutKnownOnes();
+}
+
 function hideShorts(hide = true) {
   if (isLocationPathNameToIgnore())
     return;
 
-  let selectorString = isMobile ?
-    MOBILE_SHORTS_CONTAINERS_TAG
-    : REST_DESKTOP_SHORTS_CONTAINERS_TAG + "," + dHideVideoRenderer.elementTagName;
-  elements = document.querySelectorAll(selectorString);
-  elements.forEach(element => {
+  const nodes = locationPathNameNodes();
 
-    const elementTagName = element.tagName.toLowerCase();
+  for (let i = 0; i < nodes.length; i++) {
+    let selectorString = isMobile ?
+      MOBILE_SHORTS_CONTAINERS_TAG
+      : REST_DESKTOP_SHORTS_CONTAINERS_TAG + "," + dHideVideoRenderer.elementTagName;
+    elements = nodes[i].querySelectorAll(selectorString);
+    elements.forEach(element => {
+      
+      const elementTagName = element.tagName.toLowerCase();
 
-    // subscription page in list mode
-    if (location.pathname.match(hidingShortsOnPathNames.subscriptionPage.reg)  
-      && elementTagName.match(dHideVideoRendererSubscriptionPage.elementTagName)) {
-        if (hide)
-          dHideVideoRendererSubscriptionPage.hideShort(element);
-        else
-          dHideVideoRendererSubscriptionPage.showShort(element);
-    }
-    // other pages with containers on search page
-    else if (elementTagName.match(dHideVideoRenderer.elementTagName)) {
-      if (hide) {
-        dHideVideoRenderer.hideShort(element);
+      // subscription page in list mode
+      if (location.pathname.match(hidingShortsOnPathNames.subscriptionPage.reg)  
+        && elementTagName.match(dHideVideoRendererSubscriptionPage.elementTagName)) {
+          if (hide)
+            dHideVideoRendererSubscriptionPage.hideShort(element);
+          else
+            dHideVideoRendererSubscriptionPage.showShort(element);
       }
-      else {
-        dHideVideoRenderer.showShort(element);
-      }
-    }
-    // hide whole shelf if just contains "ytd-reel-item-renderer" tag. For now seems to be only used for yt-shorts videos
-    // and hide any video container that contains a ref link to shorts
-    else if ((element.tagName.toLowerCase().match(SHELF_TAG_REGEX)
-      && element.querySelector(SHELF_ITEM_TAG_SELECTOR) != null)
-      || element.querySelector('[href^="/shorts/"]') != null) {
-      if (hide) {
-        if (!element.hasAttribute("hidden")) {
-          element.setAttribute("hidden", true);
-          dOperationsAfterHidingElement.doOperations(element);
+      // other pages with containers on search page
+      else if (elementTagName.match(dHideVideoRenderer.elementTagName)) {
+        if (hide) {
+          dHideVideoRenderer.hideShort(element);
+        }
+        else {
+          dHideVideoRenderer.showShort(element);
         }
       }
-      else if (element.hasAttribute("hidden")) {
-        element.removeAttribute("hidden");
+      // hide whole shelf if just contains "ytd-reel-item-renderer" tag. For now seems to be only used for yt-shorts videos
+      // and hide any video container that contains a ref link to shorts
+      else if ((elementTagName.match(SHELF_TAG_REGEX)
+        && element.querySelector(SHELF_ITEM_TAG_SELECTOR) != null)
+        || element.querySelector('[href^="/shorts/"]') != null) {
+        if (hide) {
+          if (!element.hasAttribute("hidden")) {
+            element.setAttribute("hidden", true);
+            dOperationsAfterHidingElement.doOperations(element);
+          }
+        }
+        else if (element.hasAttribute("hidden")) {
+          element.removeAttribute("hidden");
+        }
       }
-    }
-  });
+    });
+  }
 }
 
 function hideShortsTab(hide) {
@@ -269,11 +356,20 @@ function hideShortsTab(hide) {
   }
 }
 
-function manageObserver(selector, active, callback, aObserver = null) {
+// the button will temporarly remove shelf from subscription page till next page reload
+function addingCloseButtonForShelfOnSubscriptionsPage(subscriptionNode) {
+  // find one eather on grid mode or list mode
+  waitForElementTimeout("ytd-rich-shelf-renderer, ytd-reel-shelf-renderer", subscriptionNode, {timeout_ms: 5000}).then((element) => {
+    if (element != null && element.querySelector("div[id='shelfCloseButton']") == null)
+      insertCloseShelfButton(element.querySelector("[id=flexible-item-buttons]"));
+  });
+}
+
+function manageObserver(selector, active, callback, aObserver = null, {childList = false, subtree = false, attributes = false} = {}) {
   if (aObserver === null && active) {
     waitForElement(selector, document.body).then((node) => {
       aObserver = new MutationObserver(callback);
-      aObserver.observe(node, { childList: true, subtree: true });
+      aObserver.observe(node, { childList: childList, subtree: subtree, attributes: attributes});
     });
   }
   else if (aObserver !== null && !active) {
