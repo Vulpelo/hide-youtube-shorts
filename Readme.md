@@ -9,6 +9,13 @@
 Firefox add-on that hides YouTube-shorts videos from home page, subscriptions and search results. 
 Also allows you to hide "Shorts" tab.
 
+## Features
+
+- Hiding Shorts tab
+- Hiding Shorts only selected pages (home/subscription/channel/search page)
+- Setting a timeout to not allow checking for shorts more often than a specified time (to reduce calling hiding shorts function to reduce page load) (off by default)
+- Adds a close button to a shelf with shorts located on subscription page (off by default)
+
 ## Installation
 
 ### Firefox 
