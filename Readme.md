@@ -31,7 +31,7 @@ or add the Add-on temporarily:
 
 ### Google Chrome
 
-Install from [Chrome web store](https://chrome.google.com/webstore/detail/hide-youtube-shorts/epgdblohfbmigelolmilnjhaoikmjdan) webpage
+~~Install from [Chrome web store](https://chrome.google.com/webstore/detail/hide-youtube-shorts/epgdblohfbmigelolmilnjhaoikmjdan) webpage~~ (temporarily got removed from the store)
 
 or add the Add-on manually:
 1. Download the project
