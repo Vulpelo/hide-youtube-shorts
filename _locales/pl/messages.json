@@ -4,6 +4,8 @@
     
     "cfg_hide_videos": {"message": "Ukryj filmiki Shorts"},
     "cfg_hide_tab": {"message": "Ukryj zakładkę Shorts"},
+    "cfg_hide_notifications": {"message": "Ukryj powiadomienia Shorts"},
+
     "setting_text": {"message": "Opcje"},
     "more_dropdown_text": {"message": "Więcej"},
     "setting_experimental_text": {"message": "Eksperymentalne"},
