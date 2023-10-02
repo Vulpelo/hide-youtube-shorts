@@ -1,5 +1,5 @@
 {
-    "extensionName": {"message": "Youtube-Shorts ausblenden"},
+    "extensionName": {"message": "Shorts für YouTube™ ausblenden"},
     "extensionDescription": {"message": "Blendet YouTube-shorts Videos von der Startseite, den Abonnements und den Suchergebnissen aus."},
     
     "cfg_hide_videos": {"message": "YouTube-shorts Videos ausblenden"},

@@ -1,5 +1,5 @@
 {
-    "extensionName": {"message": "Hide Youtube-Shorts"},
+    "extensionName": {"message": "Hide shorts for Youtube™"},
     "extensionDescription": {"message": "Hides shorts from YouTube™ from home page, subscriptions and search results."},
     
     "cfg_hide_videos": {"message": "Hide Shorts videos"},
