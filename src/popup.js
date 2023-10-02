@@ -18,6 +18,14 @@ window.onload = function() {
             chrome.storage.local.set({hideYTShortsTab: e.target.checked});
         })
 
+        // hide notifications
+        let hideYTShortsNotificationsInput = document.getElementById("hideYTShortsNotificationsInput");
+        if (value.hideYTShortsNotifications != undefined)
+            hideYTShortsNotificationsInput.checked = value.hideYTShortsNotifications;
+        hideYTShortsNotificationsInput.addEventListener("input", function(e) {
+            chrome.storage.local.set({hideYTShortsNotifications: e.target.checked});
+        })
+
         // hide shorts Home
         let hideYTShortsHomeInput = document.getElementById("hideYTShortsVideosOnHomePageInput");
         if (value.hideYTShortsHome != undefined)
@@ -80,6 +88,7 @@ window.onload = function() {
     // Set language
     document.getElementById("hide_videos_text").textContent=chrome.i18n.getMessage("cfg_hide_videos");
     document.getElementById("hide_tab_text").textContent=chrome.i18n.getMessage("cfg_hide_tab");
+    document.getElementById("hide_notifications_text").textContent=chrome.i18n.getMessage("cfg_hide_notifications");
     document.getElementById("settings_text").textContent=chrome.i18n.getMessage("setting_text");
     document.getElementById("settings_experimental_text").textContent=chrome.i18n.getMessage("setting_experimental_text");
     document.getElementById("more_dropdown_text").textContent=chrome.i18n.getMessage("more_dropdown_text");
