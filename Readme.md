@@ -2,8 +2,8 @@
 
 [![Extension's Mozilla Rating](https://img.shields.io/amo/rating/hide-youtube-shorts?color=green&label=Mozilla%20Rating&logo=FirefoxBrowser)](https://addons.mozilla.org/en-US/firefox/addon/hide-youtube-shorts/)
 [![Extension's Mozilla users](https://img.shields.io/amo/users/hide-youtube-shorts?label=Mozilla%20Users&logo=FirefoxBrowser)](https://addons.mozilla.org/en-US/firefox/addon/hide-youtube-shorts/)
-[![Extension's Chrome Web Store rating](https://img.shields.io/chrome-web-store/rating/epgdblohfbmigelolmilnjhaoikmjdan?label=Chrome%20Rating&logo=google%20chrome)](https://chrome.google.com/webstore/detail/hide-shorts-for-youtube/ankepacjgoajhjpenegknbefpmfffdic)
-[![Extension's Chrome Web Store users](https://img.shields.io/chrome-web-store/users/epgdblohfbmigelolmilnjhaoikmjdan?label=Chrome%20Users&logo=google%20chrome)](https://chrome.google.com/webstore/detail/hide-shorts-for-youtube/ankepacjgoajhjpenegknbefpmfffdic)
+[![Extension's Chrome Web Store rating](https://img.shields.io/chrome-web-store/rating/ankepacjgoajhjpenegknbefpmfffdic?label=Chrome%20Rating&logo=google%20chrome)](https://chrome.google.com/webstore/detail/hide-shorts-for-youtube/ankepacjgoajhjpenegknbefpmfffdic)
+[![Extension's Chrome Web Store users](https://img.shields.io/chrome-web-store/users/ankepacjgoajhjpenegknbefpmfffdic?label=Chrome%20Users&logo=google%20chrome)](https://chrome.google.com/webstore/detail/hide-shorts-for-youtube/ankepacjgoajhjpenegknbefpmfffdic)
 [![Licence](https://img.shields.io/github/license/Vulpelo/hide-youtube-shorts)](https://github.com/Vulpelo/hide-youtube-shorts/blob/master/LICENCE.md)
 
 Firefox add-on that hides YouTube-shorts videos from home page, subscriptions and search results. 
@@ -13,6 +13,7 @@ Also allows you to hide "Shorts" tab.
 
 - Hiding Shorts tab
 - Hiding Shorts only selected pages (home/subscription/channel/search page)
+- Hiding shorts in notifications menu
 - Setting a timeout to not allow checking for shorts more often than a specified time (to reduce calling hiding shorts function to reduce page load) (off by default)
 - Adds a close button to a shelf with shorts located on subscription page (off by default)
 
