@@ -4,6 +4,7 @@
     
     "cfg_hide_videos": {"message": "Hide Shorts videos"},
     "cfg_hide_tab": {"message": "Hide Shorts tab"},
+    "cfg_hide_notifications": {"message": "Hide Shorts notifications"},
     "setting_text": {"message": "Options"},
     "more_dropdown_text": {"message": "More"},
     "setting_experimental_text": {"message": "Experimental"},

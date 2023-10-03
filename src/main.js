@@ -3,6 +3,9 @@ let hideYTShortsVideos = true;
 let hideYTShortsTab = false;
 let isHidingShortsTimeoutActive = false;
 
+let notificationsObserver = null;
+let hideYTShortsNotifications = true;
+
 let pageManagerNode = null;
 let subscriptionPageOpenObserver = null;
 let subscriptionShelfCloseButton = false;
@@ -45,6 +48,8 @@ const DESKTOP_SHORTS_MINI_TAB_SELECTOR = "ytd-mini-guide-entry-renderer>a:not([h
 const DESKTOP_GUIDE_WRAPPER_SELECTOR = "div[id='guide-wrapper']";
 const DESKTOP_GUIDE_WRAPPER_MINI_SELECTOR = "ytd-mini-guide-renderer";
 
+const DESKTOP_NOTIFICATION_RENDERER = "ytd-notification-renderer";
+
 /* ON MOBILE */
 let isMobile = location.hostname == "m.youtube.com";
 const MOBILE_SHORTS_CONTAINERS_TAG = [
@@ -63,6 +68,9 @@ const MOBILE_SHORTS_TAB_SELECTOR = "ytm-pivot-bar-item-renderer>div[class='pivot
 /* on desktop and mobile */
 const SHELF_TAG_REGEX = /yt[dm]-reel-shelf-renderer/gm
 const SHELF_ITEM_TAG_SELECTOR = "ytd-reel-item-renderer,ytm-reel-item-renderer";
+
+/* Selectors used for searching shorts elements */
+let combinedSelectorsToQuery;
 
 
 function waitForElement(selector, observeElement = document.body, {childList = true, subtree = true} = {}) {
@@ -106,9 +114,12 @@ function waitForElementTimeout(selector, observeElement = document.body, {childL
   });
 }
 
-function hideElement(hide, element) {
+function hideElement(hide, element, onHideCallback = () => {}) {
   if (hide) {
-    element.setAttribute("hidden", true);
+    if (!element.hasAttribute("hidden")) {
+      element.setAttribute("hidden", true);
+      onHideCallback()
+    }
   }
   else if (element.hasAttribute("hidden")) {
     element.removeAttribute("hidden");
@@ -142,6 +153,11 @@ function loadVariables(value) {
     chrome.storage.local.set({ hideYTShortsTab: hideYTShortsTab });
   else
     hideYTShortsTab = value.hideYTShortsTab;
+
+  if (value.hideYTShortsNotifications == undefined)
+    chrome.storage.local.set({ hideYTShortsNotifications: hideYTShortsNotifications });
+  else
+    hideYTShortsNotifications = value.hideYTShortsNotifications;
 
   if (value.hideYTShortsHome == undefined)
     chrome.storage.local.set({ hideYTShortsHome: true });
@@ -184,6 +200,8 @@ function setup() {
     loadVariables(value);
 
     if (isMobile) {
+      combinedSelectorsToQuery = MOBILE_SHORTS_CONTAINERS_TAG;
+
       hideShortsCallbackInner =
         hidingShortsTimeoutActive ?
           () => {
@@ -206,7 +224,8 @@ function setup() {
         {childList: true, subtree: true});
     }
     else {
-      
+      combinedSelectorsToQuery = REST_DESKTOP_SHORTS_CONTAINERS_TAG + "," + dHideVideoRenderer.elementTagName;
+
       waitForElementTimeout("#page-manager", document.body, {timeout_ms: 5000}).then((wrapperElement1) => {
         pageManagerNode = wrapperElement1;
         if (subscriptionShelfCloseButton) {
@@ -216,6 +235,28 @@ function setup() {
           });
         }
       });
+
+      
+      notificationsObserver = manageObserver("ytd-popup-container",
+        hideYTShortsNotifications,
+        (mutationList, observer) => {
+          for (const mutation of mutationList) {
+            if (mutation.type === "childList" && mutation.target.tagName.toLowerCase() == "ytd-notification-renderer") { 
+              if (mutation.target.querySelector('[href^="/shorts/"]') != null)
+                hideElement(true, mutation.target)
+            }
+          }
+        },
+        notificationsObserver,
+        {childList: true, subtree: true}
+      )
+
+      const nRenderers = document.querySelector("ytd-popup-container").querySelectorAll("ytd-notification-renderer")
+      nRenderers.forEach((v)=>{
+        if (v.querySelector('[href^="/shorts/"]') != null)
+          hideElement(hideYTShortsNotifications, v)
+      })
+
 
       hideShortsCallbackInner =
         hidingShortsTimeoutActive ?
@@ -290,14 +331,11 @@ function hideShorts(hide = true) {
   const nodes = locationPathNameNodes();
 
   for (let i = 0; i < nodes.length; i++) {
-    let selectorString = isMobile ?
-      MOBILE_SHORTS_CONTAINERS_TAG
-      : REST_DESKTOP_SHORTS_CONTAINERS_TAG + "," + dHideVideoRenderer.elementTagName;
-    elements = nodes[i].querySelectorAll(selectorString);
+    elements = nodes[i].querySelectorAll(combinedSelectorsToQuery);
     elements.forEach(element => {
       
       const elementTagName = element.tagName.toLowerCase();
-
+      
       // subscription page in list mode
       if (location.pathname.match(hidingShortsOnPathNames.subscriptionPage.reg)  
         && elementTagName.match(dHideVideoRendererSubscriptionPage.elementTagName)) {
@@ -320,15 +358,7 @@ function hideShorts(hide = true) {
       else if ((elementTagName.match(SHELF_TAG_REGEX)
         && element.querySelector(SHELF_ITEM_TAG_SELECTOR) != null)
         || element.querySelector('[href^="/shorts/"]') != null) {
-        if (hide) {
-          if (!element.hasAttribute("hidden")) {
-            element.setAttribute("hidden", true);
-            dOperationsAfterHidingElement.doOperations(element);
-          }
-        }
-        else if (element.hasAttribute("hidden")) {
-          element.removeAttribute("hidden");
-        }
+        hideElement(hide, element, () => {dOperationsAfterHidingElement.doOperations(element)});
       }
     });
   }
