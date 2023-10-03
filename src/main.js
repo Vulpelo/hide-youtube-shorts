@@ -240,7 +240,6 @@ function setup() {
       notificationsObserver = manageObserver("ytd-popup-container",
         hideYTShortsNotifications,
         (mutationList, observer) => {
-          console.log(mutationList)
           for (const mutation of mutationList) {
             if (mutation.type === "childList" && mutation.target.tagName.toLowerCase() == "ytd-notification-renderer") { 
               if (mutation.target.querySelector('[href^="/shorts/"]') != null)
