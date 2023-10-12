@@ -1,8 +1,23 @@
 {
     "extensionName": {"message": "Masquer les Shorts pour Youtube™"},
     "extensionDescription": {"message": "Masque les Shorts YouTube™ de la page d'accueil, des abonnements et des résultats de recherche."},
-    
+
     "cfg_hide_videos": {"message": "Masquer les Shorts"},
     "cfg_hide_tab": {"message": "Masquer l'onglet des Shorts"},
-    "setting_text": {"message": "Paramètres"}
+    "cfg_hide_notifications": {"message": "Masquer les notifications de Shorts"},
+    "setting_text": {"message": "Options"},
+    "more_dropdown_text": {"message": "Plus"},
+    "setting_experimental_text": {"message": "Expérimental"},
+    "settings_hiding_on_text": {"message": "Masquer depuis"},
+
+    "cfg_hide_videos_home": {"message": "Page d'accueil"},
+    "cfg_hide_videos_subscription": {"message": "Page des abonnements"},
+    "cfg_hide_videos_search": {"message": "Page de recherche"},
+    "cfg_hide_videos_channel": {"message": "Page d'accueil de la chaîne"},
+
+    "cfg_hide_shorts_timeout": {"message": "Délai avant la revérification des vidéos (ms)"},
+    "cfg_hide_shorts_timeout_tooltip": {"message": "Ne permettez pas de vérifier les Shorts plus souvent qu'un délai spécifié. Un délai plus long réduit le temps de chargement de la page, mais les Shorts pourraient ne pas être masqués immédiatement."},
+
+    "cfg_subscription_shelf_close_button": {"message": "Bouton de fermeture de section"},
+    "cfg_subscription_shelf_close_button_tooltip": {"message": "Ajoute un bouton pour fermer la section avec les Shorts sur la page des abonnements"}
 }
