@@ -5,7 +5,6 @@
     "cfg_hide_videos": {"message": "Ukryj filmiki Shorts"},
     "cfg_hide_tab": {"message": "Ukryj zakładkę Shorts"},
     "cfg_hide_notifications": {"message": "Ukryj powiadomienia Shorts"},
-
     "setting_text": {"message": "Opcje"},
     "more_dropdown_text": {"message": "Więcej"},
     "setting_experimental_text": {"message": "Eksperymentalne"},
@@ -19,6 +18,6 @@
     "cfg_hide_shorts_timeout": {"message": "Limit czasu przed ponownym szukaniem short'ów (ms)"},
     "cfg_hide_shorts_timeout_tooltip": {"message": "Nie zezwalaj na szukanie short'ów częściej niż określony czas. Wysoki limit zmniejsza obciążenie strony, ale short'y mogą być ukrywanie z opóźnieniem."},
 
-    "cfg_subscription_shelf_close_button": {"message": "Przycisk zamknięcia półki"},
-    "cfg_subscription_shelf_close_button_tooltip": {"message": "Dodaje przycisk zamknięcia półki z shortami na stronie z subskrypcjami"}
+    "cfg_subscription_shelf_close_button": {"message": "Przycisk zamknięcia sekcji"},
+    "cfg_subscription_shelf_close_button_tooltip": {"message": "Dodaje przycisk zamknięcia sekcji z shortami na stronie z subskrypcjami"}
 }
