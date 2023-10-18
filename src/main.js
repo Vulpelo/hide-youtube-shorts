@@ -251,11 +251,14 @@ function setup() {
         {childList: true, subtree: true}
       )
 
-      const nRenderers = document.querySelector("ytd-popup-container").querySelectorAll("ytd-notification-renderer")
-      nRenderers.forEach((v)=>{
-        if (v.querySelector('[href^="/shorts/"]') != null)
-          hideElement(hideYTShortsNotifications, v)
-      })
+      const popupContainer = document.querySelector("ytd-popup-container")
+      if (popupContainer != null) {
+        const nRenderers = popupContainer.querySelectorAll("ytd-notification-renderer")
+        nRenderers.forEach((v)=>{
+          if (v.querySelector('[href^="/shorts/"]') != null)
+            hideElement(hideYTShortsNotifications, v)
+        })
+      }
 
 
       hideShortsCallbackInner =
