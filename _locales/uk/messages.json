@@ -1,0 +1,23 @@
+{
+    "extensionName": {"message": "Приховати шорти для Youtube™"},
+    "extensionDescription": {"message": "Приховує шорти з YouTube™ з домашньої сторінки, підписок і результатів пошуку."},
+    
+    "cfg_hide_videos": {"message": "Приховати відео Шорти"},
+    "cfg_hide_tab": {"message": "Приховати вкладку Шорти"},
+    "cfg_hide_notifications": {"message": "Приховати сповіщення про шорти"},
+    "setting_text": {"message": "Опції"},
+    "more_dropdown_text": {"message": "Більше"},
+    "setting_experimental_text": {"message": "Експериментальний"},
+    "settings_hiding_on_text": {"message": "Приховати на"},
+    
+    "cfg_hide_videos_home": {"message": "Домашня сторінка"},
+    "cfg_hide_videos_subscription": {"message": "Сторінка підписок"},
+    "cfg_hide_videos_search": {"message": "Сторінка пошуку"},
+    "cfg_hide_videos_channel": {"message": "Домашня сторінка каналу"},
+
+    "cfg_hide_shorts_timeout": {"message": "Тайм-аут перед повторною перевіркою відео (мс)"},
+    "cfg_hide_shorts_timeout_tooltip": {"message": "Не дозволяйте перевіряти шорти частіше, ніж через певний час. Більший таймаут зменшує завантаження сторінки, але шорти можуть бути приховані не одразу."},
+
+    "cfg_subscription_shelf_close_button": {"message": "Кнопка закриття розділу шортів"},
+    "cfg_subscription_shelf_close_button_tooltip": {"message": "Додає кнопку закриття до розділу шортів на сторінці підписки"}
+}
