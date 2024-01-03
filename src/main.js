@@ -72,6 +72,10 @@ const SHELF_ITEM_TAG_SELECTOR = "ytd-reel-item-renderer,ytm-reel-item-renderer";
 /* Selectors used for searching shorts elements */
 let combinedSelectorsToQuery;
 
+// Hiding videos below certain length
+let isHidingShortVideos = true;
+let minimumVideoLengthSeconds = 20;
+
 
 function waitForElement(selector, observeElement = document.body, {childList = true, subtree = true} = {}) {
   return new Promise(resolve => {
@@ -363,7 +367,29 @@ function hideShorts(hide = true) {
         || element.querySelector('[href^="/shorts/"]') != null) {
         hideElement(hide, element, () => {dOperationsAfterHidingElement.doOperations(element)});
       }
+      // Hide videos that are too short
+      else {
+        if (isHidingShortVideos && hide) {
+          hideVideoIfBelowLength(element, minimumVideoLengthSeconds)
+        }
+      }
     });
+  }
+}
+
+function hideVideoIfBelowLength(element, minLengthSeconds) {
+  var vid = element.querySelector(`ytd-thumbnail-overlay-time-status-renderer`)
+  if (vid != null) {
+    var text = vid.querySelector('#text')
+    if (text) {
+      var time = text.textContent.trim().split(':').reverse()
+      var seconds = Number(time[0]) 
+        + (time.length > 1 ? Number(time[1]) * 60 : 0)
+        + (time.length > 2 ? Number(time[2]) * 3600 : 0)
+      if (seconds <= minLengthSeconds) {
+        hideElement(true, element, () => {dOperationsAfterHidingElement.doOperations(element)});
+      }
+    }
   }
 }
 
