@@ -123,6 +123,9 @@ window.onload = function() {
     document.getElementById("subscription_shelf_close_button_tooltip_text").textContent=chrome.i18n.getMessage("cfg_subscription_shelf_close_button_tooltip");
     document.getElementById("subscription_shelf_close_button_text").textContent=chrome.i18n.getMessage("cfg_subscription_shelf_close_button");
 
+    document.getElementById("hide_short_videos_tooltip_text").textContent=chrome.i18n.getMessage("cfg_hide_short_videos_tooltip");
+    document.getElementById("hide_short_timeout_text").textContent=chrome.i18n.getMessage("cfg_hide_short_timeout");
+    
     // version
     let manifestData = chrome.runtime.getManifest();
     document.getElementById("ext-version").textContent = "v" + manifestData.version;

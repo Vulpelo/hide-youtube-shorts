@@ -19,5 +19,8 @@
     "cfg_hide_shorts_timeout_tooltip": {"message": "Don't allow checking for shorts more often than a specified time. Bigger timeout lowers page load but shorts might not get hidden immediately."},
 
     "cfg_subscription_shelf_close_button": {"message": "Shorts section close button"},
-    "cfg_subscription_shelf_close_button_tooltip": {"message": "Adds a close button to the shorts section on the subscriptions page"}
+    "cfg_subscription_shelf_close_button_tooltip": {"message": "Adds a close button to the shorts section on the subscriptions page"},
+
+    "hide_short_timeout_text": {"message": "Timeout before rechecking videos (ms)"},
+    "hide_short_videos_tooltip_text": {"message": "Don't allow checking for shorts more often than a specified time. Bigger timeout lowers page load but shorts might not get hidden immediately."}
 }
