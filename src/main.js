@@ -73,8 +73,8 @@ const SHELF_ITEM_TAG_SELECTOR = "ytd-reel-item-renderer,ytm-reel-item-renderer";
 let combinedSelectorsToQuery;
 
 // Hiding videos below certain length
-let isHidingShortVideos = true;
-let minimumVideoLengthSeconds = 20;
+let hidingShortVideosActive = false;
+let hidingShortVideosTimeSeconds = 20;
 
 
 function waitForElement(selector, observeElement = document.body, {childList = true, subtree = true} = {}) {
@@ -191,6 +191,18 @@ function loadVariables(value) {
   else if (hidingShortsTimeoutActive != value.hidingShortsTimeoutActive) {
     clearShortsTimeout();
     hidingShortsTimeoutActive = value.hidingShortsTimeoutActive;
+  }
+
+  if (value.hidingShortVideosTimeSeconds == undefined)
+    chrome.storage.local.set({ hidingShortVideosTimeSeconds: hidingShortVideosTimeSeconds });
+  else if (hidingShortVideosTimeSeconds != value.hidingShortVideosTimeSeconds) {
+    hidingShortVideosTimeSeconds = value.hidingShortVideosTimeSeconds;
+  }
+
+  if (value.hidingShortVideosActive == undefined)
+    chrome.storage.local.set({ hidingShortVideosActive: hidingShortVideosActive });
+  else if (hidingShortVideosActive != value.hidingShortVideosActive) {
+    hidingShortVideosActive = value.hidingShortVideosActive;
   }
 
   if (value.subscriptionShelfCloseButton == undefined)
@@ -369,8 +381,8 @@ function hideShorts(hide = true) {
       }
       // Hide videos that are too short
       else {
-        if (isHidingShortVideos && hide) {
-          hideVideoIfBelowLength(element, minimumVideoLengthSeconds)
+        if (hidingShortVideosActive && hide) {
+          hideVideoIfBelowLength(element, hidingShortVideosTimeSeconds)
         }
       }
     });

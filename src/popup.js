@@ -82,6 +82,26 @@ window.onload = function() {
         hidingShortsTimeoutTimeMsInputCheckbox.addEventListener("input", function(e) {
             chrome.storage.local.set({hidingShortsTimeoutActive: e.target.checked});
         })
+
+        // hiding videos shorter than specified time
+        let hidingShortVideosTimeSecondsInput = document.getElementById("hidingShortVideosTimeSecondsInput");
+        if (value.hidingShortVideosTimeSeconds != undefined)
+            hidingShortVideosTimeSecondsInput.value = value.hidingShortVideosTimeSeconds;
+        hidingShortVideosTimeSecondsInput.addEventListener("input", function(e) {
+            const minAttr = parseInt(e.target.min);
+            const maxAttr = parseInt(e.target.max);
+            if (minAttr > e.target.value)
+                e.target.value = minAttr;
+            else if (maxAttr < e.target.value)
+                e.target.value = maxAttr;
+            chrome.storage.local.set({hidingShortVideosTimeSeconds: e.target.value});
+        })
+        let hidingShortVideosTimeSecondsInputCheckbox = document.getElementById("hidingShortVideosTimeSecondsInputCheckbox");
+        if (value.hidingShortVideosActive != undefined)
+            hidingShortVideosTimeSecondsInputCheckbox.checked = value.hidingShortVideosActive;
+        hidingShortVideosTimeSecondsInputCheckbox.addEventListener("input", function(e) {
+            chrome.storage.local.set({hidingShortVideosActive: e.target.checked});
+        })
         
     });
 
