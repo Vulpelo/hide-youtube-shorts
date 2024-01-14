@@ -19,5 +19,8 @@
     "cfg_hide_shorts_timeout_tooltip": {"message": "Nie zezwalaj na szukanie short'ów częściej niż określony czas. Wysoki limit zmniejsza obciążenie strony, ale short'y mogą być ukrywanie z opóźnieniem."},
 
     "cfg_subscription_shelf_close_button": {"message": "Przycisk zamknięcia sekcji"},
-    "cfg_subscription_shelf_close_button_tooltip": {"message": "Dodaje przycisk zamknięcia sekcji z shortami na stronie z subskrypcjami"}
+    "cfg_subscription_shelf_close_button_tooltip": {"message": "Dodaje przycisk zamknięcia sekcji z shortami na stronie z subskrypcjami"},
+
+    "cfg_hide_short_videos": {"message": "Ukryj filmy krótsze niż (s)"},
+    "cfg_hide_short_videos_tooltip": {"message": "Ukrywa filmy, które są krótsze niż określony czas w sekundach."}
 }
