@@ -390,17 +390,14 @@ function hideShorts(hide = true) {
 }
 
 function hideVideoIfBelowLength(element, minLengthSeconds) {
-  var vid = element.querySelector(`ytd-thumbnail-overlay-time-status-renderer`)
-  if (vid != null) {
-    var text = vid.querySelector('#text')
-    if (text) {
-      var time = text.textContent.trim().split(':').reverse()
-      var seconds = Number(time[0]) 
-        + (time.length > 1 ? Number(time[1]) * 60 : 0)
-        + (time.length > 2 ? Number(time[2]) * 3600 : 0)
-      if (seconds <= minLengthSeconds) {
-        hideElement(true, element, () => {dOperationsAfterHidingElement.doOperations(element)});
-      }
+  var timeStatus = element.querySelector('#time-status>#text')
+  if (timeStatus != null) {
+    var time = timeStatus.textContent.trim().split(':').reverse()
+    var seconds = Number(time[0]) 
+      + (time.length > 1 ? Number(time[1]) * 60 : 0)
+      + (time.length > 2 ? Number(time[2]) * 3600 : 0)
+    if (seconds <= minLengthSeconds) {
+      hideElement(true, element, () => {dOperationsAfterHidingElement.doOperations(element)});
     }
   }
 }
