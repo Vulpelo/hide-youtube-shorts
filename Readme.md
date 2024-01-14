@@ -16,6 +16,7 @@ Also allows you to hide "Shorts" tab.
 - Hiding shorts in notifications menu
 - Setting a timeout to not allow checking for shorts more often than a specified time (to reduce calling hiding shorts function to reduce page load) (off by default)
 - Adds a close button to a section with shorts located on the subscriptions page (off by default)
+- Hiding videos that are shorter than specified time (experimental, off by default)
 
 ## Installation
 
