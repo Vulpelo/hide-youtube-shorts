@@ -19,7 +19,9 @@ const hidingShortsOnPathNames = {
   subscriptionPage: { active: true, reg: /^\/feed\/subscriptions$/, nodeSelector: "ytd-browse[page-subtype='subscriptions']", node: null},
   searchPage: { active: true, reg: /^\/results$/, nodeSelector: "ytd-search", node: null},
   channelPage: { active: true, reg: /@[^\/]*(\/featured)?$/, nodeSelector: "ytd-browse[page-subtype='channels']", node: null},
-  channelShortTabPage: { active: false, reg: /^\/@[^\/]*\/shorts$/, nodeSelector: "", node: null}
+  channelShortTabPage: { active: false, reg: /^\/@[^\/]*\/shorts$/, nodeSelector: "", node: null},
+  // for hiding short videos on whole channel page
+  channelPageNotHome: { active: false, reg: /@[^\/]*((?!\/featured).)*$/, nodeSelector: "ytd-browse[page-subtype='channels']", node: null}
 };
 
 /* ON DESKTOP */
@@ -203,6 +205,7 @@ function loadVariables(value) {
     chrome.storage.local.set({ hidingShortVideosActive: hidingShortVideosActive });
   else if (hidingShortVideosActive != value.hidingShortVideosActive) {
     hidingShortVideosActive = value.hidingShortVideosActive;
+    hidingShortsOnPathNames.channelPageNotHome.active = hidingShortVideosActive && hidingShortsOnPathNames.channelPage.active;
   }
 
   if (value.subscriptionShelfCloseButton == undefined)
