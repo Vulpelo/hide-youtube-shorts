@@ -205,8 +205,8 @@ function loadVariables(value) {
     chrome.storage.local.set({ hidingShortVideosActive: hidingShortVideosActive });
   else if (hidingShortVideosActive != value.hidingShortVideosActive) {
     hidingShortVideosActive = value.hidingShortVideosActive;
-    hidingShortsOnPathNames.channelPageNotHome.active = hidingShortVideosActive && hidingShortsOnPathNames.channelPage.active;
   }
+  hidingShortsOnPathNames.channelPageNotHome.active = hidingShortVideosActive && hidingShortsOnPathNames.channelPage.active;
 
   if (value.subscriptionShelfCloseButton == undefined)
     chrome.storage.local.set({ subscriptionShelfCloseButton: subscriptionShelfCloseButton });
