@@ -21,7 +21,7 @@ const hidingShortsOnPathNames = {
   channelPage: { active: true, reg: /@[^\/]*(\/featured)?$/, nodeSelector: "ytd-browse[page-subtype='channels']", node: null},
   channelShortTabPage: { active: false, reg: /^\/@[^\/]*\/shorts$/, nodeSelector: "", node: null},
   // for hiding short videos on whole channel page
-  channelPageNotHome: { active: false, reg: /@[^\/]*((?!\/featured).)*$/, nodeSelector: "ytd-browse[page-subtype='channels']", node: null}
+  channelPageNotHome: { active: false, reg: /@[^\/]*\/((?!featured).)*$/, nodeSelector: "ytd-browse[page-subtype='channels']", node: null}
 };
 
 /* ON DESKTOP */
