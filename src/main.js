@@ -25,7 +25,7 @@ const hidingShortsOnPathNames = {
 };
 
 /* ON DESKTOP */
-let dOperationsAfterHidingElement = new OperationsAfterHidingElement();
+const dOperationsAfterHidingElement = new OperationsAfterHidingElement();
 // hiding videos on Search page, videos in list mode on subscription page 
 const dHideVideoRenderer = new HidingShortsWithContainer("ytd-video-renderer", "ytd-shelf-renderer");
 // hiding videos on subscription page in list mode
@@ -53,7 +53,7 @@ const DESKTOP_GUIDE_WRAPPER_MINI_SELECTOR = "ytd-mini-guide-renderer";
 const DESKTOP_NOTIFICATION_RENDERER = "ytd-notification-renderer";
 
 /* ON MOBILE */
-let isMobile = location.hostname == "m.youtube.com";
+const isMobile = location.hostname == "m.youtube.com";
 const MOBILE_SHORTS_CONTAINERS_TAG = [
   // shelf containing multiple shorts on Search page
   ["ytm-reel-shelf-renderer"],
@@ -260,7 +260,7 @@ function setup() {
         hideYTShortsNotifications,
         (mutationList, observer) => {
           for (const mutation of mutationList) {
-            if (mutation.type === "childList" && mutation.target.tagName.toLowerCase() == "ytd-notification-renderer") { 
+            if (mutation.type === "childList" && mutation.target.tagName.toLowerCase() == DESKTOP_NOTIFICATION_RENDERER) { 
               if (mutation.target.querySelector('[href^="/shorts/"]') != null)
                 hideElement(true, mutation.target)
             }
@@ -272,7 +272,7 @@ function setup() {
 
       const popupContainer = document.querySelector("ytd-popup-container")
       if (popupContainer != null) {
-        const nRenderers = popupContainer.querySelectorAll("ytd-notification-renderer")
+        const nRenderers = popupContainer.querySelectorAll(DESKTOP_NOTIFICATION_RENDERER)
         nRenderers.forEach((v)=>{
           if (v.querySelector('[href^="/shorts/"]') != null)
             hideElement(hideYTShortsNotifications, v)
@@ -314,7 +314,7 @@ function createOpenCloseSubscriptionPageObserver(node) {
 
 function isLocationPathNameToIgnore() {
   const pathName = location.pathname;
-  for (var key in hidingShortsOnPathNames) {
+  for (let key in hidingShortsOnPathNames) {
     if (hidingShortsOnPathNames[key].active == false && pathName.match(hidingShortsOnPathNames[key].reg))
       return true;
   }
@@ -325,7 +325,7 @@ function childrenInPageManagerWithoutKnownOnes() {
   if (pageManagerNode == null) return [document.body];
   let finalNodeList = Array.from(pageManagerNode.children);
 
-  for (var key in hidingShortsOnPathNames) {
+  for (let key in hidingShortsOnPathNames) {
     if (hidingShortsOnPathNames[key].node == null) 
       continue;
     let index = finalNodeList.indexOf(hidingShortsOnPathNames[key].node)
@@ -337,7 +337,7 @@ function childrenInPageManagerWithoutKnownOnes() {
 
 function locationPathNameNodes() {
   const pathName = location.pathname;
-  for (var key in hidingShortsOnPathNames) {
+  for (let key in hidingShortsOnPathNames) {
     if (hidingShortsOnPathNames[key].node == null && hidingShortsOnPathNames[key].nodeSelector != "")
       hidingShortsOnPathNames[key].node = document.querySelector(hidingShortsOnPathNames[key].nodeSelector);
     if (hidingShortsOnPathNames[key].node != null && pathName.match(hidingShortsOnPathNames[key].reg)) 
@@ -353,7 +353,7 @@ function hideShorts(hide = true) {
   const nodes = locationPathNameNodes();
 
   for (let i = 0; i < nodes.length; i++) {
-    elements = nodes[i].querySelectorAll(combinedSelectorsToQuery);
+    let elements = nodes[i].querySelectorAll(combinedSelectorsToQuery);
     elements.forEach(element => {
       
       const elementTagName = element.tagName.toLowerCase();
@@ -393,10 +393,10 @@ function hideShorts(hide = true) {
 }
 
 function hideVideoIfBelowLength(element, minLengthSeconds) {
-  var timeStatus = element.querySelector('#time-status>#text')
+  const timeStatus = element.querySelector('#time-status>#text')
   if (timeStatus != null) {
-    var time = timeStatus.textContent.trim().split(':').reverse()
-    var seconds = Number(time[0]) 
+    const time = timeStatus.textContent.trim().split(':').reverse()
+    const seconds = Number(time[0]) 
       + (time.length > 1 ? Number(time[1]) * 60 : 0)
       + (time.length > 2 ? Number(time[2]) * 3600 : 0)
     if (seconds <= minLengthSeconds) {
