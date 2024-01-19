@@ -83,13 +83,18 @@ function waitForElement(selector, observeElement = document.body, {childList = t
   return new Promise(resolve => {
     let element = document.querySelector(selector);
     if (element) {
-      return resolve(document.querySelector(selector));
+      return resolve(element);
     }
-    const elementObserver = new MutationObserver(() => {
-      element = document.querySelector(selector);
-      if (element) {
-        resolve(element);
-        elementObserver.disconnect();
+    const isAdvSelector = selector.indexOf('>') > -1;
+    const elementObserver = new MutationObserver((mutationList) => {
+      for (const mutation of mutationList) {
+        element = isAdvSelector ? mutation.target.querySelector(selector) : mutation.target;
+
+        if ((!isAdvSelector && element.matches(selector)) || (isAdvSelector && element)) { 
+          resolve(element);
+          elementObserver.disconnect();
+          break;
+        }
       }
     });
     elementObserver.observe(observeElement, { childList: childList, subtree: subtree });
@@ -100,15 +105,20 @@ function waitForElementTimeout(selector, observeElement = document.body, {childL
   return new Promise(resolve => {
     let element = document.querySelector(selector);
     if (element) {
-      return resolve(document.querySelector(selector));
+      return resolve(element);
     }
     let timer = null;
-    const elementObserver = new MutationObserver(() => {
-      element = document.querySelector(selector);
-      if (element) {
-        clearTimeout(timer);
-        resolve(element);
-        elementObserver.disconnect();
+    const isAdvSelector = selector.indexOf('>') > -1;
+    const elementObserver = new MutationObserver((mutationList) => {
+      for (const mutation of mutationList) {
+        element = isAdvSelector ? mutation.target.querySelector(selector) : mutation.target;
+
+        if ((!isAdvSelector && element.matches(selector)) || (isAdvSelector && element)) { 
+          clearTimeout(timer);
+          resolve(element);
+          elementObserver.disconnect();
+          break;
+        }
       }
     });
     elementObserver.observe(observeElement, {childList: childList, subtree: subtree});
