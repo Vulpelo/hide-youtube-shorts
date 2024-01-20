@@ -9,6 +9,7 @@
     "more_dropdown_text": {"message": "Więcej"},
     "setting_experimental_text": {"message": "Eksperymentalne"},
     "settings_hiding_on_text": {"message": "Ukrywanie na"},
+    "settings_performance_text": {"message": "Wydajność"},
 
     "cfg_hide_videos_home": {"message": "Strona główna"},
     "cfg_hide_videos_subscription": {"message": "Strona subskrypcji"},

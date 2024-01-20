@@ -9,6 +9,7 @@
     "more_dropdown_text": {"message": "More"},
     "setting_experimental_text": {"message": "Experimental"},
     "settings_hiding_on_text": {"message": "Hiding on"},
+    "settings_performance_text": {"message": "Performance"},
     
     "cfg_hide_videos_home": {"message": "Home page"},
     "cfg_hide_videos_subscription": {"message": "Subscriptions page"},
@@ -23,4 +24,5 @@
 
     "cfg_hide_short_videos": {"message": "Hide videos shorter than (s)"},
     "cfg_hide_short_videos_tooltip": {"message": "Hides videos that are shorter than specified time in seconds."}
+
 }
