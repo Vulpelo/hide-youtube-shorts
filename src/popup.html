@@ -82,6 +82,25 @@
 
             <div class="summary-content">
                 <fieldset id="settings_more" style="transform: scale(1); pointer-events: auto; opacity: 1;">
+                    <legend id="settings_performance_text">
+                        Performance
+                    </legend>
+
+                    <label class="setting">
+                        <label class="tooltip">
+                            <input type="checkbox" id="hidingShortsTimeoutTimeMsInputCheckbox">
+                            <span id="hide_shorts_timeout_tooltip_text" class="tooltiptext">Dont allow checking for shorts more often than specified time. Bigger timeout then  better performance but shorts might not get hidden immediatelly</span>
+                            <span id="hide_shorts_timeout_text" class="switchLabel">
+                                Timeout for rechecking videos (ms)
+                            </span>
+                            <input type="number" id="hidingShortsTimeoutTimeMsInput" min="0" max="10000" style="width: 50px">
+                        </label>
+                    </label>
+                </fieldset>
+            </div>
+
+            <div class="summary-content">
+                <fieldset id="settings_more" style="transform: scale(1); pointer-events: auto; opacity: 1;">
                     <legend id="settings_experimental_text">
                         Experimental
                     </legend>
@@ -93,17 +112,6 @@
                             <span id="subscription_shelf_close_button_text" class="switchLabel">
                                 Shelf close button
                             </span>
-                        </label>
-                    </label>
-                    <br>
-                    <label class="setting">
-                        <label class="tooltip">
-                            <input type="checkbox" id="hidingShortsTimeoutTimeMsInputCheckbox">
-                            <span id="hide_shorts_timeout_tooltip_text" class="tooltiptext">Dont allow checking for shorts more often than specified time. Bigger timeout then  better performance but shorts might not get hidden immediatelly</span>
-                            <span id="hide_shorts_timeout_text" class="switchLabel">
-                                Timeout for rechecking videos (ms)
-                            </span>
-                            <input type="number" id="hidingShortsTimeoutTimeMsInput" min="0" max="10000" style="width: 50px">
                         </label>
                     </label>
                     <br>

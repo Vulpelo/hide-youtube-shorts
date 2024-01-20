@@ -111,6 +111,7 @@ window.onload = function() {
     document.getElementById("hide_notifications_text").textContent=chrome.i18n.getMessage("cfg_hide_notifications");
     document.getElementById("settings_text").textContent=chrome.i18n.getMessage("setting_text");
     document.getElementById("settings_experimental_text").textContent=chrome.i18n.getMessage("setting_experimental_text");
+    document.getElementById("settings_performance_text").textContent=chrome.i18n.getMessage("settings_performance_text");
     document.getElementById("more_dropdown_text").textContent=chrome.i18n.getMessage("more_dropdown_text");
     document.getElementById("hide_shorts_timeout_tooltip_text").textContent=chrome.i18n.getMessage("cfg_hide_shorts_timeout_tooltip");
     document.getElementById("hide_shorts_timeout_text").textContent=chrome.i18n.getMessage("cfg_hide_shorts_timeout");
