@@ -24,5 +24,4 @@
 
     "cfg_hide_short_videos": {"message": "Hide videos shorter than (s)"},
     "cfg_hide_short_videos_tooltip": {"message": "Hides videos that are shorter than specified time in seconds."}
-
 }

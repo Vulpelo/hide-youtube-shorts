@@ -9,6 +9,7 @@
     "more_dropdown_text": {"message": "Більше"},
     "setting_experimental_text": {"message": "Експериментальний"},
     "settings_hiding_on_text": {"message": "Приховати на"},
+    "settings_performance_text": {"message": "Продуктивність"},
     
     "cfg_hide_videos_home": {"message": "Домашня сторінка"},
     "cfg_hide_videos_subscription": {"message": "Сторінка підписок"},
@@ -19,5 +20,8 @@
     "cfg_hide_shorts_timeout_tooltip": {"message": "Не дозволяйте перевіряти шорти частіше, ніж через певний час. Більший таймаут зменшує завантаження сторінки, але шорти можуть бути приховані не одразу."},
 
     "cfg_subscription_shelf_close_button": {"message": "Кнопка закриття розділу шортів"},
-    "cfg_subscription_shelf_close_button_tooltip": {"message": "Додає кнопку закриття до розділу шортів на сторінці підписки"}
+    "cfg_subscription_shelf_close_button_tooltip": {"message": "Додає кнопку закриття до розділу шортів на сторінці підписки"},
+
+    "cfg_hide_short_videos": {"message": "Сховати відео, коротше за (s)"},
+    "cfg_hide_short_videos_tooltip": {"message": "Приховує відео, які коротші за вказаний час у секундах."}
 }

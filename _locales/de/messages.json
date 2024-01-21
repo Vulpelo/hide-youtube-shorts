@@ -9,6 +9,7 @@
     "more_dropdown_text": {"message": "Mehr"},
     "setting_experimental_text": {"message": "Experimentell"},
     "settings_hiding_on_text": {"message": "Verstecken auf"},
+    "settings_performance_text": {"message": "Leistung"},
 
     "cfg_hide_videos_home": {"message": "Startseite"},
     "cfg_hide_videos_subscription": {"message": "Abonnements Seite"},
@@ -19,5 +20,8 @@
     "cfg_hide_shorts_timeout_tooltip": {"message": "Sucht im Rhythmus des angegebenen Zeitintervalls nach YouTube-Shorts Videos. Größere Zeitintervalle verringern die Ladezeit der Seite, aber YouTube-shorts Videos werden möglicherweise nicht sofort entfernt."},
     
     "cfg_subscription_shelf_close_button": {"message": "Shorts Rubrik Schließen Button"},
-    "cfg_subscription_shelf_close_button_tooltip": {"message": "Fügt auf der Abonnements Seite einen Button zum Schließen der Shorts Rubrik hinzu"}
+    "cfg_subscription_shelf_close_button_tooltip": {"message": "Fügt auf der Abonnements Seite einen Button zum Schließen der Shorts Rubrik hinzu"},
+
+    "cfg_hide_short_videos": {"message": "Videos ausblenden, die kürzer sind als (s)"},
+    "cfg_hide_short_videos_tooltip": {"message": "Versteckt Videos, die kürzer als die angegebene Zeit in Sekunden sind."}
 }

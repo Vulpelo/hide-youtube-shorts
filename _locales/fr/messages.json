@@ -9,6 +9,7 @@
     "more_dropdown_text": {"message": "Plus"},
     "setting_experimental_text": {"message": "Expérimental"},
     "settings_hiding_on_text": {"message": "Masquer depuis"},
+    "settings_performance_text": {"message": "Performance"},
 
     "cfg_hide_videos_home": {"message": "Page d'accueil"},
     "cfg_hide_videos_subscription": {"message": "Page des abonnements"},
@@ -19,5 +20,8 @@
     "cfg_hide_shorts_timeout_tooltip": {"message": "Ne permettez pas de vérifier les Shorts plus souvent qu'un délai spécifié. Un délai plus long réduit le temps de chargement de la page, mais les Shorts pourraient ne pas être masqués immédiatement."},
 
     "cfg_subscription_shelf_close_button": {"message": "Bouton de fermeture de section"},
-    "cfg_subscription_shelf_close_button_tooltip": {"message": "Ajoute un bouton pour fermer la section avec les Shorts sur la page des abonnements"}
+    "cfg_subscription_shelf_close_button_tooltip": {"message": "Ajoute un bouton pour fermer la section avec les Shorts sur la page des abonnements"},
+
+    "cfg_hide_short_videos": {"message": "Masquer les vidéos plus courtes que (s)"},
+    "cfg_hide_short_videos_tooltip": {"message": "Masque les vidéos dont la durée est plus courte que la durée spécifiée en secondes."}
 }
