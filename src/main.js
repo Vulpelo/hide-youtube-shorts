@@ -85,16 +85,11 @@ function waitForElement(selector, observeElement = document.body, {childList = t
     if (element) {
       return resolve(element);
     }
-    const isAdvSelector = selector.indexOf('>') > -1;
-    const elementObserver = new MutationObserver((mutationList) => {
-      for (const mutation of mutationList) {
-        element = isAdvSelector ? mutation.target.querySelector(selector) : mutation.target;
-
-        if ((!isAdvSelector && element.matches(selector)) || (isAdvSelector && element)) { 
-          resolve(element);
-          elementObserver.disconnect();
-          break;
-        }
+    const elementObserver = new MutationObserver(() => {
+      element = document.querySelector(selector);
+      if (element) {
+        resolve(element);
+        elementObserver.disconnect();
       }
     });
     elementObserver.observe(observeElement, { childList: childList, subtree: subtree });
@@ -108,17 +103,12 @@ function waitForElementTimeout(selector, observeElement = document.body, {childL
       return resolve(element);
     }
     let timer = null;
-    const isAdvSelector = selector.indexOf('>') > -1;
-    const elementObserver = new MutationObserver((mutationList) => {
-      for (const mutation of mutationList) {
-        element = isAdvSelector ? mutation.target.querySelector(selector) : mutation.target;
-
-        if ((!isAdvSelector && element.matches(selector)) || (isAdvSelector && element)) { 
-          clearTimeout(timer);
-          resolve(element);
-          elementObserver.disconnect();
-          break;
-        }
+    const elementObserver = new MutationObserver(() => {
+      element = document.querySelector(selector);
+      if (element) {
+        clearTimeout(timer);
+        resolve(element);
+        elementObserver.disconnect();
       }
     });
     elementObserver.observe(observeElement, {childList: childList, subtree: subtree});
