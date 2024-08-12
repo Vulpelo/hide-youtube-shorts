@@ -103,6 +103,22 @@ window.onload = function() {
             chrome.storage.local.set({hidingShortVideosActive: e.target.checked});
         })
         
+
+        // hiding live videos
+        let hidingLiveVideosInputCheckbox = document.getElementById("hidingLiveVideosInputCheckbox");
+        if (value.hidingLiveVideosActive != undefined)
+            hidingLiveVideosInputCheckbox.checked = value.hidingLiveVideosActive;
+        hidingLiveVideosInputCheckbox.addEventListener("input", function(e) {
+            chrome.storage.local.set({hidingLiveVideosActive: e.target.checked});
+        })
+
+        // hiding upcoming videos
+        let hidingUpcomingVideosInputCheckbox = document.getElementById("hidingUpcomingVideosInputCheckbox");
+        if (value.hidingUpcomingVideosActive != undefined)
+            hidingUpcomingVideosInputCheckbox.checked = value.hidingUpcomingVideosActive;
+        hidingUpcomingVideosInputCheckbox.addEventListener("input", function(e) {
+            chrome.storage.local.set({hidingUpcomingVideosActive: e.target.checked});
+        })
     });
 
     // Set language
@@ -126,6 +142,9 @@ window.onload = function() {
 
     document.getElementById("hide_short_videos_tooltip_text").textContent=chrome.i18n.getMessage("cfg_hide_short_videos_tooltip");
     document.getElementById("hide_short_videos_text").textContent=chrome.i18n.getMessage("cfg_hide_short_videos");
+
+    document.getElementById("hide_live_videos_text").textContent=chrome.i18n.getMessage("cfg_hide_live_videos");
+    document.getElementById("hide_upcoming_videos_text").textContent=chrome.i18n.getMessage("cfg_hide_upcoming_videos");
     
     // version
     let manifestData = chrome.runtime.getManifest();

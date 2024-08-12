@@ -23,5 +23,8 @@
     "cfg_subscription_shelf_close_button_tooltip": {"message": "Fügt auf der Abonnements Seite einen Button zum Schließen der Shorts Rubrik hinzu"},
 
     "cfg_hide_short_videos": {"message": "Videos ausblenden, die kürzer sind als (s)"},
-    "cfg_hide_short_videos_tooltip": {"message": "Versteckt Videos, die kürzer als die angegebene Zeit in Sekunden sind."}
+    "cfg_hide_short_videos_tooltip": {"message": "Versteckt Videos, die kürzer als die angegebene Zeit in Sekunden sind."},
+
+    "cfg_hide_live_videos": {"message": "'Live-Videos' ausblenden"},
+    "cfg_hide_upcoming_videos": {"message": "'Kommende' Videos ausblenden"}
 }
