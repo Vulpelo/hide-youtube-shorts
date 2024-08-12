@@ -37,6 +37,8 @@ const REST_DESKTOP_SHORTS_CONTAINERS_TAG = [
   ["ytd-reel-shelf-renderer"],
   // shelf containing multiple shorts on Home page 
   ["ytd-rich-shelf-renderer"],
+  // container of videos on home/subscription page (so far only for shorts)
+  ["ytd-rich-grid-group"],
 
   // videos on Home page and subscription page
   ["ytd-rich-item-renderer"],
@@ -357,7 +359,7 @@ function hideShorts(hide = true) {
     elements.forEach(element => {
       
       const elementTagName = element.tagName.toLowerCase();
-      
+
       // subscription page in list mode
       if (location.pathname.match(hidingShortsOnPathNames.subscriptionPage.reg)  
         && elementTagName.match(dHideVideoRendererSubscriptionPage.elementTagName)) {
@@ -380,7 +382,7 @@ function hideShorts(hide = true) {
       else if ((elementTagName.match(SHELF_TAG_REGEX)
         && element.querySelector(SHELF_ITEM_TAG_SELECTOR) != null)
         || element.querySelector('[href^="/shorts/"]') != null) {
-        hideElement(hide, element, () => {dOperationsAfterHidingElement.doOperations(element)});
+          hideElement(hide, element, () => {dOperationsAfterHidingElement.doOperations(element)});
       }
       // Hide videos that are too short
       else {
