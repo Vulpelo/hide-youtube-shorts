@@ -23,5 +23,8 @@
     "cfg_subscription_shelf_close_button_tooltip": {"message": "Додає кнопку закриття до розділу шортів на сторінці підписки"},
 
     "cfg_hide_short_videos": {"message": "Сховати відео, коротше за (s)"},
-    "cfg_hide_short_videos_tooltip": {"message": "Приховує відео, які коротші за вказаний час у секундах."}
+    "cfg_hide_short_videos_tooltip": {"message": "Приховує відео, які коротші за вказаний час у секундах."},
+
+    "cfg_hide_live_videos": {"message": "Приховати 'живі' відео"},
+    "cfg_hide_upcoming_videos": {"message": "Приховати 'майбутні' відео"}
 }

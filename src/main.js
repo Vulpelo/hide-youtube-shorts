@@ -1,6 +1,6 @@
 let observer = null;
 let hideYTShortsVideos = true;
-let hideYTShortsTab = false;
+let hideYTShortsTab = true;
 let isHidingShortsTimeoutActive = false;
 
 let notificationsObserver = null;
@@ -80,6 +80,10 @@ let combinedSelectorsToQuery;
 let hidingShortVideosActive = false;
 let hidingShortVideosTimeSeconds = 20;
 
+// Hide other video types
+const LIVE = "LIVE"
+const UPCOMING = "UPCOMING"
+let hidingVideoTypes = []
 
 function waitForElement(selector, observeElement = document.body, {childList = true, subtree = true} = {}) {
   return new Promise(resolve => {
@@ -152,6 +156,17 @@ let hideShortsCallbackInner = () => {};
 function hideShortsCallback() { hideShortsCallbackInner(); };
 
 function loadVariables(value) {
+  hidingVideoTypes = []
+  if (value.hidingLiveVideosActive == undefined)
+    chrome.storage.local.set({ hidingLiveVideosActive: false });
+  if (value.hidingLiveVideosActive === true)
+    hidingVideoTypes.push(LIVE)
+
+  if (value.hidingUpcomingVideosActive == undefined)
+    chrome.storage.local.set({ hidingUpcomingVideosActive: false });
+  if (value.hidingUpcomingVideosActive === true)
+    hidingVideoTypes.push(UPCOMING)
+
   if (value.hideYTShortsVideos == undefined)
     chrome.storage.local.set({ hideYTShortsVideos: hideYTShortsVideos });
   else
@@ -384,13 +399,23 @@ function hideShorts(hide = true) {
         || element.querySelector('[href^="/shorts/"]') != null) {
           hideElement(hide, element, () => {dOperationsAfterHidingElement.doOperations(element)});
       }
-      // Hide videos that are too short
-      else {
-        if (hidingShortVideosActive && hide) {
+      else if (hide) {
+        // Hide videos that are too short
+        if (hidingShortVideosActive) {
           hideVideoIfBelowLength(element, hidingShortVideosTimeSeconds)
         }
+        // Hide videos of type
+        if (hidingVideoTypes.length > 0)
+          hideVideoIfOfType(hidingVideoTypes, element)
       }
     });
+  }
+}
+
+function hideVideoIfOfType(types, element) {
+  const timeOverlay = element.querySelector('ytd-thumbnail-overlay-time-status-renderer')
+  if (timeOverlay !== null && timeOverlay.hasAttribute("overlay-style") && types.includes(timeOverlay.getAttribute("overlay-style"))) {
+    hideElement(true, element, () => {dOperationsAfterHidingElement.doOperations(element)});
   }
 }
 
@@ -401,7 +426,7 @@ function hideVideoIfBelowLength(element, minLengthSeconds) {
     const seconds = Number(time[0]) 
       + (time.length > 1 ? Number(time[1]) * 60 : 0)
       + (time.length > 2 ? Number(time[2]) * 3600 : 0)
-    if (seconds <= minLengthSeconds) {
+    if (seconds != NaN && seconds <= minLengthSeconds) {
       hideElement(true, element, () => {dOperationsAfterHidingElement.doOperations(element)});
     }
   }
