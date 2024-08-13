@@ -14,6 +14,11 @@ let timeoutId = -1;
 let hidingShortsTimeoutActive = false;
 let hidingShortsTimeoutTimeMs = 500;
 
+let hidingShortVideosActive = false;
+let hidingShortVideosTimeSeconds = 20;
+
+const isMobile = location.hostname == "m.youtube.com";
+
 const hidingShortsOnPathNames = {
   homePage: { active: true, reg: /^\/$/, nodeSelector: "ytd-browse[page-subtype='home']", node: null},
   subscriptionPage: { active: true, reg: /^\/feed\/subscriptions$/, nodeSelector: "ytd-browse[page-subtype='subscriptions']", node: null},
@@ -24,15 +29,21 @@ const hidingShortsOnPathNames = {
   channelPageNotHome: { active: false, reg: /@[^\/]*\/((?!featured).)*$/, nodeSelector: "ytd-browse[page-subtype='channels']", node: null}
 };
 
-/* ON DESKTOP */
-const dOperationsAfterHidingElement = new OperationsAfterHidingElement();
-// hiding videos on Search page, videos in list mode on subscription page 
-const dHideVideoRenderer = new HidingShortsWithContainer("ytd-video-renderer", "ytd-shelf-renderer");
-// hiding videos on subscription page in list mode
-const dHideVideoRendererSubscriptionPage = new HidingShortsWithContainer("ytd-video-renderer", "ytd-item-section-renderer");
 
 // to hide videos/containers on Home page, Subscription page, Search page, Video page
-const REST_DESKTOP_SHORTS_CONTAINERS_TAG = [
+const REST_SHORTS_CONTAINERS_TAG = isMobile ? [
+  // shelf containing multiple shorts on Search page
+  ["ytm-reel-shelf-renderer"],
+
+  // videos on Home page
+  ["ytm-rich-item-renderer"],
+  // videos on Subscription page
+  ["div[tab-identifier='FEsubscriptions']>ytm-section-list-renderer>lazy-list>ytm-item-section-renderer"],
+  // videos in grid mode
+  ["ytm-grid-video-renderer"],
+  // videos on Search page and Video page
+  ["ytm-video-with-context-renderer"],
+].join(",") : [
   // shelf containing multiple shorts on Search page
   ["ytd-reel-shelf-renderer"],
   // shelf containing multiple shorts on Home page 
@@ -47,38 +58,30 @@ const REST_DESKTOP_SHORTS_CONTAINERS_TAG = [
   // videos on Video page
   ["ytd-compact-video-renderer"],
 ].join(",")
-const DESKTOP_SHORTS_TAB_SELECTOR = "ytd-guide-entry-renderer>a:not([href])"
+
+/* ON DESKTOP */
+const dOperationsAfterHidingElement = new OperationsAfterHidingElement();
+// hiding videos on Search page, videos in list mode on subscription page 
+const dHidingVideoRenderer = new HidingShortsWithContainer("ytd-video-renderer", "ytd-shelf-renderer");
+// hiding videos on subscription page in list mode
+const dHideVideoRendererSubscriptionPage = new HidingShortsWithContainer("ytd-video-renderer", "ytd-item-section-renderer");
 const DESKTOP_SHORTS_MINI_TAB_SELECTOR = "ytd-mini-guide-entry-renderer>a:not([href])"
 const DESKTOP_GUIDE_WRAPPER_SELECTOR = "div[id='guide-wrapper']";
 const DESKTOP_GUIDE_WRAPPER_MINI_SELECTOR = "ytd-mini-guide-renderer";
-
 const DESKTOP_NOTIFICATION_RENDERER = "ytd-notification-renderer";
 
-/* ON MOBILE */
-const isMobile = location.hostname == "m.youtube.com";
-const MOBILE_SHORTS_CONTAINERS_TAG = [
-  // shelf containing multiple shorts on Search page
-  ["ytm-reel-shelf-renderer"],
+const SHORTS_TAB_SELECTOR = isMobile ? "ytm-pivot-bar-item-renderer>div[class='pivot-bar-item-tab pivot-shorts']" : "ytd-guide-entry-renderer>a:not([href])"
 
-  // videos on Home page
-  ["ytm-rich-item-renderer"],
-  // videos on Subscription page
-  ["div[tab-identifier='FEsubscriptions']>ytm-section-list-renderer>lazy-list>ytm-item-section-renderer"],
-  // videos on Search page and Video page
-  ["ytm-video-with-context-renderer"],
-].join(",")
-const MOBILE_SHORTS_TAB_SELECTOR = "ytm-pivot-bar-item-renderer>div[class='pivot-bar-item-tab pivot-shorts']"
-
-/* on desktop and mobile */
+/* dedicated shelfs for shorts */
 const SHELF_TAG_REGEX = /yt[dm]-reel-shelf-renderer/gm
-const SHELF_ITEM_TAG_SELECTOR = "ytd-reel-item-renderer,ytm-reel-item-renderer";
+const SHELF_ITEM_TAG_SELECTOR = isMobile ? "ytm-reel-item-renderer" : "ytd-reel-item-renderer";
+
+// Time overlay status on thumbnail
+const TIME_OVERLAY_STATUS_TAG = isMobile ? 'ytm-thumbnail-overlay-time-status-renderer' : 'ytd-thumbnail-overlay-time-status-renderer';
+const TIME_OVERLAY_STATUS_STYLE_ATTRIBUTE = isMobile ? "data-style" : "overlay-style";
 
 /* Selectors used for searching shorts elements */
 let combinedSelectorsToQuery;
-
-// Hiding videos below certain length
-let hidingShortVideosActive = false;
-let hidingShortVideosTimeSeconds = 20;
 
 // Hide other video types
 const LIVE = "LIVE"
@@ -235,9 +238,8 @@ function setup() {
   chrome.storage.local.get(null, function (value) {
     loadVariables(value);
 
+    combinedSelectorsToQuery = REST_SHORTS_CONTAINERS_TAG;
     if (isMobile) {
-      combinedSelectorsToQuery = MOBILE_SHORTS_CONTAINERS_TAG;
-
       hideShortsCallbackInner =
         hidingShortsTimeoutActive ?
           () => {
@@ -260,8 +262,7 @@ function setup() {
         {childList: true, subtree: true});
     }
     else {
-      combinedSelectorsToQuery = REST_DESKTOP_SHORTS_CONTAINERS_TAG + "," + dHideVideoRenderer.elementTagName;
-
+      combinedSelectorsToQuery += "," + dHidingVideoRenderer.elementTagName;
       waitForElementTimeout("#page-manager", document.body, {timeout_ms: 5000}).then((wrapperElement1) => {
         pageManagerNode = wrapperElement1;
         if (subscriptionShelfCloseButton) {
@@ -384,12 +385,12 @@ function hideShorts(hide = true) {
             dHideVideoRendererSubscriptionPage.showShort(element);
       }
       // other pages with containers on search page
-      else if (elementTagName.match(dHideVideoRenderer.elementTagName)) {
+      else if (elementTagName.match(dHidingVideoRenderer.elementTagName)) {
         if (hide) {
-          dHideVideoRenderer.hideShort(element);
+          dHidingVideoRenderer.hideShort(element);
         }
         else {
-          dHideVideoRenderer.showShort(element);
+          dHidingVideoRenderer.showShort(element);
         }
       }
       // hide whole shelf if just contains "ytd-reel-item-renderer" tag. For now seems to be only used for yt-shorts videos
@@ -413,8 +414,9 @@ function hideShorts(hide = true) {
 }
 
 function hideVideoIfOfType(types, element) {
-  const timeOverlay = element.querySelector('ytd-thumbnail-overlay-time-status-renderer')
-  if (timeOverlay !== null && timeOverlay.hasAttribute("overlay-style") && types.includes(timeOverlay.getAttribute("overlay-style"))) {
+  const timeOverlay = element.querySelector(TIME_OVERLAY_STATUS_TAG)
+  console.log(timeOverlay)
+  if (timeOverlay !== null && timeOverlay.hasAttribute(TIME_OVERLAY_STATUS_STYLE_ATTRIBUTE) && types.includes(timeOverlay.getAttribute(TIME_OVERLAY_STATUS_STYLE_ATTRIBUTE))) {
     hideElement(true, element, () => {dOperationsAfterHidingElement.doOperations(element)});
   }
 }
@@ -434,13 +436,13 @@ function hideVideoIfBelowLength(element, minLengthSeconds) {
 
 function hideShortsTab(hide) {
   if (isMobile) {
-    let element = document.querySelector(MOBILE_SHORTS_TAB_SELECTOR);
+    let element = document.querySelector(SHORTS_TAB_SELECTOR);
     if (element)
       hideElement(hide, element.parentElement)
   }
   else {
     waitForElement(DESKTOP_GUIDE_WRAPPER_SELECTOR, document.body).then((wrapperElement) => {
-      waitForElement(DESKTOP_SHORTS_TAB_SELECTOR, wrapperElement).then((element) => {
+      waitForElement(SHORTS_TAB_SELECTOR, wrapperElement).then((element) => {
         if (element != null)
           hideElement(hide, element)
       });
