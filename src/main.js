@@ -20,15 +20,14 @@ let hidingShortVideosTimeSeconds = 20;
 const isMobile = location.hostname == "m.youtube.com";
 
 const hidingShortsOnPathNames = {
-  homePage: { active: true, reg: /^\/$/, nodeSelector: "ytd-browse[page-subtype='home']", node: null},
-  subscriptionPage: { active: true, reg: /^\/feed\/subscriptions$/, nodeSelector: "ytd-browse[page-subtype='subscriptions']", node: null},
-  searchPage: { active: true, reg: /^\/results$/, nodeSelector: "ytd-search", node: null},
-  channelPage: { active: true, reg: /@[^\/]*(\/featured)?$/, nodeSelector: "ytd-browse[page-subtype='channels']", node: null},
-  channelShortTabPage: { active: false, reg: /^\/@[^\/]*\/shorts$/, nodeSelector: "", node: null},
+  homePage: { active: true, reg: /^\/$/, nodeSelector: "ytd-browse[page-subtype='home']", node: null },
+  subscriptionPage: { active: true, reg: /^\/feed\/subscriptions$/, nodeSelector: "ytd-browse[page-subtype='subscriptions']", node: null },
+  searchPage: { active: true, reg: /^\/results$/, nodeSelector: "ytd-search", node: null },
+  channelPage: { active: true, reg: /@[^\/]*(\/featured)?$/, nodeSelector: "ytd-browse[page-subtype='channels']", node: null },
+  channelShortTabPage: { active: false, reg: /^\/@[^\/]*\/shorts$/, nodeSelector: "", node: null },
   // for hiding short videos on whole channel page
-  channelPageNotHome: { active: false, reg: /@[^\/]*\/((?!featured).)*$/, nodeSelector: "ytd-browse[page-subtype='channels']", node: null}
+  channelPageNotHome: { active: false, reg: /@[^\/]*\/((?!featured).)*$/, nodeSelector: "ytd-browse[page-subtype='channels']", node: null }
 };
-
 
 // to hide videos/containers on Home page, Subscription page, Search page, Video page
 const REST_SHORTS_CONTAINERS_TAG = isMobile ? [
@@ -88,7 +87,8 @@ const LIVE = "LIVE"
 const UPCOMING = "UPCOMING"
 let hidingVideoTypes = []
 
-function waitForElement(selector, observeElement = document.body, {childList = true, subtree = true} = {}) {
+
+function waitForElement(selector, observeElement = document.body, { childList = true, subtree = true } = {}) {
   return new Promise(resolve => {
     let element = document.querySelector(selector);
     if (element) {
@@ -105,7 +105,7 @@ function waitForElement(selector, observeElement = document.body, {childList = t
   });
 }
 
-function waitForElementTimeout(selector, observeElement = document.body, {childList = true, subtree = true, timeout_ms = 150} = {}) {
+function waitForElementTimeout(selector, observeElement = document.body, { childList = true, subtree = true, timeout_ms = 150 } = {}) {
   return new Promise(resolve => {
     let element = document.querySelector(selector);
     if (element) {
@@ -120,7 +120,7 @@ function waitForElementTimeout(selector, observeElement = document.body, {childL
         elementObserver.disconnect();
       }
     });
-    elementObserver.observe(observeElement, {childList: childList, subtree: subtree});
+    elementObserver.observe(observeElement, { childList: childList, subtree: subtree });
     if (timeout_ms > 0)
       timer = setTimeout(() => {
         resolve(null);
@@ -129,7 +129,7 @@ function waitForElementTimeout(selector, observeElement = document.body, {childL
   });
 }
 
-function hideElement(hide, element, onHideCallback = () => {}) {
+function hideElement(hide, element, onHideCallback = () => { }) {
   if (hide) {
     if (!element.hasAttribute("hidden")) {
       element.setAttribute("hidden", true);
@@ -155,7 +155,7 @@ function clearShortsTimeout() {
   isHidingShortsTimeoutActive = false;
 }
 
-let hideShortsCallbackInner = () => {};
+let hideShortsCallbackInner = () => { };
 function hideShortsCallback() { hideShortsCallbackInner(); };
 
 function loadVariables(value) {
@@ -259,39 +259,39 @@ function setup() {
         hideYTShortsTab || hideYTShortsVideos,
         hideShortsCallback,
         observer,
-        {childList: true, subtree: true});
+        { childList: true, subtree: true });
     }
     else {
       combinedSelectorsToQuery += "," + dHidingVideoRenderer.elementTagName;
-      waitForElementTimeout("#page-manager", document.body, {timeout_ms: 5000}).then((wrapperElement1) => {
+      waitForElementTimeout("#page-manager", document.body, { timeout_ms: 5000 }).then((wrapperElement1) => {
         pageManagerNode = wrapperElement1;
         if (subscriptionShelfCloseButton) {
           /* MutationObserver for Subscription page when got opened/closed */
-          waitForElement("ytd-browse[page-subtype='subscriptions']", pageManagerNode, {childList: true, subtree: false}).then((wrapperElement2) => {
+          waitForElement("ytd-browse[page-subtype='subscriptions']", pageManagerNode, { childList: true, subtree: false }).then((wrapperElement2) => {
             createOpenCloseSubscriptionPageObserver(wrapperElement2);
           });
         }
       });
 
-      
+
       notificationsObserver = manageObserver("ytd-popup-container",
         hideYTShortsNotifications,
         (mutationList, observer) => {
           for (const mutation of mutationList) {
-            if (mutation.type === "childList" && mutation.target.tagName.toLowerCase() == DESKTOP_NOTIFICATION_RENDERER) { 
+            if (mutation.type === "childList" && mutation.target.tagName.toLowerCase() == DESKTOP_NOTIFICATION_RENDERER) {
               if (mutation.target.querySelector('[href^="/shorts/"]') != null)
                 hideElement(true, mutation.target)
             }
           }
         },
         notificationsObserver,
-        {childList: true, subtree: true}
+        { childList: true, subtree: true }
       )
 
       const popupContainer = document.querySelector("ytd-popup-container")
       if (popupContainer != null) {
         const nRenderers = popupContainer.querySelectorAll(DESKTOP_NOTIFICATION_RENDERER)
-        nRenderers.forEach((v)=>{
+        nRenderers.forEach((v) => {
           if (v.querySelector('[href^="/shorts/"]') != null)
             hideElement(hideYTShortsNotifications, v)
         })
@@ -316,18 +316,18 @@ function setup() {
         hideYTShortsVideos,
         hideShortsCallback,
         observer,
-        {childList: true, subtree: true});
+        { childList: true, subtree: true });
     }
   });
 }
 
 function createOpenCloseSubscriptionPageObserver(node) {
   addingCloseButtonForShelfOnSubscriptionsPage(node);
-  subscriptionPageOpenObserver = manageObserver("ytd-browse[page-subtype='subscriptions']", 
-    true, 
-    () => {addingCloseButtonForShelfOnSubscriptionsPage(node);}, 
-    subscriptionPageOpenObserver, 
-    {attributes: true});
+  subscriptionPageOpenObserver = manageObserver("ytd-browse[page-subtype='subscriptions']",
+    true,
+    () => { addingCloseButtonForShelfOnSubscriptionsPage(node); },
+    subscriptionPageOpenObserver,
+    { attributes: true });
 }
 
 function isLocationPathNameToIgnore() {
@@ -344,7 +344,7 @@ function childrenInPageManagerWithoutKnownOnes() {
   let finalNodeList = Array.from(pageManagerNode.children);
 
   for (let key in hidingShortsOnPathNames) {
-    if (hidingShortsOnPathNames[key].node == null) 
+    if (hidingShortsOnPathNames[key].node == null)
       continue;
     let index = finalNodeList.indexOf(hidingShortsOnPathNames[key].node)
     if (index >= 0)
@@ -358,7 +358,7 @@ function locationPathNameNodes() {
   for (let key in hidingShortsOnPathNames) {
     if (hidingShortsOnPathNames[key].node == null && hidingShortsOnPathNames[key].nodeSelector != "")
       hidingShortsOnPathNames[key].node = document.querySelector(hidingShortsOnPathNames[key].nodeSelector);
-    if (hidingShortsOnPathNames[key].node != null && pathName.match(hidingShortsOnPathNames[key].reg)) 
+    if (hidingShortsOnPathNames[key].node != null && pathName.match(hidingShortsOnPathNames[key].reg))
       return [hidingShortsOnPathNames[key].node];
   }
   return childrenInPageManagerWithoutKnownOnes();
@@ -373,16 +373,16 @@ function hideShorts(hide = true) {
   for (let i = 0; i < nodes.length; i++) {
     let elements = nodes[i].querySelectorAll(combinedSelectorsToQuery);
     elements.forEach(element => {
-      
+
       const elementTagName = element.tagName.toLowerCase();
 
       // subscription page in list mode
-      if (location.pathname.match(hidingShortsOnPathNames.subscriptionPage.reg)  
+      if (location.pathname.match(hidingShortsOnPathNames.subscriptionPage.reg)
         && elementTagName.match(dHideVideoRendererSubscriptionPage.elementTagName)) {
-          if (hide)
-            dHideVideoRendererSubscriptionPage.hideShort(element);
-          else
-            dHideVideoRendererSubscriptionPage.showShort(element);
+        if (hide)
+          dHideVideoRendererSubscriptionPage.hideShort(element);
+        else
+          dHideVideoRendererSubscriptionPage.showShort(element);
       }
       // other pages with containers on search page
       else if (elementTagName.match(dHidingVideoRenderer.elementTagName)) {
@@ -398,7 +398,7 @@ function hideShorts(hide = true) {
       else if ((elementTagName.match(SHELF_TAG_REGEX)
         && element.querySelector(SHELF_ITEM_TAG_SELECTOR) != null)
         || element.querySelector('[href^="/shorts/"]') != null) {
-          hideElement(hide, element, () => {dOperationsAfterHidingElement.doOperations(element)});
+        hideElement(hide, element, () => { dOperationsAfterHidingElement.doOperations(element) });
       }
       else if (hide) {
         // Hide videos that are too short
@@ -415,9 +415,8 @@ function hideShorts(hide = true) {
 
 function hideVideoIfOfType(types, element) {
   const timeOverlay = element.querySelector(TIME_OVERLAY_STATUS_TAG)
-  console.log(timeOverlay)
   if (timeOverlay !== null && timeOverlay.hasAttribute(TIME_OVERLAY_STATUS_STYLE_ATTRIBUTE) && types.includes(timeOverlay.getAttribute(TIME_OVERLAY_STATUS_STYLE_ATTRIBUTE))) {
-    hideElement(true, element, () => {dOperationsAfterHidingElement.doOperations(element)});
+    hideElement(true, element, () => { dOperationsAfterHidingElement.doOperations(element) });
   }
 }
 
@@ -425,11 +424,11 @@ function hideVideoIfBelowLength(element, minLengthSeconds) {
   const timeStatus = element.querySelector('#time-status>#text')
   if (timeStatus != null) {
     const time = timeStatus.textContent.trim().split(':').reverse()
-    const seconds = Number(time[0]) 
+    const seconds = Number(time[0])
       + (time.length > 1 ? Number(time[1]) * 60 : 0)
       + (time.length > 2 ? Number(time[2]) * 3600 : 0)
     if (seconds != NaN && seconds <= minLengthSeconds) {
-      hideElement(true, element, () => {dOperationsAfterHidingElement.doOperations(element)});
+      hideElement(true, element, () => { dOperationsAfterHidingElement.doOperations(element) });
     }
   }
 }
@@ -459,17 +458,17 @@ function hideShortsTab(hide) {
 // the button will temporarly remove shelf from subscription page till next page reload
 function addingCloseButtonForShelfOnSubscriptionsPage(subscriptionNode) {
   // find one eather on grid mode or list mode
-  waitForElementTimeout("ytd-rich-shelf-renderer, ytd-reel-shelf-renderer", subscriptionNode, {timeout_ms: 5000}).then((element) => {
+  waitForElementTimeout("ytd-rich-shelf-renderer, ytd-reel-shelf-renderer", subscriptionNode, { timeout_ms: 5000 }).then((element) => {
     if (element != null && element.querySelector("div[id='shelfCloseButton']") == null)
       insertCloseShelfButton(element.querySelector("[id=flexible-item-buttons]"));
   });
 }
 
-function manageObserver(selector, active, callback, aObserver = null, {childList = false, subtree = false, attributes = false} = {}) {
+function manageObserver(selector, active, callback, aObserver = null, { childList = false, subtree = false, attributes = false } = {}) {
   if (aObserver === null && active) {
     waitForElement(selector, document.body).then((node) => {
       aObserver = new MutationObserver(callback);
-      aObserver.observe(node, { childList: childList, subtree: subtree, attributes: attributes});
+      aObserver.observe(node, { childList: childList, subtree: subtree, attributes: attributes });
     });
   }
   else if (aObserver !== null && !active) {

@@ -87,9 +87,8 @@ class OperationsAfterHidingElement {
   }
 
   doOperations(element) {
-    if (element.parentElement.parentElement.tagName.toLowerCase().match(this.RICH_GRID_ROW) &&
-      element.hasAttribute("items-per-row")) 
-    {
+    if (element.parentElement.parentElement.tagName.toLowerCase().match(this.RICH_GRID_ROW)
+        && element.hasAttribute("items-per-row")) {
       const pElement = element.parentElement;
       const itemsPerRow = element.getAttribute("items-per-row");
       element.remove();
