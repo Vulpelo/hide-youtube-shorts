@@ -415,9 +415,18 @@ function hideShorts(hide = true) {
 
 function hideVideoIfOfType(types, element) {
   const timeOverlay = element.querySelector(TIME_OVERLAY_STATUS_TAG)
-  if (timeOverlay !== null && timeOverlay.hasAttribute(TIME_OVERLAY_STATUS_STYLE_ATTRIBUTE) && types.includes(timeOverlay.getAttribute(TIME_OVERLAY_STATUS_STYLE_ATTRIBUTE))) {
-    hideElement(true, element, () => { dOperationsAfterHidingElement.doOperations(element) });
+  if (timeOverlay === null) {
+    if (!types.includes(LIVE)) 
+      return;
+    // on home/subscription pages, live videos have different tree and tags
+    const liveBadgeOverlay = element.querySelector("ytd-badge-supported-renderer>div.badge-style-type-live-now-alternate")
+    if (liveBadgeOverlay === null)
+      return;
   }
+  else if (!timeOverlay.hasAttribute(TIME_OVERLAY_STATUS_STYLE_ATTRIBUTE) || !types.includes(timeOverlay.getAttribute(TIME_OVERLAY_STATUS_STYLE_ATTRIBUTE))) {
+    return;
+  }
+  hideElement(true, element, () => { dOperationsAfterHidingElement.doOperations(element) });
 }
 
 function hideVideoIfBelowLength(element, minLengthSeconds) {
