@@ -14,7 +14,7 @@
         </center>
 
         <!-- Options -->
-        <fieldset id="settings" style="transform: scale(1); pointer-events: auto; opacity: 1;">
+        <fieldset id="settings" style="pointer-events: auto; opacity: 1;">
             <legend id="settings_text">
                 Options
             </legend>
@@ -45,101 +45,103 @@
             <summary>
                 <span id="more_dropdown_text" class="summary-title">More</span>
             </summary>
-            <div class="summary-content">
-                <fieldset id="settings_more" style="transform: scale(1); pointer-events: auto; opacity: 1;">
-                    <legend id="settings_hiding_on_text">
-                        Hiding on
-                    </legend>
-                    <label class="setting">
-                        <input type="checkbox" id="hideYTShortsVideosOnHomePageInput">
-                        <span id="hide_videos_home_text" class="switchLabel">
-                            Home page
-                        </span>
-                    </label>
-                    <br>
-                    <label class="setting">
-                        <input type="checkbox" id="hideYTShortsVideosOnSubscriptionPageInput">
-                        <span id="hide_videos_subscription_text" class="switchLabel">
-                            Subscription page
-                        </span>
-                    </label>
-                    <br>
-                    <label class="setting">
-                        <input type="checkbox" id="hideYTShortsVideosOnSearchPageInput">
-                        <span id="hide_videos_search_text" class="switchLabel">
-                            Search page
-                        </span>
-                    </label>
-                    <br>
-                    <label class="setting">
-                        <input type="checkbox" id="hideYTShortsVideosOnChannelPageInput">
-                        <span id="hide_videos_channel_text" class="switchLabel">
-                            Channel page
-                        </span>
-                    </label>
-                </fieldset>
-            </div>
-
-            <div class="summary-content">
-                <fieldset id="settings_more" style="transform: scale(1); pointer-events: auto; opacity: 1;">
-                    <legend id="settings_performance_text">
-                        Performance
-                    </legend>
-
-                    <label class="setting">
-                        <label class="tooltip">
-                            <input type="checkbox" id="hidingShortsTimeoutTimeMsInputCheckbox">
-                            <span id="hide_shorts_timeout_tooltip_text" class="tooltiptext">Dont allow checking for shorts more often than specified time. Bigger timeout then  better performance but shorts might not get hidden immediatelly</span>
-                            <span id="hide_shorts_timeout_text" class="switchLabel">
-                                Timeout for rechecking videos (ms)
-                            </span>
-                            <input type="number" id="hidingShortsTimeoutTimeMsInput" min="0" max="10000" style="width: 50px">
-                        </label>
-                    </label>
-                </fieldset>
-            </div>
-
-            <div class="summary-content">
-                <fieldset id="settings_more" style="transform: scale(1); pointer-events: auto; opacity: 1;">
-                    <legend id="settings_experimental_text">
-                        Experimental
-                    </legend>
-
-                    <label class="setting">
-                        <label class="tooltip">
-                            <input type="checkbox" id="subscriptionShelfCloseButtonInputCheckbox">
-                            <span id="subscription_shelf_close_button_tooltip_text" class="tooltiptext">Adds a close button to the shelf with shorts on subscription page</span>
-                            <span id="subscription_shelf_close_button_text" class="switchLabel">
-                                Shelf close button
+            <div class="more-dropdown">
+                <div class="summary-content">
+                    <fieldset id="settings_more" style="pointer-events: auto; opacity: 1;">
+                        <legend id="settings_hiding_on_text">
+                            Hiding on
+                        </legend>
+                        <label class="setting">
+                            <input type="checkbox" id="hideYTShortsVideosOnHomePageInput">
+                            <span id="hide_videos_home_text" class="switchLabel">
+                                Home page
                             </span>
                         </label>
-                    </label>
-                    <br>
-                    <label class="setting">
-                        <label class="tooltip">
-                            <input type="checkbox" id="hidingShortVideosTimeSecondsInputCheckbox">
-                            <span id="hide_short_videos_tooltip_text" class="tooltiptext">Hides videos that are shorter than specified time in seconds</span>
-                            <span id="hide_short_videos_text" class="switchLabel">
-                                Hide videos shorter than (s)
+                        <br>
+                        <label class="setting">
+                            <input type="checkbox" id="hideYTShortsVideosOnSubscriptionPageInput">
+                            <span id="hide_videos_subscription_text" class="switchLabel">
+                                Subscription page
                             </span>
-                            <input type="number" id="hidingShortVideosTimeSecondsInput" min="0" max="1000" style="width: 50px">
                         </label>
-                    </label>
-                    <br>
-                    <label class="setting">
-                        <input type="checkbox" id="hidingLiveVideosInputCheckbox">
-                        <span id="hide_live_videos_text" class="switchLabel">
-                            Hide Live videos
-                        </span>
-                    </label>
-                    <br>
-                    <label class="setting">
-                        <input type="checkbox" id="hidingUpcomingVideosInputCheckbox">
-                        <span id="hide_upcoming_videos_text" class="switchLabel">
-                            Hide Upcoming videos
-                        </span>
-                    </label>
-                </fieldset>
+                        <br>
+                        <label class="setting">
+                            <input type="checkbox" id="hideYTShortsVideosOnSearchPageInput">
+                            <span id="hide_videos_search_text" class="switchLabel">
+                                Search page
+                            </span>
+                        </label>
+                        <br>
+                        <label class="setting">
+                            <input type="checkbox" id="hideYTShortsVideosOnChannelPageInput">
+                            <span id="hide_videos_channel_text" class="switchLabel">
+                                Channel page
+                            </span>
+                        </label>
+                    </fieldset>
+                </div>
+
+                <div class="summary-content">
+                    <fieldset id="settings_more" style="pointer-events: auto; opacity: 1;">
+                        <legend id="settings_performance_text">
+                            Performance
+                        </legend>
+
+                        <label class="setting">
+                            <label class="tooltip">
+                                <input type="checkbox" id="hidingShortsTimeoutTimeMsInputCheckbox">
+                                <span id="hide_shorts_timeout_tooltip_text" class="tooltiptext">Dont allow checking for shorts more often than specified time. Bigger timeout then  better performance but shorts might not get hidden immediatelly</span>
+                                <span id="hide_shorts_timeout_text" class="switchLabel">
+                                    Timeout for rechecking videos (ms)
+                                </span>
+                                <input type="number" id="hidingShortsTimeoutTimeMsInput" min="0" max="10000" style="width: 50px">
+                            </label>
+                        </label>
+                    </fieldset>
+                </div>
+
+                <div class="summary-content">
+                    <fieldset id="settings_more" style="pointer-events: auto; opacity: 1;">
+                        <legend id="settings_experimental_text">
+                            Experimental
+                        </legend>
+
+                        <label class="setting">
+                            <label class="tooltip">
+                                <input type="checkbox" id="subscriptionShelfCloseButtonInputCheckbox">
+                                <span id="subscription_shelf_close_button_tooltip_text" class="tooltiptext">Adds a close button to the shelf with shorts on subscription page</span>
+                                <span id="subscription_shelf_close_button_text" class="switchLabel">
+                                    Shelf close button
+                                </span>
+                            </label>
+                        </label>
+                        <br>
+                        <label class="setting">
+                            <label class="tooltip">
+                                <input type="checkbox" id="hidingShortVideosTimeSecondsInputCheckbox">
+                                <span id="hide_short_videos_tooltip_text" class="tooltiptext">Hides videos that are shorter than specified time in seconds</span>
+                                <span id="hide_short_videos_text" class="switchLabel">
+                                    Hide videos shorter than (s)
+                                </span>
+                                <input type="number" id="hidingShortVideosTimeSecondsInput" min="0" max="1000" style="width: 50px">
+                            </label>
+                        </label>
+                        <br>
+                        <label class="setting">
+                            <input type="checkbox" id="hidingLiveVideosInputCheckbox">
+                            <span id="hide_live_videos_text" class="switchLabel">
+                                Hide Live videos
+                            </span>
+                        </label>
+                        <br>
+                        <label class="setting">
+                            <input type="checkbox" id="hidingUpcomingVideosInputCheckbox">
+                            <span id="hide_upcoming_videos_text" class="switchLabel">
+                                Hide Upcoming videos
+                            </span>
+                        </label>
+                    </fieldset>
+                </div>
             </div>
         </details>
 

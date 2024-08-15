@@ -2,7 +2,6 @@ body {
 	max-width: 14rem;
 	min-width: 12rem;
     height: 100%;
-    overflow: hidden;
 }
 
 .bottom {
@@ -21,7 +20,6 @@ body {
 
 #hideYTShortsVideosInput:checked + span + .rearrangeVideosContent {
     display: inline;
-    height: 5%;
     width: 100%;
     opacity: 1;
     pointer-events: auto;
@@ -29,37 +27,38 @@ body {
     visibility: visible;
 }
 
-.tooltip {
-    position: relative;
-    display: inline;
-    border-bottom: 1px dotted black;
+.more-dropdown {
+    max-height: 210px; 
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .tooltip .tooltiptext {
     width: 120px;
-    bottom: 100%;
     left: 0; 
     visibility: hidden;
     background-color: black;
     color: #fff;
     text-align: center;
     border-radius: 6px;
-    padding: 5px 0;
+    padding: 5px 5px;
+}
 
-    /* Position the tooltip */
-    position: absolute;
-    z-index: 0;
+.tooltip {
+    border-bottom: 1px dotted black;
 }
 
 .tooltiptext {
     display: block;
+    position: absolute;
+    z-index: 9999;
+    bottom: 100%;
 }
 
-.tooltip:hover .tooltiptext {
-    visibility: visible;
+.tooltip:hover > .tooltiptext {
     transition-delay: 700ms;
+    visibility: visible;
 }
-
 
 details {
 	width: 100%;
@@ -89,4 +88,3 @@ summary:hover, .details {
 	top: 0.75em;
 	background: #ffffff;
 }
-
