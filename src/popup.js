@@ -150,3 +150,16 @@ window.onload = function() {
     let manifestData = chrome.runtime.getManifest();
     document.getElementById("ext-version").textContent = "v" + manifestData.version;
 };
+
+const tooltips = document.querySelectorAll(".tooltip");
+const details = document.querySelector("details");
+
+tooltips.forEach(tooltip => {
+    tooltip.onmouseover = function (e) {
+        const detailsY = details.getBoundingClientRect().bottom;
+        const tooltipRect = tooltip.getBoundingClientRect()
+
+        const tooltipText = tooltip.querySelector(".tooltiptext");
+        tooltipText.style.bottom = (detailsY - tooltipRect.bottom + tooltipRect.height) + 'px';
+    };
+});
