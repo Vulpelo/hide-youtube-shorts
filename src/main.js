@@ -58,6 +58,11 @@ const REST_SHORTS_CONTAINERS_TAG = isMobile ? [
   ["ytd-compact-video-renderer"],
 ].join(",")
 
+
+/* ON MOBILE */
+// videos in ytm-rich-section-renderer on Home page
+const mHidingVideoRenderer = new HidingShortsWithContainer("ytm-shorts-lockup-view-model", "ytm-rich-section-renderer");
+
 /* ON DESKTOP */
 const dOperationsAfterHidingElement = new OperationsAfterHidingElement();
 // hiding videos on Search page, videos in list mode on subscription page 
@@ -240,6 +245,7 @@ function setup() {
 
     combinedSelectorsToQuery = REST_SHORTS_CONTAINERS_TAG;
     if (isMobile) {
+      combinedSelectorsToQuery += "," + mHidingVideoRenderer.elementTagName
       hideShortsCallbackInner =
         hidingShortsTimeoutActive ?
           () => {
@@ -384,6 +390,17 @@ function hideShorts(hide = true) {
         else
           dHideVideoRendererSubscriptionPage.showShort(element);
       }
+      else if (isMobile === true 
+        && location.pathname.match(hidingShortsOnPathNames.homePage.reg) 
+        && elementTagName.match(mHidingVideoRenderer.elementTagName)) 
+      {
+        if (hide) {
+          mHidingVideoRenderer.hideShort(element);
+        }
+        else {
+          mHidingVideoRenderer.showShort(element);
+        }
+      }
       // other pages with containers on search page
       else if (elementTagName.match(dHidingVideoRenderer.elementTagName)) {
         if (hide) {
@@ -393,7 +410,7 @@ function hideShorts(hide = true) {
           dHidingVideoRenderer.showShort(element);
         }
       }
-      // hide whole shelf if just contains "ytd-reel-item-renderer" tag. For now seems to be only used for yt-shorts videos
+      // hide whole shelf if just contains "yt[dm]-reel-item-renderer" tag. For now seems to be only used for yt-shorts videos
       // and hide any video container that contains a ref link to shorts
       else if ((elementTagName.match(SHELF_TAG_REGEX)
         && element.querySelector(SHELF_ITEM_TAG_SELECTOR) != null)
