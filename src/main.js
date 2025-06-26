@@ -45,6 +45,8 @@ const REST_SHORTS_CONTAINERS_TAG = isMobile ? [
 ].join(",") : [
   // shelf containing multiple shorts on Search page
   ["ytd-reel-shelf-renderer"],
+  // extendable shelf with shorts on Search page 
+  ["grid-shelf-view-model"],
   // shelf containing multiple shorts on Home page 
   ["ytd-rich-shelf-renderer"],
   // container of videos on home/subscription page (so far only for shorts)
