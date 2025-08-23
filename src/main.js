@@ -66,7 +66,7 @@ const REST_SHORTS_CONTAINERS_TAG = isMobile ? [
 const mHidingVideoRenderer = new HidingShortsWithContainer("ytm-shorts-lockup-view-model", "ytm-rich-section-renderer");
 
 /* ON DESKTOP */
-const dOperationsAfterHidingElement = new RearrangeVideosInGrid();
+const dRearrangeVideosInGrid = new RearrangeVideosInGrid();
 // hiding videos on Search page, videos in list mode on subscription page 
 const dHidingVideoRenderer = new HidingShortsWithContainer("ytd-video-renderer", "ytd-shelf-renderer");
 // hiding videos on subscription page in list mode
@@ -377,11 +377,8 @@ function hideShorts(hide = true) {
 		return;
 
 	const nodes = locationPathNameNodes();
-	console.log(nodes.length)
-
 	for (let i = 0; i < nodes.length; i++) {
 		let elements = nodes[i].querySelectorAll(combinedSelectorsToQuery);
-		console.log(elements)
 		elements.forEach(element => {
 
 			const elementTagName = element.tagName.toLowerCase();
@@ -421,7 +418,7 @@ function hideShorts(hide = true) {
 			else if ((elementTagName.match(SHELF_TAG_REGEX)
 				&& element.querySelector(SHELF_ITEM_TAG_SELECTOR) != null)
 				|| element.querySelector('[href^="/shorts/"]') != null) {
-				hideElement(hide, element, () => { dOperationsAfterHidingElement.execute(element) });
+				hideElement(hide, element, () => { dRearrangeVideosInGrid.execute(element) });
 			}
 			else if (hide) {
 				hideNonShorts(element)
@@ -446,14 +443,14 @@ function hideVideoIfOfType(types, element) {
 		if (!types.includes(LIVE))
 			return;
 		// on home/subscription pages, live videos have different tree and tags
-		const liveBadgeOverlay = element.querySelector("ytd-badge-supported-renderer>div.badge-style-type-live-now-alternate")
+		const liveBadgeOverlay = element.querySelector("yt-thumbnail-badge-view-model>badge-shape.badge-shape-wiz--thumbnail-live,ytd-badge-supported-renderer>div.badge-style-type-live-now-alternate")
 		if (liveBadgeOverlay === null)
 			return;
 	}
 	else if (!timeOverlay.hasAttribute(TIME_OVERLAY_STATUS_STYLE_ATTRIBUTE) || !types.includes(timeOverlay.getAttribute(TIME_OVERLAY_STATUS_STYLE_ATTRIBUTE))) {
 		return;
 	}
-	hideElement(true, element, () => { dOperationsAfterHidingElement.execute(element) });
+	hideElement(true, element, () => { dRearrangeVideosInGrid.execute(element) });
 }
 
 function hideVideoIfBelowLength(element, minLengthSeconds) {
@@ -464,7 +461,7 @@ function hideVideoIfBelowLength(element, minLengthSeconds) {
 			+ (time.length > 1 ? Number(time[1]) * 60 : 0)
 			+ (time.length > 2 ? Number(time[2]) * 3600 : 0)
 		if (seconds != NaN && seconds <= minLengthSeconds) {
-			hideElement(true, element, () => { dOperationsAfterHidingElement.execute(element) });
+			hideElement(true, element, () => { dRearrangeVideosInGrid.execute(element) });
 		}
 	}
 }
