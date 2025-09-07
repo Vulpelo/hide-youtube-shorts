@@ -439,18 +439,26 @@ function hideNonShorts(element) {
 
 function hideVideoIfOfType(types, element) {
 	const timeOverlay = element.querySelector(TIME_OVERLAY_STATUS_TAG)
+    let toHide = false
 	if (timeOverlay === null) {
-		if (!types.includes(LIVE))
-			return;
-		// on home/subscription pages, live videos have different tree and tags
-		const liveBadgeOverlay = element.querySelector("yt-thumbnail-badge-view-model>badge-shape.badge-shape-wiz--thumbnail-live,ytd-badge-supported-renderer>div.badge-style-type-live-now-alternate")
-		if (liveBadgeOverlay === null)
-			return;
+		if (types.includes("UPCOMING")) {
+            const timeStatus = element.querySelector('.yt-badge-shape--thumbnail-default>div.badge-shape-wiz__text,.yt-badge-shape--thumbnail-default>div.yt-badge-shape__text')
+            if (timeStatus !== null && !timeStatus.textContent.trim().match(/^[0-9][0-9]?(:[0-9][0-9])*$/))
+                toHide = true
+        }
+
+        if (!toHide && types.includes("LIVE")) {
+            // on home/subscription pages, live videos have different tree and tags
+            const liveBadgeOverlay = element.querySelector("yt-thumbnail-badge-view-model>badge-shape.badge-shape-wiz--thumbnail-live,ytd-badge-supported-renderer>div.badge-style-type-live-now-alternate,yt-thumbnail-badge-view-model>badge-shape.yt-badge-shape--thumbnail-live")
+            toHide = liveBadgeOverlay !== null
+        }
 	}
-	else if (!timeOverlay.hasAttribute(TIME_OVERLAY_STATUS_STYLE_ATTRIBUTE) || !types.includes(timeOverlay.getAttribute(TIME_OVERLAY_STATUS_STYLE_ATTRIBUTE))) {
-		return;
+	else if (timeOverlay.hasAttribute("overlay-style") && types.includes(timeOverlay.getAttribute("overlay-style"))) {
+		toHide = true
 	}
-	hideElement(true, element, () => { dRearrangeVideosInGrid.execute(element) });
+
+    if (toHide)
+	    hideElement(true, element, () => { dRearrangeVideosInGrid.execute(element) });
 }
 
 function hideVideoIfBelowLength(element, minLengthSeconds) {
