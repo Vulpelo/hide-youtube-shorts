@@ -1,27 +1,27 @@
 {
     "manifest_version": 2,
-    "version": "1.8.6",
-
+    "version": "1.8.7",
     "name": "__MSG_extensionName__",
     "description": "__MSG_extensionDescription__",
-  
     "icons": {
       "64": "icons/hideshort-64.png"
     },
     "permissions" : [
       "storage" 
     ],
-
     "content_scripts": [
       {
-        "matches": ["*://*.youtube.com/*"],
-        "js": ["./src/HidingShortsMore.js", "./src/main.js"],
+        "matches": [
+          "*://*.youtube.com/*"
+        ],
+        "js": [
+          "./src/HidingShortsMore.js", 
+          "./src/main.js"
+        ],
         "run_at": "document_idle"
       }
     ],
-
     "default_locale": "en",
-
     "browser_action": {
       "default_icon":{
           "64":"icons/hideshort-64.png"
