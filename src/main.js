@@ -386,8 +386,12 @@ function hideShorts(hide = true) {
 			// subscription page in list mode
 			if (location.pathname.match(hidingShortsOnPathNames.subscriptionPage.reg)
 				&& elementTagName.match(dHideVideoRendererSubscriptionPage.elementTagName)) {
-				if (hide)
-					dHideVideoRendererSubscriptionPage.hideShort(element);
+				if (hide) {
+					if (!dHideVideoRendererSubscriptionPage.hideShort(element)) {
+						hideNonShorts(element)
+						hideContainerOfElement("ytd-item-section-renderer", element)
+					}
+				}
 				else
 					dHideVideoRendererSubscriptionPage.showShort(element);
 			}
