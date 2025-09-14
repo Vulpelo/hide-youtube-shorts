@@ -5,6 +5,7 @@ const videoElementLive1 = require('./fixtures/video_element_LIVE-1.js')
 const videoElementLive2 = require('./fixtures/video_element_LIVE-2.js')
 const videoElementNormal1 = require('./fixtures/video_element_NORMAL-1.js')
 const videoElementNormal2 = require('./fixtures/video_element_NORMAL-2.js')
+const playlistElement = require('./fixtures/playlist_element.js')
 
 jsdom.reconfigure({
     url: 'https://www.youtube.com',
@@ -16,8 +17,9 @@ function hideVideoIfOfType(types, element) {
     let toHide = false
 	if (timeOverlay === null) {
 		if (types.includes("UPCOMING")) {
-            const timeStatus = element.querySelector('.yt-badge-shape--thumbnail-default>div.badge-shape-wiz__text,.yt-badge-shape--thumbnail-default>div.yt-badge-shape__text')
-            if (timeStatus !== null && !timeStatus.textContent.trim().match(/^[0-9][0-9]?(:[0-9][0-9])*$/))
+            const foundElement = element.querySelector(`badge-shape.yt-badge-shape--thumbnail-default:has(div.yt-badge-shape__text):not(:has(div.yt-badge-shape__icon))`)
+            const foundElement2 = element.querySelector(`toggle-button-view-model`) // Notification button
+            if (foundElement !== null && foundElement2 != null)
                 toHide = true
         }
 
@@ -157,6 +159,26 @@ test('Dont hide NORMAL video when hiding LIVE and UPCOMING type videos - v2', ()
     expect(x).toBe(false)
 });
 
+test("Don't hide playlist element", () => {
+    document.body.innerHTML = playlistElement
+    let element = document.querySelector("ytd-rich-item-renderer")
+
+    let x = hideVideoIfOfType(["LIVE", "UPCOMING"], element)
+    expect(x).toBe(false)
+
+    x = hideVideoIfOfType(["LIVE"], element)
+    expect(x).toBe(false)
+
+    x = hideVideoIfOfType(["UPCOMING"], element)
+    expect(x).toBe(false)
+
+    x = hideVideoIfOfType([], element)
+    expect(x).toBe(false)
+
+    x = hideVideoIfBelowLength(element, 60)
+    expect(x).toBe(false)
+})
+
 describe('Hiding videos of length', () => {
     test('Hide NORMAL video when its length is shorter than specified time - v1', () => {
         document.body.innerHTML = videoElementNormal1
@@ -176,7 +198,7 @@ describe('Hiding videos of length', () => {
         expect(x).toBe(false)
     });
 
-        test('Hide NORMAL video when its length is shorter than specified time - v2', () => {
+    test('Hide NORMAL video when its length is shorter than specified time - v2', () => {
         document.body.innerHTML = videoElementNormal2
 
         let element = document.querySelector("ytd-rich-item-renderer")
