@@ -1,8 +1,8 @@
 {
   "scripts": {
     "test": "jest",
-    "zip-firefox": "cp manifest-firefox.json manifest.json; zip hide-youtube-shorts-firefox.zip _locales/* icons/* src/* manifest.json LICENCE.md Readme.md; rm manifest.json",
-    "zip-chrome": "cp manifest-chrome.json manifest.json; zip hide-youtube-shorts-chrome.zip _locales/* icons/* src/* manifest.json LICENCE.md Readme.md; rm manifest.json",
+    "zip-firefox": "cp manifest-firefox.json manifest.json; zip -r hide-youtube-shorts-firefox.zip _locales/* icons/* src/* manifest.json LICENCE.md Readme.md; rm manifest.json",
+    "zip-chrome": "cp manifest-chrome.json manifest.json; zip -r hide-youtube-shorts-chrome.zip _locales/* icons/* src/* manifest.json LICENCE.md Readme.md; rm manifest.json",
     "zip": "npm run zip-firefox; npm run zip-chrome;"
   },
   "devDependencies": {
