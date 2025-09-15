@@ -22,8 +22,10 @@ function hideVideoIfOfType(types, element) {
 		if (types.includes("UPCOMING")) {
             const foundElement = element.querySelector(`badge-shape.yt-badge-shape--thumbnail-default:has(div.yt-badge-shape__text):not(:has(div.yt-badge-shape__icon))`)
             const foundElement2 = element.querySelector(`toggle-button-view-model`) // Notification button
-            if (foundElement !== null && foundElement2 != null)
+            const timeStatus = element.querySelector(`badge-shape.yt-badge-shape--thumbnail-default>div.yt-badge-shape__text`)
+            if (foundElement !== null && foundElement2 != null && timeStatus !== null && !timeStatus.textContent.trim().match(/^([0-9]:[0-9]|[0-9])+$/)) {
                 toHide = true
+            }
         }
 
         if (!toHide && types.includes("LIVE")) {
