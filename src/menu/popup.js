@@ -2,7 +2,7 @@ window.onload = function () {
 
     chrome.storage.local.get(null, function (value) {
         // hide shorts
-        let hideYTShortsInput = document.getElementById("hideYTShortsVideosInput");
+        const hideYTShortsInput = document.getElementById("hideYTShortsVideosInput");
         if (value.hideYTShortsVideos != undefined)
             hideYTShortsInput.checked = value.hideYTShortsVideos;
         hideYTShortsInput.addEventListener("input", function (e) {
@@ -10,7 +10,7 @@ window.onload = function () {
         })
 
         // hide tab
-        let hideYTShortsTabInput = document.getElementById("hideYTShortsTabInput");
+        const hideYTShortsTabInput = document.getElementById("hideYTShortsTabInput");
         if (value.hideYTShortsTab != undefined)
             hideYTShortsTabInput.checked = value.hideYTShortsTab;
         hideYTShortsTabInput.addEventListener("input", function (e) {
@@ -18,7 +18,7 @@ window.onload = function () {
         })
 
         // hide notifications
-        let hideYTShortsNotificationsInput = document.getElementById("hideYTShortsNotificationsInput");
+        const hideYTShortsNotificationsInput = document.getElementById("hideYTShortsNotificationsInput");
         if (value.hideYTShortsNotifications != undefined)
             hideYTShortsNotificationsInput.checked = value.hideYTShortsNotifications;
         hideYTShortsNotificationsInput.addEventListener("input", function (e) {
@@ -26,28 +26,28 @@ window.onload = function () {
         })
 
         // hide shorts Home
-        let hideYTShortsHomeInput = document.getElementById("hideYTShortsVideosOnHomePageInput");
+        const hideYTShortsHomeInput = document.getElementById("hideYTShortsVideosOnHomePageInput");
         if (value.hideYTShortsHome != undefined)
             hideYTShortsHomeInput.checked = value.hideYTShortsHome;
         hideYTShortsHomeInput.addEventListener("input", function (e) {
             chrome.storage.local.set({ hideYTShortsHome: e.target.checked });
         })
         // hide shorts Subscription
-        let hideYTShortsVideosOnSubscriptionPageInput = document.getElementById("hideYTShortsVideosOnSubscriptionPageInput");
+        const hideYTShortsVideosOnSubscriptionPageInput = document.getElementById("hideYTShortsVideosOnSubscriptionPageInput");
         if (value.hideYTShortsVideosOnSubscriptionPage != undefined)
             hideYTShortsVideosOnSubscriptionPageInput.checked = value.hideYTShortsVideosOnSubscriptionPage;
         hideYTShortsVideosOnSubscriptionPageInput.addEventListener("input", function (e) {
             chrome.storage.local.set({ hideYTShortsVideosOnSubscriptionPage: e.target.checked });
         })
         // hide shorts Search
-        let hideYTShortsVideosOnSearchPageInput = document.getElementById("hideYTShortsVideosOnSearchPageInput");
+        const hideYTShortsVideosOnSearchPageInput = document.getElementById("hideYTShortsVideosOnSearchPageInput");
         if (value.hideYTShortsVideosOnSearchPage != undefined)
             hideYTShortsVideosOnSearchPageInput.checked = value.hideYTShortsVideosOnSearchPage;
         hideYTShortsVideosOnSearchPageInput.addEventListener("input", function (e) {
             chrome.storage.local.set({ hideYTShortsVideosOnSearchPage: e.target.checked });
         })
         // hide shorts Channel
-        let hideYTShortsVideosOnChannelPageInput = document.getElementById("hideYTShortsVideosOnChannelPageInput");
+        const hideYTShortsVideosOnChannelPageInput = document.getElementById("hideYTShortsVideosOnChannelPageInput");
         if (value.hideYTShortsVideosOnChannelPage != undefined)
             hideYTShortsVideosOnChannelPageInput.checked = value.hideYTShortsVideosOnChannelPage;
         hideYTShortsVideosOnChannelPageInput.addEventListener("input", function (e) {
@@ -55,15 +55,23 @@ window.onload = function () {
         })
 
         // close button for shelf on subscription page 
-        let subscriptionShelfCloseButtonInputCheckbox = document.getElementById("subscriptionShelfCloseButtonInputCheckbox");
+        const subscriptionShelfCloseButtonInputCheckbox = document.getElementById("subscriptionShelfCloseButtonInputCheckbox");
         if (value.subscriptionShelfCloseButton != undefined)
             subscriptionShelfCloseButtonInputCheckbox.checked = value.subscriptionShelfCloseButton;
         subscriptionShelfCloseButtonInputCheckbox.addEventListener("input", function (e) {
             chrome.storage.local.set({ subscriptionShelfCloseButton: e.target.checked });
         })
 
+        // redirect Url
+        const shortsInOriginalVideoPlayerInputCheckbox = document.getElementById("shortsInOriginalVideoPlayerInputCheckbox");
+        if (value.shortsInOriginalVideoPlayer != undefined)
+            shortsInOriginalVideoPlayerInputCheckbox.checked = value.shortsInOriginalVideoPlayer;
+        shortsInOriginalVideoPlayerInputCheckbox.addEventListener("input", function (e) {
+            chrome.storage.local.set({ shortsInOriginalVideoPlayer: e.target.checked });
+        })
+
         // timeout
-        let hidingShortsTimeoutTimeMsInput = document.getElementById("hidingShortsTimeoutTimeMsInput");
+        const hidingShortsTimeoutTimeMsInput = document.getElementById("hidingShortsTimeoutTimeMsInput");
         if (value.hidingShortsTimeoutTimeMs != undefined)
             hidingShortsTimeoutTimeMsInput.value = value.hidingShortsTimeoutTimeMs;
         hidingShortsTimeoutTimeMsInput.addEventListener("input", function (e) {
@@ -75,7 +83,7 @@ window.onload = function () {
                 e.target.value = maxAttr;
             chrome.storage.local.set({ hidingShortsTimeoutTimeMs: e.target.value });
         })
-        let hidingShortsTimeoutTimeMsInputCheckbox = document.getElementById("hidingShortsTimeoutTimeMsInputCheckbox");
+        const hidingShortsTimeoutTimeMsInputCheckbox = document.getElementById("hidingShortsTimeoutTimeMsInputCheckbox");
         if (value.hidingShortsTimeoutActive != undefined)
             hidingShortsTimeoutTimeMsInputCheckbox.checked = value.hidingShortsTimeoutActive;
         hidingShortsTimeoutTimeMsInputCheckbox.addEventListener("input", function (e) {
@@ -83,7 +91,7 @@ window.onload = function () {
         })
 
         // hiding videos shorter than specified time
-        let hidingShortVideosTimeSecondsInput = document.getElementById("hidingShortVideosTimeSecondsInput");
+        const hidingShortVideosTimeSecondsInput = document.getElementById("hidingShortVideosTimeSecondsInput");
         if (value.hidingShortVideosTimeSeconds != undefined)
             hidingShortVideosTimeSecondsInput.value = value.hidingShortVideosTimeSeconds;
         hidingShortVideosTimeSecondsInput.addEventListener("input", function (e) {
@@ -95,7 +103,7 @@ window.onload = function () {
                 e.target.value = maxAttr;
             chrome.storage.local.set({ hidingShortVideosTimeSeconds: e.target.value });
         })
-        let hidingShortVideosTimeSecondsInputCheckbox = document.getElementById("hidingShortVideosTimeSecondsInputCheckbox");
+        const hidingShortVideosTimeSecondsInputCheckbox = document.getElementById("hidingShortVideosTimeSecondsInputCheckbox");
         if (value.hidingShortVideosActive != undefined)
             hidingShortVideosTimeSecondsInputCheckbox.checked = value.hidingShortVideosActive;
         hidingShortVideosTimeSecondsInputCheckbox.addEventListener("input", function (e) {
@@ -104,7 +112,7 @@ window.onload = function () {
 
 
         // hiding live videos
-        let hidingLiveVideosInputCheckbox = document.getElementById("hidingLiveVideosInputCheckbox");
+        const hidingLiveVideosInputCheckbox = document.getElementById("hidingLiveVideosInputCheckbox");
         if (value.hidingLiveVideosActive != undefined)
             hidingLiveVideosInputCheckbox.checked = value.hidingLiveVideosActive;
         hidingLiveVideosInputCheckbox.addEventListener("input", function (e) {
@@ -112,7 +120,7 @@ window.onload = function () {
         })
 
         // hiding upcoming videos
-        let hidingUpcomingVideosInputCheckbox = document.getElementById("hidingUpcomingVideosInputCheckbox");
+        const hidingUpcomingVideosInputCheckbox = document.getElementById("hidingUpcomingVideosInputCheckbox");
         if (value.hidingUpcomingVideosActive != undefined)
             hidingUpcomingVideosInputCheckbox.checked = value.hidingUpcomingVideosActive;
         hidingUpcomingVideosInputCheckbox.addEventListener("input", function (e) {
@@ -144,6 +152,7 @@ window.onload = function () {
 
     document.getElementById("hide_live_videos_text").textContent = chrome.i18n.getMessage("cfg_hide_live_videos");
     document.getElementById("hide_upcoming_videos_text").textContent = chrome.i18n.getMessage("cfg_hide_upcoming_videos");
+    document.getElementById("shorts_in_original_video_player_text").textContent = chrome.i18n.getMessage("cfg_shorts_in_original_video_player");
 
     // version
     let manifestData = chrome.runtime.getManifest();

@@ -26,5 +26,6 @@
     "cfg_hide_short_videos_tooltip": {"message": "Приховує відео, які коротші за вказаний час у секундах."},
 
     "cfg_hide_live_videos": {"message": "Приховати 'живі' відео"},
-    "cfg_hide_upcoming_videos": {"message": "Приховати 'майбутні' відео"}
+    "cfg_hide_upcoming_videos": {"message": "Приховати 'майбутні' відео"},
+    "cfg_shorts_in_original_video_player": {"message": "Перенаправлення на оригінальний відеоплеєр"}
 }

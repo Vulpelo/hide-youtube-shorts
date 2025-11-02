@@ -1,13 +1,14 @@
 {
     "manifest_version": 2,
-    "version": "1.8.8",
+    "version": "1.9.0",
     "name": "__MSG_extensionName__",
     "description": "__MSG_extensionDescription__",
     "icons": {
       "64": "icons/hideshort-64.png"
     },
     "permissions" : [
-      "storage" 
+      "storage",
+      "tabs"
     ],
     "content_scripts": [
       {
@@ -21,12 +22,15 @@
         "run_at": "document_idle"
       }
     ],
+    "background": {
+      "scripts": [ "./src/background/background-firefox.js" ]
+    },
     "default_locale": "en",
     "browser_action": {
       "default_icon":{
           "64":"icons/hideshort-64.png"
       },
       "default_title": "Hide-Shorts",
-      "default_popup": "./src/popup.html"
+      "default_popup": "./src/menu/popup.html"
   }
 }

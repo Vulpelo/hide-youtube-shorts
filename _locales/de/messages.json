@@ -26,5 +26,6 @@
     "cfg_hide_short_videos_tooltip": {"message": "Versteckt Videos, die kürzer als die angegebene Zeit in Sekunden sind."},
 
     "cfg_hide_live_videos": {"message": "'Live-Videos' ausblenden"},
-    "cfg_hide_upcoming_videos": {"message": "'Kommende' Videos ausblenden"}
+    "cfg_hide_upcoming_videos": {"message": "'Kommende' Videos ausblenden"},
+    "cfg_shorts_in_original_video_player": {"message": "Weiterleitung zum Original-Videoplayer"}
 }
