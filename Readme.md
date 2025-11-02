@@ -19,6 +19,7 @@ Also allows you to hide "Shorts" tab.
 - Hiding videos that are shorter than specified time (experimental, off by default)
 - Hiding live videos (experimental, off by default)
 - Hiding 'Upcoming' videos (experimental, off by default)
+- Redirect shorts to original video player (experimental, off by default)
 
 ## Installation
 
@@ -48,3 +49,11 @@ or add the Add-on manually:
 ## License
 
 [GPL-3.0](https://github.com/Vulpelo/hide-youtube-shorts/blob/master/LICENCE.md)
+
+# FAQ
+- Going "Back" in navigation again redirects tab to the original video player
+    - Chrome and Firefox on Android don't support [loadReplace option](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/update), meaning that clicking "Back" button will direct to the original video URL (not the page from which video was clicked on). This will then again redirect the page. You can click and hold the back button to display list of previous pages and select desired page from here. 
+- After addon installation shorts are still visible on youtube's page
+    - It is also required to refresh the youtube's page in order for the scripts to load.
+- After a while youtube starts slowing down
+    - Extension hides (not removes) shorts and their containers so they still take up some memory. Depending on how many shorts got hidden the website can start slowing down. Refreshing the page will clean up website from leftover elements.

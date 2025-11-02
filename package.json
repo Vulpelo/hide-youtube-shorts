@@ -3,12 +3,15 @@
     "test": "jest",
     "zip-firefox": "cp manifest-firefox.json manifest.json; zip -r hide-youtube-shorts-firefox.zip _locales/* icons/* src/* manifest.json LICENCE.md Readme.md; rm manifest.json",
     "zip-chrome": "cp manifest-chrome.json manifest.json; zip -r hide-youtube-shorts-chrome.zip _locales/* icons/* src/* manifest.json LICENCE.md Readme.md; rm manifest.json",
-    "zip": "npm run zip-firefox; npm run zip-chrome;"
+    "zip": "npm run zip-firefox; npm run zip-chrome;",
+    "firefox-lint": "web-ext lint",
+    "debug-android": "web-ext run -t firefox-android"
   },
   "devDependencies": {
     "jest": "^30.1.2",
     "jest-environment-jsdom": "^29.7.0",
-    "jest-environment-jsdom-global": "^4.0.0"
+    "jest-environment-jsdom-global": "^4.0.0",
+    "web-ext": "^9.1.0"
   },
   "jest": {
     "verbose": true,
