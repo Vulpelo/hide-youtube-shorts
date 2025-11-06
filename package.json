@@ -1,11 +1,18 @@
 {
   "scripts": {
-    "test": "jest",
-    "zip-firefox": "cp manifest-firefox.json manifest.json; zip -r hide-youtube-shorts-firefox.zip _locales/* icons/* src/* manifest.json LICENCE.md Readme.md; rm manifest.json",
-    "zip-chrome": "cp manifest-chrome.json manifest.json; zip -r hide-youtube-shorts-chrome.zip _locales/* icons/* src/* manifest.json LICENCE.md Readme.md; rm manifest.json",
+    "prepare-firefox": "mkdir -p ./build/hys-f; cp -r manifest-firefox.json _locales icons src LICENCE.md Readme.md ./build/hys-f; mv ./build/hys-f/src/background/background-firefox.js ./build/hys-f/src/background/background.js; mv ./build/hys-f/src/menu/permissions-firefox.js ./build/hys-f/src/menu/permissions.js; mv ./build/hys-f/manifest-firefox.json ./build/hys-f/manifest.json; find ./build/hys-f -name \"*-chrome.js\" -type f -delete",
+    "prepare-chrome": "mkdir -p ./build/hys-c; cp -r manifest-chrome.json _locales icons src LICENCE.md Readme.md ./build/hys-c; mv ./build/hys-c/src/background/background-chrome.js ./build/hys-c/src/background/background.js; mv ./build/hys-c/src/menu/permissions-chrome.js ./build/hys-c/src/menu/permissions.js; mv ./build/hys-c/manifest-chrome.json ./build/hys-c/manifest.json; find ./build/hys-c -name \"*-firefox.js\" -type f -delete",
+    "prepare": "npm run prepare-firefox; npm run prepare-chrome",
+
+    "zip-firefox": "npm run prepare-firefox; cd ./build/hys-f; zip -r ../hide-youtube-shorts-firefox.zip ./**; cd -",
+    "zip-chrome": "npm run prepare-chrome; cd ./build/hys-c; zip -r ../hide-youtube-shorts-chrome.zip ./**; cd -",
     "zip": "npm run zip-firefox; npm run zip-chrome;",
+
+    "clean": "rm -r ./build",
+
     "firefox-lint": "web-ext lint",
-    "debug-android": "web-ext run -t firefox-android"
+    "debug-android": "web-ext run -t firefox-android",
+    "test": "jest"
   },
   "devDependencies": {
     "jest": "^30.1.2",

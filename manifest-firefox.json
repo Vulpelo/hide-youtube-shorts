@@ -1,13 +1,15 @@
 {
     "manifest_version": 2,
-    "version": "1.9.0",
+    "version": "1.9.1",
     "name": "__MSG_extensionName__",
     "description": "__MSG_extensionDescription__",
     "icons": {
       "64": "icons/hideshort-64.png"
     },
-    "permissions" : [
-      "storage",
+    "permissions": [
+      "storage"
+    ],
+    "optional_permissions": [
       "tabs"
     ],
     "content_scripts": [
@@ -23,7 +25,15 @@
       }
     ],
     "background": {
-      "scripts": [ "./src/background/background-firefox.js" ]
+      "scripts": [ "./src/background/background.js" ]
+    },
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "{88ebde3a-4581-4c6b-8019-2a05a9e3e938}",
+        "data_collection_permissions": {
+          "required": ["none"]
+        }
+      }
     },
     "default_locale": "en",
     "browser_action": {

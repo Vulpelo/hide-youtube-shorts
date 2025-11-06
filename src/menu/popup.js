@@ -67,7 +67,7 @@ window.onload = function () {
         if (value.shortsInOriginalVideoPlayer != undefined)
             shortsInOriginalVideoPlayerInputCheckbox.checked = value.shortsInOriginalVideoPlayer;
         shortsInOriginalVideoPlayerInputCheckbox.addEventListener("input", function (e) {
-            chrome.storage.local.set({ shortsInOriginalVideoPlayer: e.target.checked });
+            shortsInOriginalVideoPlayerCheckboxPermission(e)
         })
 
         // timeout
