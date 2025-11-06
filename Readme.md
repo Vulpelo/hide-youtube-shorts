@@ -23,28 +23,30 @@ Also allows you to hide "Shorts" tab.
 
 ## Installation
 
+For firefox install from [Mozilla Add-ons](https://addons.mozilla.org/en-US/firefox/addon/hide-youtube-shorts/) webpage
+
+For chrome install from [Chrome web store](https://chrome.google.com/webstore/detail/hide-shorts-for-youtube/ankepacjgoajhjpenegknbefpmfffdic) webpage
+
+## Debugging
+
+Prepare files for chrome and firefox versions by running `npm run prepare` command. This will create new directories `./build/hys-c` (for chrome) `./build/hys-f` (for firefox) with respected files.
+
+You can also run `npm run zip` command to prepare and create zip archives for both chrome and firefox versions. Both will be placed in `./build` directory
+
 ### Firefox 
 
-Install from [Mozilla Add-ons](https://addons.mozilla.org/en-US/firefox/addon/hide-youtube-shorts/) webpage
-
-or add the Add-on temporarily:
-1. Download the project
-2. Rename 'manifest-firefox.json' file to 'manifest.json'
-3. In Firefox browser go to the debugging page by typing in url <b>[about:debugging#/runtime/this-firefox](about:debugging#/runtime/this-firefox)</b>
-4. Click on <b>Load Temporary Add-on...</b>
-5. Select a file (eg. 'manifest.json' file) inside of downloaded git project. Or you can ZIP contents of the project and select it instead.
+Add the Add-on temporarily:
+1. In Firefox browser go to the debugging page by typing in url <b>[about:debugging#/runtime/this-firefox](about:debugging#/runtime/this-firefox)</b>
+2. Click on <b>Load Temporary Add-on...</b>
+3. Select a file `./build/hys-f/manifest.json` file. Or you can ZIP contents of the project and select it instead.
 
 ### Google Chrome
 
-Install from [Chrome web store](https://chrome.google.com/webstore/detail/hide-shorts-for-youtube/ankepacjgoajhjpenegknbefpmfffdic) webpage
-
-or add the Add-on manually:
-1. Download the project
-2. Rename 'manifest-chrome.json' file to 'manifest.json'
-3. In Chrome browser go to the Extensions page (or type in url <b>[chrome://extensions/](chrome://extensions/)</b>)
-4. Enable the <b>Developer Mode</b>
-5. Click the <b>Load unpacked</b> button
-6. Select the directory of downloaded git project.
+Add the Add-on manually:
+1. In Chrome browser go to the Extensions page (or type in url <b>[chrome://extensions/](chrome://extensions/)</b>)
+2. Enable the <b>Developer Mode</b>
+3. Click the <b>Load unpacked</b> button
+4. Select built directory `./build/hys-c`.
 
 ## License
 

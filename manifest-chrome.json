@@ -1,13 +1,15 @@
 {
     "manifest_version": 3,
-    "version": "1.9.0",
+    "version": "1.9.1",
     "name": "__MSG_extensionName__",
     "description": "__MSG_extensionDescription__",
     "icons": {
       "64": "icons/hideshort-64.png"
     },
-    "permissions" : [
-      "storage",
+    "permissions": [
+      "storage"
+    ],
+    "optional_permissions": [
       "tabs"
     ],
     "content_scripts": [
@@ -23,7 +25,7 @@
       }
     ],
     "background": {
-      "service_worker": "./src/background/background-chrome.js",
+      "service_worker": "./src/background/background.js",
       "type": "module"
     },
     "default_locale": "en",
