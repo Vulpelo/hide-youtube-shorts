@@ -5,6 +5,8 @@ const videoElementLive1 = require('./fixtures/video_element_LIVE-1.js')
 const videoElementLive2 = require('./fixtures/video_element_LIVE-2.js')
 const videoElementNormal1 = require('./fixtures/video_element_NORMAL-1.js')
 const videoElementNormal2 = require('./fixtures/video_element_NORMAL-2.js')
+const videoElementNormal3 = require('./fixtures/video_element_NORMAL-3.js')
+const videoElementNormal3Hovered = require('./fixtures/video_element_NORMAL-3-hovered.js')
 const playlistElement = require('./fixtures/playlist_element.js')
 const videoElementListUpcoming1 = require('./fixtures/video_list_element_UPCOMING.js')
 
@@ -22,8 +24,15 @@ function hideVideoIfOfType(types, element) {
 		if (types.includes("UPCOMING")) {
             const foundElement = element.querySelector(`badge-shape.yt-badge-shape--thumbnail-default:has(div.yt-badge-shape__text):not(:has(div.yt-badge-shape__icon))`)
             const foundElement2 = element.querySelector(`toggle-button-view-model`) // Notification button
-            const timeStatus = element.querySelector(`badge-shape.yt-badge-shape--thumbnail-default>div.yt-badge-shape__text`)
-            if (foundElement !== null && foundElement2 != null && timeStatus !== null && !timeStatus.textContent.trim().match(/^([0-9]:[0-9]|[0-9])+$/)) {
+            const timeStatuses = element.querySelectorAll(`badge-shape.yt-badge-shape--thumbnail-default>div.yt-badge-shape__text`)
+            let nonHaveTimeStatus = true
+            timeStatuses.forEach(timeStatus => {
+                if (timeStatus.textContent && timeStatus.textContent.trim().match(/^([0-9]:[0-9]|[0-9])+$/)) {
+                    nonHaveTimeStatus = false
+                    return
+                }
+            })
+            if (foundElement !== null && foundElement2 !== null && timeStatuses.length > 0 && nonHaveTimeStatus) {
                 toHide = true
             }
         }
@@ -177,6 +186,41 @@ test('Dont hide NORMAL video when hiding LIVE and UPCOMING type videos - v2', ()
     expect(x).toBe(false)
 
     x = hideVideoIfOfType([], element)
+    expect(x).toBe(false)
+});
+
+test('Dont hide NORMAL video when hiding LIVE and UPCOMING type videos - v3', () => {
+    document.body.innerHTML = videoElementNormal3
+
+    let element = document.querySelector(VIDEO_ELEMENT_SELECTOR)
+    let x = hideVideoIfOfType([], element)
+    expect(x).toBe(false)
+
+    x = hideVideoIfOfType(["LIVE"], element)
+    expect(x).toBe(false)
+
+    x = hideVideoIfOfType(["UPCOMING"], element)
+    expect(x).toBe(false)
+
+    x = hideVideoIfOfType(["LIVE", "UPCOMING"], element)
+    expect(x).toBe(false)
+});
+
+test('Dont hide hovered NORMAL video when hiding LIVE and UPCOMING type videos - v3', () => {
+    document.body.innerHTML = videoElementNormal3Hovered
+
+    let element = document.querySelector(VIDEO_ELEMENT_SELECTOR)
+    let x = hideVideoIfOfType([], element)
+    expect(x).toBe(false)
+    
+    x = hideVideoIfOfType(["LIVE"], element)
+    expect(x).toBe(false)
+    
+    x = hideVideoIfOfType(["UPCOMING"], element)
+    expect(x).toBe(false)
+    
+    
+    x = hideVideoIfOfType(["LIVE", "UPCOMING"], element)
     expect(x).toBe(false)
 });
 
