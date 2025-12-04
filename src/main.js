@@ -77,6 +77,7 @@ const DESKTOP_GUIDE_WRAPPER_MINI_SELECTOR = "ytd-mini-guide-renderer";
 const DESKTOP_NOTIFICATION_RENDERER = "ytd-notification-renderer";
 
 const SHORTS_TAB_SELECTOR = isMobile ? "ytm-pivot-bar-item-renderer>div[class='pivot-bar-item-tab pivot-shorts']" : "ytd-guide-entry-renderer>a:not([href])"
+const SHORTS_HREF_SELECTOR = `[href^="/shorts/"]`;
 
 /* dedicated shelfs for shorts */
 const SHELF_TAG_REGEX = /yt[dm]-reel-shelf-renderer/gm
@@ -287,7 +288,7 @@ function setup() {
 				(mutationList, observer) => {
 					for (const mutation of mutationList) {
 						if (mutation.type === "childList" && mutation.target.tagName.toLowerCase() == DESKTOP_NOTIFICATION_RENDERER) {
-							if (mutation.target.querySelector('[href^="/shorts/"]') != null)
+							if (mutation.target.querySelector(SHORTS_HREF_SELECTOR) != null)
 								hideElement(true, mutation.target)
 						}
 					}
@@ -300,7 +301,7 @@ function setup() {
 			if (popupContainer != null) {
 				const nRenderers = popupContainer.querySelectorAll(DESKTOP_NOTIFICATION_RENDERER)
 				nRenderers.forEach((v) => {
-					if (v.querySelector('[href^="/shorts/"]') != null)
+					if (v.querySelector(SHORTS_HREF_SELECTOR) != null)
 						hideElement(hideYTShortsNotifications, v)
 				})
 			}
@@ -421,7 +422,7 @@ function hideShorts(hide = true) {
 			// and hide any video container that contains a ref link to shorts
 			else if ((elementTagName.match(SHELF_TAG_REGEX)
 				&& element.querySelector(SHELF_ITEM_TAG_SELECTOR) != null)
-				|| element.querySelector('[href^="/shorts/"]') != null) {
+				|| element.querySelector(SHORTS_HREF_SELECTOR) != null) {
 				hideElement(hide, element, () => { dRearrangeVideosInGrid.execute(element) });
 			}
 			else if (hide) {
@@ -448,9 +449,17 @@ function hideVideoIfOfType(types, element) {
 		if (types.includes("UPCOMING")) {
             const foundElement = element.querySelector(`badge-shape.yt-badge-shape--thumbnail-default:has(div.yt-badge-shape__text):not(:has(div.yt-badge-shape__icon))`)
             const foundElement2 = element.querySelector(`toggle-button-view-model`) // Notification button
-			const timeStatus = element.querySelector(`badge-shape.yt-badge-shape--thumbnail-default>div.yt-badge-shape__text`)
-            if (foundElement !== null && foundElement2 != null && timeStatus !== null && !timeStatus.textContent.trim().match(/^([0-9]:[0-9]|[0-9])+$/))
+            const timeStatuses = element.querySelectorAll(`badge-shape.yt-badge-shape--thumbnail-default>div.yt-badge-shape__text`)
+            let nonHaveTimeStatus = true
+            timeStatuses.forEach(timeStatus => {
+                if (timeStatus.textContent && timeStatus.textContent.trim().match(/^([0-9]:[0-9]|[0-9])+$/)) {
+                    nonHaveTimeStatus = false
+                    return
+                }
+            })
+            if (foundElement !== null && foundElement2 !== null && timeStatuses.length > 0 && nonHaveTimeStatus) {
                 toHide = true
+            }
         }
 
         if (!toHide && types.includes("LIVE")) {

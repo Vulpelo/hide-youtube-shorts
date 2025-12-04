@@ -11,7 +11,7 @@
     "clean": "rm -r ./build",
 
     "firefox-lint": "web-ext lint",
-    "debug-android": "web-ext run -t firefox-android",
+    "debug-android": "npm run prepare-firefox; web-ext run -t firefox-android --source-dir ./build/hys-f",
     "test": "jest"
   },
   "devDependencies": {

@@ -41,7 +41,7 @@ class HidingShortsWithContainer {
 	hideShort(element) {
 		// hide whole shelf if just contains "ytd-reel-item-renderer" tag. For now seems to be only used for yt-shorts videos
 		// and hide any video container that contains a ref link to shorts
-		if (element.querySelector('[href^="/shorts/"]') == null) return false;
+		if (element.querySelector(SHORTS_HREF_SELECTOR) == null) return false;
 		element.setAttribute("hidden", true);
 
 		hideContainerOfElement(this.container, element);
@@ -51,7 +51,7 @@ class HidingShortsWithContainer {
 	showShort(element) {
 		// hide whole shelf if just contains "ytd-reel-item-renderer" tag. For now seems to be only used for yt-shorts videos
 		// and hide any video container that contains a ref link to shorts
-		if (element.querySelector('[href^="/shorts/"]') == null) return;
+		if (element.querySelector(SHORTS_HREF_SELECTOR) == null) return;
 		if (element.hasAttribute("hidden")) {
 			element.removeAttribute("hidden");
 			showContainerOfElement(this.container, element);
