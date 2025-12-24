@@ -71,9 +71,9 @@ const dRearrangeVideosInGrid = new RearrangeVideosInGrid();
 const dHidingVideoRenderer = new HidingShortsWithContainer("ytd-video-renderer", "ytd-shelf-renderer");
 // hiding videos on subscription page in list mode
 const dHideVideoRendererSubscriptionPage = new HidingShortsWithContainer("ytd-video-renderer", "ytd-item-section-renderer");
-const DESKTOP_SHORTS_MINI_TAB_SELECTOR = "ytd-mini-guide-entry-renderer>a:not([href])"
+const DESKTOP_SHORTS_MINI_TAB_SELECTOR = "ytd-mini-guide-entry-renderer>a[href='/shorts/']"
 const DESKTOP_GUIDE_WRAPPER_SELECTOR = "div[id='guide-wrapper']";
-const DESKTOP_GUIDE_WRAPPER_MINI_SELECTOR = "ytd-mini-guide-renderer";
+const DESKTOP_GUIDE_WRAPPER_MINI_SELECTOR = "ytd-mini-guide-renderer>div[id='items']";
 const DESKTOP_NOTIFICATION_RENDERER = "ytd-notification-renderer";
 
 const SHORTS_TAB_SELECTOR = isMobile ? "ytm-pivot-bar-item-renderer>div[class='pivot-bar-item-tab pivot-shorts']" : "ytd-guide-entry-renderer>a:not([href])"
