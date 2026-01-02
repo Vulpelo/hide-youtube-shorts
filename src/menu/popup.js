@@ -54,7 +54,7 @@ window.onload = function () {
             chrome.storage.local.set({ hideYTShortsVideosOnChannelPage: e.target.checked });
         })
 
-        // close button for shelf on subscription page 
+        // close button for shelf on subscription page
         const subscriptionShelfCloseButtonInputCheckbox = document.getElementById("subscriptionShelfCloseButtonInputCheckbox");
         if (value.subscriptionShelfCloseButton != undefined)
             subscriptionShelfCloseButtonInputCheckbox.checked = value.subscriptionShelfCloseButton;
@@ -126,6 +126,15 @@ window.onload = function () {
         hidingUpcomingVideosInputCheckbox.addEventListener("input", function (e) {
             chrome.storage.local.set({ hidingUpcomingVideosActive: e.target.checked });
         })
+
+        // hiding posts
+        const hidingPostsCheckbox = document.getElementById("hidingPostsCheckbox");
+        if (value.hidingPostsActive != undefined)
+            hidingPostsCheckbox.checked = value.hidingPostsActive;
+        hidingPostsCheckbox.addEventListener("input", function (e) {
+            chrome.storage.local.set({ hidingPostsActive: e.target.checked });
+        })
+
     });
 
     // Set language
@@ -153,6 +162,7 @@ window.onload = function () {
     document.getElementById("hide_live_videos_text").textContent = chrome.i18n.getMessage("cfg_hide_live_videos");
     document.getElementById("hide_upcoming_videos_text").textContent = chrome.i18n.getMessage("cfg_hide_upcoming_videos");
     document.getElementById("shorts_in_original_video_player_text").textContent = chrome.i18n.getMessage("cfg_shorts_in_original_video_player");
+    document.getElementById("hide_posts_text").textContent = chrome.i18n.getMessage("cfg_hide_posts");
 
     // version
     let manifestData = chrome.runtime.getManifest();

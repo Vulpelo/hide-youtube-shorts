@@ -1,7 +1,7 @@
 {
     "extensionName": {"message": "Hide shorts for Youtube™"},
     "extensionDescription": {"message": "Hides shorts from YouTube™ from home page, subscriptions and search results."},
-    
+
     "cfg_hide_videos": {"message": "Hide Shorts videos"},
     "cfg_hide_tab": {"message": "Hide Shorts tab"},
     "cfg_hide_notifications": {"message": "Hide Shorts notifications"},
@@ -10,7 +10,7 @@
     "setting_experimental_text": {"message": "Experimental"},
     "settings_hiding_on_text": {"message": "Hiding on"},
     "settings_performance_text": {"message": "Performance"},
-    
+
     "cfg_hide_videos_home": {"message": "Home page"},
     "cfg_hide_videos_subscription": {"message": "Subscriptions page"},
     "cfg_hide_videos_search": {"message": "Search page"},
@@ -27,5 +27,6 @@
 
     "cfg_hide_live_videos": {"message": "Hide Live videos"},
     "cfg_hide_upcoming_videos": {"message": "Hide 'Upcoming' videos"},
-    "cfg_shorts_in_original_video_player": {"message": "Redirect to original video player"}
+    "cfg_shorts_in_original_video_player": {"message": "Redirect to original video player"},
+    "cfg_hide_posts": {"message": "Hide posts"}
 }

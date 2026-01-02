@@ -6,7 +6,7 @@
 [![Extension's Chrome Web Store users](https://img.shields.io/chrome-web-store/users/ankepacjgoajhjpenegknbefpmfffdic?label=Chrome%20Users&logo=google%20chrome)](https://chrome.google.com/webstore/detail/hide-shorts-for-youtube/ankepacjgoajhjpenegknbefpmfffdic)
 [![Licence](https://img.shields.io/github/license/Vulpelo/hide-youtube-shorts)](https://github.com/Vulpelo/hide-youtube-shorts/blob/master/LICENCE.md)
 
-Firefox add-on that hides YouTube-shorts videos from home page, subscriptions and search results. 
+Firefox add-on that hides YouTube-shorts videos from home page, subscriptions and search results.
 Also allows you to hide "Shorts" tab.
 
 ## Features
@@ -20,6 +20,7 @@ Also allows you to hide "Shorts" tab.
 - Hiding live videos (experimental, off by default)
 - Hiding 'Upcoming' videos (experimental, off by default)
 - Redirect shorts to original video player (experimental, off by default)
+- Hiding posts (experimental, off by default)
 
 ## Installation
 
@@ -33,7 +34,7 @@ Prepare files for chrome and firefox versions by running `npm run prepare` comma
 
 You can also run `npm run zip` command to prepare and create zip archives for both chrome and firefox versions. Both will be placed in `./build` directory
 
-### Firefox 
+### Firefox
 
 Add the Add-on temporarily:
 1. In Firefox browser go to the debugging page by typing in url <b>[about:debugging#/runtime/this-firefox](about:debugging#/runtime/this-firefox)</b>
@@ -54,7 +55,7 @@ Add the Add-on manually:
 
 # FAQ
 - Going "Back" in navigation again redirects tab to the original video player
-    - Chrome and Firefox on Android don't support [loadReplace option](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/update), meaning that clicking "Back" button will direct to the original video URL (not the page from which video was clicked on). This will then again redirect the page. You can click and hold the back button to display list of previous pages and select desired page from here. 
+    - Chrome and Firefox on Android don't support [loadReplace option](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/update), meaning that clicking "Back" button will direct to the original video URL (not the page from which video was clicked on). This will then again redirect the page. You can click and hold the back button to display list of previous pages and select desired page from here.
 - After addon installation shorts are still visible on youtube's page
     - It is also required to refresh the youtube's page in order for the scripts to load.
 - After a while youtube starts slowing down
