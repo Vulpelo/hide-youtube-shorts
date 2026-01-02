@@ -17,6 +17,8 @@ let hidingShortsTimeoutTimeMs = 500;
 let hidingShortVideosActive = false;
 let hidingShortVideosTimeSeconds = 20;
 
+let hideYTPosts = false
+
 const isMobile = location.hostname == "m.youtube.com";
 
 const hidingShortsOnPathNames = {
@@ -42,12 +44,14 @@ const REST_SHORTS_CONTAINERS_TAG = isMobile ? [
 	["ytm-grid-video-renderer"],
 	// videos on Search page and Video page
 	["ytm-video-with-context-renderer"],
+	// posts
+	["ytm-backstage-post-thread-renderer"],
 ].join(",") : [
 	// shelf containing multiple shorts on Search page
 	["ytd-reel-shelf-renderer"],
-	// extendable shelf with shorts on Search page 
+	// extendable shelf with shorts on Search page
 	["grid-shelf-view-model"],
-	// shelf containing multiple shorts on Home page 
+	// shelf containing multiple shorts on Home page
 	["ytd-rich-shelf-renderer"],
 	// container of videos on home/subscription page (so far only for shorts)
 	["ytd-rich-grid-group"],
@@ -64,10 +68,11 @@ const REST_SHORTS_CONTAINERS_TAG = isMobile ? [
 /* ON MOBILE */
 // videos in ytm-rich-section-renderer on Home page
 const mHidingVideoRenderer = new HidingShortsWithContainer("ytm-shorts-lockup-view-model", "ytm-rich-section-renderer");
+const MOBILE_POSTS_RENDERER = "ytm-backstage-post-thread-renderer";
 
 /* ON DESKTOP */
 const dRearrangeVideosInGrid = new RearrangeVideosInGrid();
-// hiding videos on Search page, videos in list mode on subscription page 
+// hiding videos on Search page, videos in list mode on subscription page
 const dHidingVideoRenderer = new HidingShortsWithContainer("ytd-video-renderer", "ytd-shelf-renderer");
 // hiding videos on subscription page in list mode
 const dHideVideoRendererSubscriptionPage = new HidingShortsWithContainer("ytd-video-renderer", "ytd-item-section-renderer");
@@ -178,6 +183,11 @@ function loadVariables(value) {
 	if (value.hidingUpcomingVideosActive === true)
 		hidingVideoTypes.push(UPCOMING)
 
+	if (value.hidingPostsActive == undefined)
+		chrome.storage.local.set({ hidingPostsActive: hideYTPosts });
+	else
+		hideYTPosts = value.hidingPostsActive;
+
 	if (value.hideYTShortsVideos == undefined)
 		chrome.storage.local.set({ hideYTShortsVideos: hideYTShortsVideos });
 	else
@@ -247,6 +257,7 @@ function setup() {
 		loadVariables(value);
 
 		combinedSelectorsToQuery = REST_SHORTS_CONTAINERS_TAG;
+
 		if (isMobile) {
 			combinedSelectorsToQuery += "," + mHidingVideoRenderer.elementTagName
 			hideShortsCallbackInner =
@@ -438,8 +449,11 @@ function hideNonShorts(element) {
 		hideVideoIfBelowLength(element, hidingShortVideosTimeSeconds)
 	}
 	// Hide videos of type
-	if (hidingVideoTypes.length > 0)
+    if (hidingVideoTypes.length > 0)
 		hideVideoIfOfType(hidingVideoTypes, element)
+
+	if (element.tagName.toLowerCase() == MOBILE_POSTS_RENDERER)
+		hideElement(hideYTPosts, element);
 }
 
 function hideVideoIfOfType(types, element) {
