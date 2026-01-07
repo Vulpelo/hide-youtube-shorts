@@ -27,5 +27,6 @@
 
     "cfg_hide_live_videos": {"message": "Ukryj transmisje na żywo"},
     "cfg_hide_upcoming_videos": {"message": "Ukryj filmy typu 'Wkrótce'"},
-    "cfg_shorts_in_original_video_player": {"message": "Przekieruj do oryginalnego odtwarzacza wideo"}
+    "cfg_shorts_in_original_video_player": {"message": "Przekieruj do oryginalnego odtwarzacza wideo"},
+    "cfg_hide_posts": {"message": "Ukryj posty"}
 }

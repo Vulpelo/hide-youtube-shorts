@@ -27,5 +27,6 @@
 
     "cfg_hide_live_videos": {"message": "Masquer les vidéos 'en direct'"},
     "cfg_hide_upcoming_videos": {"message": "Masquer les vidéos 'à venir'"},
-    "cfg_shorts_in_original_video_player": {"message": "Rediriger vers le lecteur vidéo d'origine"}
+    "cfg_shorts_in_original_video_player": {"message": "Rediriger vers le lecteur vidéo d'origine"},
+    "cfg_hide_posts": {"message": "Masquer les publications"}
 }

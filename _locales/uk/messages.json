@@ -27,5 +27,6 @@
 
     "cfg_hide_live_videos": {"message": "Приховати 'живі' відео"},
     "cfg_hide_upcoming_videos": {"message": "Приховати 'майбутні' відео"},
-    "cfg_shorts_in_original_video_player": {"message": "Перенаправлення на оригінальний відеоплеєр"}
+    "cfg_shorts_in_original_video_player": {"message": "Перенаправлення на оригінальний відеоплеєр"},
+    "cfg_hide_posts": {"message": "Приховати публікації"}
 }
