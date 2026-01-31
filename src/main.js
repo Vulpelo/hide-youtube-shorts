@@ -50,7 +50,7 @@ const REST_SHORTS_CONTAINERS_TAG = isMobile ? [
     // extendable shelf with shorts on Search page
     ["grid-shelf-view-model"],
     // shelf containing multiple shorts on Home page
-    ["ytd-rich-shelf-renderer"],
+    ["ytd-rich-section-renderer:has(>div>ytd-rich-shelf-renderer)"],
     // container of videos on home/subscription page (so far only for shorts)
     ["ytd-rich-grid-group"],
 
@@ -268,16 +268,17 @@ function setup() {
         loadVariables(value);
 
         hidingMethodsToExecute = []
-        if (hideYTShortsVideos) {
-            hidingMethodsToExecute.push(() => hideShorts(hideYTShortsVideos))
-        }
-        else {
-            hideShorts(hideYTShortsVideos)
-        }
 
         combinedSelectorsToQuery = REST_SHORTS_CONTAINERS_TAG;
 
         if (isMobile) {
+            if (hideYTShortsVideos) {
+                hidingMethodsToExecute.push(() => hideShortsMobile(hideYTShortsVideos))
+            }
+            else {
+                hideShortsMobile(hideYTShortsVideos)
+            }
+
             if (hideYTShortsTab) {
                 hidingMethodsToExecute.push(() => hideShortsTab(hideYTShortsTab))
             }
@@ -298,6 +299,13 @@ function setup() {
                 { childList: true, subtree: true });
         }
         else {
+            if (hideYTShortsVideos) {
+                hidingMethodsToExecute.push(() => hideShortsDesktop(hideYTShortsVideos))
+            }
+            else {
+                hideShortsDesktop(hideYTShortsVideos)
+            }
+
             combinedSelectorsToQuery += "," + dHidingVideoRenderer.elementTagName;
             waitForElementTimeout("#page-manager", document.body, { timeout_ms: 5000 }).then((wrapperElement1) => {
                 pageManagerNode = wrapperElement1;
@@ -413,7 +421,7 @@ function locationPathNameNodes() {
     return childrenInPageManagerWithoutKnownOnes();
 }
 
-function hideShorts(hide = true) {
+function hideShortsDesktop(hide = true) {
     if (isLocationPathNameToIgnore())
         return;
 
@@ -436,16 +444,6 @@ function hideShorts(hide = true) {
                 else
                     dHideVideoRendererSubscriptionPage.showShort(element);
             }
-            else if (isMobile === true
-                && location.pathname.match(hidingShortsOnPathNames.homePage.reg)
-                && elementTagName.match(mHidingVideoRenderer.elementTagName)) {
-                if (hide) {
-                    mHidingVideoRenderer.hideShort(element);
-                }
-                else {
-                    mHidingVideoRenderer.showShort(element);
-                }
-            }
             // other pages with containers on search page and channel's search
             else if (elementTagName.match(dHidingVideoRenderer.elementTagName)) {
                 if (hide) {
@@ -456,6 +454,40 @@ function hideShorts(hide = true) {
                 }
                 else {
                     dHidingVideoRenderer.showShort(element);
+                }
+            }
+            // hide whole shelf if just contains "yt[dm]-reel-item-renderer" tag. For now seems to be only used for yt-shorts videos
+            // and hide any video container that contains a ref link to shorts
+            else if ((elementTagName.match(SHELF_TAG_REGEX)
+                && element.querySelector(SHELF_ITEM_TAG_SELECTOR) != null)
+                || element.querySelector(SHORTS_HREF_SELECTOR) != null) {
+                hideElement(hide, element, () => { dRearrangeVideosInGrid.execute(element) });
+            }
+            else if (hide) {
+                hideNonShorts(element)
+            }
+        });
+    }
+}
+
+function hideShortsMobile(hide = true) {
+    if (isLocationPathNameToIgnore())
+        return;
+
+    const nodes = locationPathNameNodes();
+    for (let i = 0; i < nodes.length; i++) {
+        let elements = nodes[i].querySelectorAll(combinedSelectorsToQuery);
+        elements.forEach(element => {
+
+            const elementTagName = element.tagName.toLowerCase();
+
+            if (location.pathname.match(hidingShortsOnPathNames.homePage.reg)
+                && elementTagName.match(mHidingVideoRenderer.elementTagName)) {
+                if (hide) {
+                    mHidingVideoRenderer.hideShort(element);
+                }
+                else {
+                    mHidingVideoRenderer.showShort(element);
                 }
             }
             // hide whole shelf if just contains "yt[dm]-reel-item-renderer" tag. For now seems to be only used for yt-shorts videos
