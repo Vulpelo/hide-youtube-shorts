@@ -9,6 +9,7 @@ const videoElementNormal3 = require('./fixtures/video_element_NORMAL-3.js')
 const videoElementNormal3Hovered = require('./fixtures/video_element_NORMAL-3-hovered.js')
 const playlistElement = require('./fixtures/playlist_element.js')
 const videoElementListUpcoming1 = require('./fixtures/video_list_element_UPCOMING.js')
+const videoElementMembersOnly1 = require('./fixtures/video_element_d_MEMBERS_FIRST.js')
 
 const VIDEO_ELEMENT_SELECTOR = "ytd-rich-item-renderer,ytd-video-renderer"
 
@@ -46,10 +47,12 @@ function hideVideoIfOfType(types, element) {
 	else if (timeOverlay.hasAttribute("overlay-style") && types.includes(timeOverlay.getAttribute("overlay-style"))) {
 		toHide = true
 	}
+    else if (types.includes("MEMBERS_ONLY")) {
+        const membersBadgeOverlay = element.querySelector("ytd-badge-supported-renderer>div>badge-shape.yt-badge-shape--membership")
+        toHide = membersBadgeOverlay !== null
+    }
 
-    if (toHide)
-	    return true; // hideElement()
-    return false
+    return toHide
 }
 
 function hideVideoIfBelowLength(element, minLengthSeconds) {
@@ -155,11 +158,33 @@ describe('Hiding LIVE type videos', () => {
     });
 });
 
+describe('Hiding MEMBERS_ONLY type videos', () => {
+        test('channels videos tab - v1', () => {
+        document.body.innerHTML = videoElementMembersOnly1
+        let element = document.querySelector(VIDEO_ELEMENT_SELECTOR)
+
+        let x = hideVideoIfOfType([], element)
+        expect(x).toBe(false)
+
+        x = hideVideoIfOfType(["LIVE"], element)
+        expect(x).toBe(false)
+
+        x = hideVideoIfOfType(["UPCOMING"], element)
+        expect(x).toBe(false)
+
+        x = hideVideoIfOfType(["MEMBERS_ONLY"], element)
+        expect(x).toBe(true)
+
+        x = hideVideoIfOfType(["LIVE", "UPCOMING", "MEMBERS_ONLY"], element)
+        expect(x).toBe(true)
+    });
+})
+
 test('Dont hide NORMAL video when hiding LIVE and UPCOMING type videos - v1', () => {
     document.body.innerHTML = videoElementNormal1
 
     let element = document.querySelector(VIDEO_ELEMENT_SELECTOR)
-    let x = hideVideoIfOfType(["LIVE", "UPCOMING"], element)
+    let x = hideVideoIfOfType([], element)
     expect(x).toBe(false)
 
     x = hideVideoIfOfType(["LIVE"], element)
@@ -168,7 +193,10 @@ test('Dont hide NORMAL video when hiding LIVE and UPCOMING type videos - v1', ()
     x = hideVideoIfOfType(["UPCOMING"], element)
     expect(x).toBe(false)
 
-    x = hideVideoIfOfType([], element)
+    x = hideVideoIfOfType(["MEMBERS_ONLY"], element)
+    expect(x).toBe(false)
+
+    x = hideVideoIfOfType(["LIVE", "UPCOMING", "MEMBERS_ONLY"], element)
     expect(x).toBe(false)
 });
 
@@ -176,7 +204,7 @@ test('Dont hide NORMAL video when hiding LIVE and UPCOMING type videos - v2', ()
     document.body.innerHTML = videoElementNormal2
 
     let element = document.querySelector(VIDEO_ELEMENT_SELECTOR)
-    let x = hideVideoIfOfType(["LIVE", "UPCOMING"], element)
+    let x = hideVideoIfOfType([], element)
     expect(x).toBe(false)
 
     x = hideVideoIfOfType(["LIVE"], element)
@@ -185,7 +213,10 @@ test('Dont hide NORMAL video when hiding LIVE and UPCOMING type videos - v2', ()
     x = hideVideoIfOfType(["UPCOMING"], element)
     expect(x).toBe(false)
 
-    x = hideVideoIfOfType([], element)
+    x = hideVideoIfOfType(["MEMBERS_ONLY"], element)
+    expect(x).toBe(false)
+
+    x = hideVideoIfOfType(["LIVE", "UPCOMING", "MEMBERS_ONLY"], element)
     expect(x).toBe(false)
 });
 
@@ -202,7 +233,10 @@ test('Dont hide NORMAL video when hiding LIVE and UPCOMING type videos - v3', ()
     x = hideVideoIfOfType(["UPCOMING"], element)
     expect(x).toBe(false)
 
-    x = hideVideoIfOfType(["LIVE", "UPCOMING"], element)
+    x = hideVideoIfOfType(["MEMBERS_ONLY"], element)
+    expect(x).toBe(false)
+
+    x = hideVideoIfOfType(["LIVE", "UPCOMING", "MEMBERS_ONLY"], element)
     expect(x).toBe(false)
 });
 
@@ -219,8 +253,10 @@ test('Dont hide hovered NORMAL video when hiding LIVE and UPCOMING type videos -
     x = hideVideoIfOfType(["UPCOMING"], element)
     expect(x).toBe(false)
     
-    
-    x = hideVideoIfOfType(["LIVE", "UPCOMING"], element)
+    x = hideVideoIfOfType(["MEMBERS_ONLY"], element)
+    expect(x).toBe(false)
+
+    x = hideVideoIfOfType(["LIVE", "UPCOMING", "MEMBERS_ONLY"], element)
     expect(x).toBe(false)
 });
 

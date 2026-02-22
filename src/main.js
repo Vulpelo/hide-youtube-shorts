@@ -95,6 +95,7 @@ let combinedSelectorsToQuery;
 // Hide other video types
 const LIVE = "LIVE"
 const UPCOMING = "UPCOMING"
+const MEMBERS_ONLY = "MEMBERS_ONLY"
 let hidingVideoTypes = []
 
 // Hide custom elements
@@ -185,6 +186,11 @@ function loadVariables(value) {
         chrome.storage.local.set({ hidingUpcomingVideosActive: false });
     if (value.hidingUpcomingVideosActive === true)
         hidingVideoTypes.push(UPCOMING)
+
+    if (value.hidingMembersOnlyVideosActive == undefined)
+        chrome.storage.local.set({ hidingMembersOnlyVideosActive: false });
+    if (value.hidingMembersOnlyVideosActive === true)
+        hidingVideoTypes.push(MEMBERS_ONLY)
 
     if (value.hidingPostsActive == undefined)
         chrome.storage.local.set({ hidingPostsActive: hideYTPosts });
@@ -518,7 +524,7 @@ function hideVideoIfOfType(types, element) {
     const timeOverlay = element.querySelector(TIME_OVERLAY_STATUS_TAG)
     let toHide = false
     if (timeOverlay === null) {
-        if (types.includes("UPCOMING")) {
+        if (types.includes(UPCOMING)) {
             const foundElement = element.querySelector(`badge-shape.yt-badge-shape--thumbnail-default:has(div.yt-badge-shape__text):not(:has(div.yt-badge-shape__icon))`)
             const foundElement2 = element.querySelector(`toggle-button-view-model`) // Notification button
             const timeStatuses = element.querySelectorAll(`badge-shape.yt-badge-shape--thumbnail-default>div.yt-badge-shape__text`)
@@ -534,7 +540,7 @@ function hideVideoIfOfType(types, element) {
             }
         }
 
-        if (!toHide && types.includes("LIVE")) {
+        if (!toHide && types.includes(LIVE)) {
             // on home/subscription pages, live videos have different tree and tags
             const liveBadgeOverlay = element.querySelector("yt-thumbnail-badge-view-model>badge-shape.badge-shape-wiz--thumbnail-live,ytd-badge-supported-renderer>div.badge-style-type-live-now-alternate,yt-thumbnail-badge-view-model>badge-shape.yt-badge-shape--thumbnail-live")
             toHide = liveBadgeOverlay !== null
@@ -542,6 +548,10 @@ function hideVideoIfOfType(types, element) {
     }
     else if (timeOverlay.hasAttribute("overlay-style") && types.includes(timeOverlay.getAttribute("overlay-style"))) {
         toHide = true
+    }
+    else if (types.includes("MEMBERS_ONLY")) {
+        const membersBadgeOverlay = element.querySelector("ytd-badge-supported-renderer>div>badge-shape.yt-badge-shape--membership")
+        toHide = membersBadgeOverlay !== null
     }
 
     if (toHide)

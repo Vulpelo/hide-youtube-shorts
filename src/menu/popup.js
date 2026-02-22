@@ -127,6 +127,14 @@ window.onload = function () {
             chrome.storage.local.set({ hidingUpcomingVideosActive: e.target.checked });
         })
 
+        // hiding upcoming videos
+        const hidingMembersOnlyVideosInputCheckbox = document.getElementById("hidingMembersOnlyVideosInputCheckbox");
+        if (value.hidingMembersOnlyVideosActive != undefined)
+            hidingMembersOnlyVideosInputCheckbox.checked = value.hidingMembersOnlyVideosActive;
+        hidingMembersOnlyVideosInputCheckbox.addEventListener("input", function (e) {
+            chrome.storage.local.set({ hidingMembersOnlyVideosActive: e.target.checked });
+        })
+
         // hiding posts
         const hidingPostsCheckbox = document.getElementById("hidingPostsCheckbox");
         if (value.hidingPostsActive != undefined)
@@ -161,6 +169,7 @@ window.onload = function () {
 
     document.getElementById("hide_live_videos_text").textContent = chrome.i18n.getMessage("cfg_hide_live_videos");
     document.getElementById("hide_upcoming_videos_text").textContent = chrome.i18n.getMessage("cfg_hide_upcoming_videos");
+    document.getElementById("hide_members_only_videos_text").textContent = chrome.i18n.getMessage("cfg_hide_members_only_videos_text");
     document.getElementById("shorts_in_original_video_player_text").textContent = chrome.i18n.getMessage("cfg_shorts_in_original_video_player");
     document.getElementById("hide_posts_text").textContent = chrome.i18n.getMessage("cfg_hide_posts");
 
