@@ -2,15 +2,34 @@
   --color-bg: #fefefe;
   --color-text: #111111;
 }
+
 @media (prefers-color-scheme: dark) {
   :root {
     --color-bg: #111111;
     --color-text: #fefefe;
   }
 
-  #ghlink {
+  #ghlink:not([data-theme]) {
     filter: invert(100%);
   }
+}
+
+:root[data-theme="light"] {
+  --color-bg: #fefefe;
+  --color-text: #111111;
+}
+
+:root[data-theme="dark"] {
+  --color-bg: #111111;
+  --color-text: #fefefe;
+}
+
+:root[data-theme="light"] #ghlink {
+  filter: none;
+}
+
+:root[data-theme="dark"] #ghlink {
+  filter: invert(100%);
 }
 
 body {

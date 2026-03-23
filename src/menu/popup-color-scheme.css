@@ -1,0 +1,41 @@
+#theme-toggle {
+  display: flex;
+  justify-content: end;
+}
+
+#theme-button {
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  font-size: 1.2rem;
+  display: grid;
+}
+
+#theme-button span {
+  grid-area: 1 / 1;
+}
+
+#theme-button .sun {
+  opacity: 1;
+}
+
+#theme-button .moon {
+  opacity: 0;
+}
+
+[data-theme="dark"] #theme-button .sun {
+  opacity: 0;
+}
+
+[data-theme="dark"] #theme-button .moon {
+  opacity: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) #theme-button .sun {
+    opacity: 0;
+  }
+  :root:not([data-theme]) #theme-button .moon {
+    opacity: 1;
+  }
+}
