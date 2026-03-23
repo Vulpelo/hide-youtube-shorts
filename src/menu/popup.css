@@ -1,90 +1,91 @@
 body {
-	max-width: 14rem;
-	min-width: 12rem;
-    height: 100%;
+  max-width: 14rem;
+  min-width: 12rem;
+  height: 100%;
 }
 
 .bottom {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin-top: 5px;
-    height: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 5px;
+  height: 20px;
 }
 .right {
-    text-align: right;
+  text-align: right;
 }
 
 .setting {
-    user-select: none;
+  user-select: none;
 }
 
 #hideYTShortsVideosInput:checked + span + .rearrangeVideosContent {
-    display: inline;
-    width: 100%;
-    opacity: 1;
-    pointer-events: auto;
-    cursor: auto;
-    visibility: visible;
+  display: inline;
+  width: 100%;
+  opacity: 1;
+  pointer-events: auto;
+  cursor: auto;
+  visibility: visible;
 }
 
 .more-dropdown {
-    max-height: 210px; 
-    overflow-y: scroll;
-    overflow-x: hidden;
+  max-height: 210px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .tooltip .tooltiptext {
-    width: 120px;
-    left: 0; 
-    visibility: hidden;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 5px;
+  width: 120px;
+  left: 0;
+  visibility: hidden;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 5px;
 }
 
 .tooltip {
-    border-bottom: 1px dotted black;
+  border-bottom: 1px dotted black;
 }
 
 .tooltiptext {
-    display: block;
-    position: absolute;
-    z-index: 9999;
-    bottom: 100%;
+  display: block;
+  position: absolute;
+  z-index: 9999;
+  bottom: 100%;
 }
 
 .tooltip:hover > .tooltiptext {
-    transition-delay: 700ms;
-    visibility: visible;
+  transition-delay: 700ms;
+  visibility: visible;
 }
 
 details {
-	width: 100%;
-	background: #ffffff;
-	border-radius: 8px;
-	position: relative;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 8px;
+  position: relative;
 }
 
 .summary-title.details {
-	user-select: none;
+  user-select: none;
 }
 
-summary:hover, .details {
-	cursor: pointer;
+summary:hover,
+.details {
+  cursor: pointer;
 }
 
 .summary-content.details {
-	border-top: 1px solid #e2e8f0;
-	cursor: default;
-	line-height: 1.5;
+  border-top: 1px solid #e2e8f0;
+  cursor: default;
+  line-height: 1.5;
 }
 
 .summary-chevron-up,
 .summary-chevron-down {
-	pointer-events: none;
-	position: absolute;
-	top: 0.75em;
-	background: #ffffff;
+  pointer-events: none;
+  position: absolute;
+  top: 0.75em;
+  background: #ffffff;
 }
