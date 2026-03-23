@@ -1,12 +1,16 @@
 :root {
   --color-bg: #fefefe;
   --color-text: #111111;
+  --color-tooltip-bg: #fefefe;
+  --color-tooltip-text: #111111;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --color-bg: #111111;
     --color-text: #fefefe;
+    --color-tooltip-bg: #111111;
+    --color-tooltip-text: #fefefe;
   }
 
   #ghlink:not([data-theme]) {
@@ -17,11 +21,15 @@
 :root[data-theme="light"] {
   --color-bg: #fefefe;
   --color-text: #111111;
+  --color-tooltip-bg: #fefefe;
+  --color-tooltip-text: #111111;
 }
 
 :root[data-theme="dark"] {
   --color-bg: #111111;
   --color-text: #fefefe;
+  --color-tooltip-bg: #111111;
+  --color-tooltip-text: #fefefe;
 }
 
 :root[data-theme="light"] #ghlink {
@@ -73,6 +81,8 @@ body {
   width: 120px;
   left: 0;
   visibility: hidden;
+  background-color: var(--color-tooltip-bg);
+  color: var(--color-tooltip-text);
   text-align: center;
   border-radius: 6px;
   padding: 5px 5px;
