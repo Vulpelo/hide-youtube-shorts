@@ -1,7 +1,24 @@
+:root {
+  --color-bg: #fefefe;
+  --color-text: #111111;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #111111;
+    --color-text: #fefefe;
+  }
+
+  #ghlink {
+    filter: invert(100%);
+  }
+}
+
 body {
   max-width: 14rem;
   min-width: 12rem;
   height: 100%;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 .bottom {
@@ -37,8 +54,6 @@ body {
   width: 120px;
   left: 0;
   visibility: hidden;
-  background-color: black;
-  color: #fff;
   text-align: center;
   border-radius: 6px;
   padding: 5px 5px;
@@ -62,7 +77,6 @@ body {
 
 details {
   width: 100%;
-  background: #ffffff;
   border-radius: 8px;
   position: relative;
 }
@@ -87,5 +101,4 @@ summary:hover,
   pointer-events: none;
   position: absolute;
   top: 0.75em;
-  background: #ffffff;
 }
