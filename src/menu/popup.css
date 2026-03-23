@@ -1,16 +1,16 @@
 :root {
-  --color-bg: #fefefe;
+  --color-bg: #eeeeee;
   --color-text: #111111;
-  --color-tooltip-bg: #fefefe;
+  --color-tooltip-bg: #eeeeee;
   --color-tooltip-text: #111111;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --color-bg: #111111;
-    --color-text: #fefefe;
+    --color-text: #eeeeee;
     --color-tooltip-bg: #111111;
-    --color-tooltip-text: #fefefe;
+    --color-tooltip-text: #eeeeee;
   }
 
   #ghlink:not([data-theme]) {
@@ -19,17 +19,17 @@
 }
 
 :root[data-theme="light"] {
-  --color-bg: #fefefe;
+  --color-bg: #eeeeee;
   --color-text: #111111;
-  --color-tooltip-bg: #fefefe;
+  --color-tooltip-bg: #eeeeee;
   --color-tooltip-text: #111111;
 }
 
 :root[data-theme="dark"] {
   --color-bg: #111111;
-  --color-text: #fefefe;
+  --color-text: #eeeeee;
   --color-tooltip-bg: #111111;
-  --color-tooltip-text: #fefefe;
+  --color-tooltip-text: #eeeeee;
 }
 
 :root[data-theme="light"] #ghlink {
