@@ -28,5 +28,6 @@
     "cfg_hide_live_videos": {"message": "'Live-Videos' ausblenden"},
     "cfg_hide_upcoming_videos": {"message": "'Kommende' Videos ausblenden"},
     "cfg_shorts_in_original_video_player": {"message": "Weiterleitung zum Original-Videoplayer"},
-    "cfg_hide_posts": {"message": "Beiträge ausblenden"}
+    "cfg_hide_posts": {"message": "Beiträge ausblenden"},
+    "cfg_hide_playables": {"message": "Playables-Ablage ausblenden"}
 }
