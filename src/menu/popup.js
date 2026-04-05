@@ -25,6 +25,14 @@ window.onload = function () {
             chrome.storage.local.set({ hideYTShortsNotifications: e.target.checked });
         })
 
+        // hide playables
+        const hideYTPlayablesInput = document.getElementById("hideYTPlayablesInput");
+        if (value.hideYTPlayables != undefined)
+            hideYTPlayablesInput.checked = value.hideYTPlayables;
+        hideYTPlayablesInput.addEventListener("input", function (e) {
+            chrome.storage.local.set({ hideYTPlayables: e.target.checked });
+        })
+
         // hide shorts Home
         const hideYTShortsHomeInput = document.getElementById("hideYTShortsVideosOnHomePageInput");
         if (value.hideYTShortsHome != undefined)
@@ -141,6 +149,7 @@ window.onload = function () {
     document.getElementById("hide_videos_text").textContent = chrome.i18n.getMessage("cfg_hide_videos");
     document.getElementById("hide_tab_text").textContent = chrome.i18n.getMessage("cfg_hide_tab");
     document.getElementById("hide_notifications_text").textContent = chrome.i18n.getMessage("cfg_hide_notifications");
+    document.getElementById("hide_playables_text").textContent = chrome.i18n.getMessage("cfg_hide_playables");
     document.getElementById("settings_text").textContent = chrome.i18n.getMessage("setting_text");
     document.getElementById("settings_experimental_text").textContent = chrome.i18n.getMessage("setting_experimental_text");
     document.getElementById("settings_performance_text").textContent = chrome.i18n.getMessage("settings_performance_text");

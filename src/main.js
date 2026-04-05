@@ -18,6 +18,7 @@ let hidingShortVideosActive = false;
 let hidingShortVideosTimeSeconds = 20;
 
 let hideYTPosts = false
+let hideYTPlayables = false
 
 const isMobile = location.hostname == "m.youtube.com";
 
@@ -80,6 +81,7 @@ const DESKTOP_NOTIFICATION_RENDERER = "ytd-notification-renderer";
 
 const SHORTS_TAB_SELECTOR = isMobile ? "ytm-pivot-bar-item-renderer>div[class='pivot-bar-item-tab pivot-shorts']" : "ytd-guide-entry-renderer>a:not([href])"
 const SHORTS_HREF_SELECTOR = `[href^="/shorts/"]`;
+const PLAYABLES_HREF_SELECTOR = `[href^="/playables"]`;
 
 /* dedicated shelfs for shorts */
 const SHELF_TAG_REGEX = /yt[dm]-reel-shelf-renderer/gm
@@ -253,6 +255,11 @@ function loadVariables(value) {
         chrome.storage.local.set({ subscriptionShelfCloseButton: subscriptionShelfCloseButton });
     else
         subscriptionShelfCloseButton = value.subscriptionShelfCloseButton;
+
+    if (value.hideYTPlayables == undefined)
+        chrome.storage.local.set({ hideYTPlayables: hideYTPlayables });
+    else
+        hideYTPlayables = value.hideYTPlayables;
 }
 
 function executeMethods() {
@@ -299,7 +306,7 @@ function setup() {
                 { childList: true, subtree: true });
         }
         else {
-            if (hideYTShortsVideos) {
+            if (hideYTShortsVideos || hideYTPlayables) {
                 hidingMethodsToExecute.push(() => hideShortsDesktop(hideYTShortsVideos))
             }
             else {
@@ -349,7 +356,7 @@ function setup() {
             hideShortsTab(hideYTShortsTab);
 
             observer = manageObserver("#content",
-                hideYTShortsVideos,
+                hideYTShortsVideos || hideYTPlayables,
                 hideShortsCallback,
                 observer,
                 { childList: true, subtree: true });
@@ -463,6 +470,9 @@ function hideShortsDesktop(hide = true) {
                 || element.querySelector(SHORTS_HREF_SELECTOR) != null) {
                 hideElement(hide, element, () => { dRearrangeVideosInGrid.execute(element) });
             }
+            else if (element.querySelector(PLAYABLES_HREF_SELECTOR) != null) {
+                hideElement(hideYTPlayables, element, () => { dRearrangeVideosInGrid.execute(element) });
+            }
             else if (hide) {
                 hideNonShorts(element)
             }
@@ -496,6 +506,9 @@ function hideShortsMobile(hide = true) {
                 && element.querySelector(SHELF_ITEM_TAG_SELECTOR) != null)
                 || element.querySelector(SHORTS_HREF_SELECTOR) != null) {
                 hideElement(hide, element, () => { dRearrangeVideosInGrid.execute(element) });
+            }
+            else if (element.querySelector(PLAYABLES_HREF_SELECTOR) != null) {
+                hideElement(hideYTPlayables, element, () => { dRearrangeVideosInGrid.execute(element) });
             }
             else if (hide) {
                 hideNonShorts(element)

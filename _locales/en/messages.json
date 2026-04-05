@@ -28,5 +28,6 @@
     "cfg_hide_live_videos": {"message": "Hide Live videos"},
     "cfg_hide_upcoming_videos": {"message": "Hide 'Upcoming' videos"},
     "cfg_shorts_in_original_video_player": {"message": "Redirect to original video player"},
-    "cfg_hide_posts": {"message": "Hide posts"}
+    "cfg_hide_posts": {"message": "Hide posts"},
+    "cfg_hide_playables": {"message": "Hide Playables shelf"}
 }
