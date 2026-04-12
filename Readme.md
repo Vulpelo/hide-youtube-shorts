@@ -21,6 +21,13 @@ Also allows you to hide "Shorts" tab.
 - Hiding 'Upcoming' videos (experimental, off by default)
 - Redirect shorts to original video player (experimental, off by default)
 - Hiding posts (experimental, off by default)
+- Hide custom elements (off by default)
+
+### Hide custom elements
+
+```
+ytd-guide-entry-renderer>a[href='/feed/subscriptions'],ytd-guide-entry-renderer>a[href='/feed/you']
+```
 
 ## Installation
 

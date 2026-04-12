@@ -1,23 +1,12 @@
 let observer = null;
 let hideYTShortsVideos = true;
 let hideYTShortsTab = true;
-let isHidingShortsTimeoutActive = false;
 
-let notificationsObserver = null;
-let hideYTShortsNotifications = true;
-
-let pageManagerNode = null;
-let subscriptionPageOpenObserver = null;
-let subscriptionShelfCloseButton = false;
-
-let timeoutId = -1;
 let hidingShortsTimeoutActive = false;
-let hidingShortsTimeoutTimeMs = 500;
 
 let hidingShortVideosActive = false;
 let hidingShortVideosTimeSeconds = 20;
 
-let hideYTPosts = false
 let hideYTPlayables = false
 
 const isMobile = location.hostname == "m.youtube.com";
@@ -94,105 +83,13 @@ const TIME_OVERLAY_STATUS_STYLE_ATTRIBUTE = isMobile ? "data-style" : "overlay-s
 /* Selectors used for searching shorts elements */
 let combinedSelectorsToQuery;
 
-// Hide other video types
-const LIVE = "LIVE"
-const UPCOMING = "UPCOMING"
-let hidingVideoTypes = []
-
-// Hide custom elements
-const MOBILE_POSTS_RENDERER = "ytm-rich-section-renderer:has(>div>ytm-backstage-post-thread-renderer)";
-let hideCustomElements = ""
-
 let hidingMethodsToExecute = []
 
-
-function waitForElement(selector, observeElement = document.body, { childList = true, subtree = true } = {}) {
-    return new Promise(resolve => {
-        let element = document.querySelector(selector);
-        if (element) {
-            return resolve(element);
-        }
-        const elementObserver = new MutationObserver(() => {
-            element = document.querySelector(selector);
-            if (element) {
-                resolve(element);
-                elementObserver.disconnect();
-            }
-        });
-        elementObserver.observe(observeElement, { childList: childList, subtree: subtree });
-    });
-}
-
-function waitForElementTimeout(selector, observeElement = document.body, { childList = true, subtree = true, timeout_ms = 150 } = {}) {
-    return new Promise(resolve => {
-        let element = document.querySelector(selector);
-        if (element) {
-            return resolve(element);
-        }
-        let timer = null;
-        const elementObserver = new MutationObserver(() => {
-            element = document.querySelector(selector);
-            if (element) {
-                clearTimeout(timer);
-                resolve(element);
-                elementObserver.disconnect();
-            }
-        });
-        elementObserver.observe(observeElement, { childList: childList, subtree: subtree });
-        if (timeout_ms > 0)
-            timer = setTimeout(() => {
-                resolve(null);
-                elementObserver.disconnect();
-            }, timeout_ms);
-    });
-}
-
-function hideElement(hide, element, onHideCallback = () => { }) {
-    if (hide) {
-        if (!element.hasAttribute("hidden")) {
-            element.setAttribute("hidden", true);
-            onHideCallback()
-        }
-    }
-    else if (element.hasAttribute("hidden")) {
-        element.removeAttribute("hidden");
-    }
-}
-
-function hidingShortsTimeout(callback, timeMs) {
-    if (isHidingShortsTimeoutActive) return;
-    isHidingShortsTimeoutActive = true;
-    timeoutId = setTimeout(() => {
-        callback();
-        isHidingShortsTimeoutActive = false;
-    }, timeMs);
-}
-
-function clearShortsTimeout() {
-    clearTimeout(timeoutId);
-    isHidingShortsTimeoutActive = false;
-}
 
 let hideShortsCallbackInner = () => { };
 function hideShortsCallback() { hideShortsCallbackInner(); };
 
 function loadVariables(value) {
-    hidingVideoTypes = []
-    if (value.hidingLiveVideosActive == undefined)
-        chrome.storage.local.set({ hidingLiveVideosActive: false });
-    if (value.hidingLiveVideosActive === true)
-        hidingVideoTypes.push(LIVE)
-
-    if (value.hidingUpcomingVideosActive == undefined)
-        chrome.storage.local.set({ hidingUpcomingVideosActive: false });
-    if (value.hidingUpcomingVideosActive === true)
-        hidingVideoTypes.push(UPCOMING)
-
-    if (value.hidingPostsActive == undefined)
-        chrome.storage.local.set({ hidingPostsActive: hideYTPosts });
-    else
-        hideYTPosts = value.hidingPostsActive;
-
     if (value.hideYTShortsVideos == undefined)
         chrome.storage.local.set({ hideYTShortsVideos: hideYTShortsVideos });
     else
@@ -202,11 +99,6 @@ function loadVariables(value) {
         chrome.storage.local.set({ hideYTShortsTab: hideYTShortsTab });
     else
         hideYTShortsTab = value.hideYTShortsTab;
-
-    if (value.hideYTShortsNotifications == undefined)
-        chrome.storage.local.set({ hideYTShortsNotifications: hideYTShortsNotifications });
-    else
-        hideYTShortsNotifications = value.hideYTShortsNotifications;
 
     if (value.hideYTShortsHome == undefined)
         chrome.storage.local.set({ hideYTShortsHome: true });
@@ -223,13 +115,6 @@ function loadVariables(value) {
     if (value.hideYTShortsVideosOnChannelPage == undefined)
         chrome.storage.local.set({ hideYTShortsVideosOnChannelPage: true });
     hidingShortsOnPathNames.channelPage.active = value.hideYTShortsVideosOnChannelPage;
-
-    if (value.hidingShortsTimeoutTimeMs == undefined)
-        chrome.storage.local.set({ hidingShortsTimeoutTimeMs: hidingShortsTimeoutTimeMs });
-    else if (hidingShortsTimeoutTimeMs != value.hidingShortsTimeoutTimeMs) {
-        clearShortsTimeout();
-        hidingShortsTimeoutTimeMs = value.hidingShortsTimeoutTimeMs;
-    }
 
     if (value.hidingShortsTimeoutActive == undefined)
         chrome.storage.local.set({ hidingShortsTimeoutActive: hidingShortsTimeoutActive });
@@ -251,11 +136,6 @@ function loadVariables(value) {
     }
     hidingShortsOnPathNames.channelPageNotHome.active = hidingShortVideosActive && hidingShortsOnPathNames.channelPage.active;
 
-    if (value.subscriptionShelfCloseButton == undefined)
-        chrome.storage.local.set({ subscriptionShelfCloseButton: subscriptionShelfCloseButton });
-    else
-        subscriptionShelfCloseButton = value.subscriptionShelfCloseButton;
-
     if (value.hideYTPlayables == undefined)
         chrome.storage.local.set({ hideYTPlayables: hideYTPlayables });
     else
@@ -269,7 +149,6 @@ function executeMethods() {
         })
 }
 
-
 function setup() {
     chrome.storage.local.get(null, function (value) {
         loadVariables(value);
@@ -278,6 +157,8 @@ function setup() {
 
         combinedSelectorsToQuery = REST_SHORTS_CONTAINERS_TAG;
 
+        let mainObserverSelector = ""
+        let mainObserverActive = false
         if (isMobile) {
             if (hideYTShortsVideos) {
                 hidingMethodsToExecute.push(() => hideShortsMobile(hideYTShortsVideos))
@@ -287,23 +168,15 @@ function setup() {
             }
 
             if (hideYTShortsTab) {
-                hidingMethodsToExecute.push(() => hideShortsTab(hideYTShortsTab))
+                hidingMethodsToExecute.push(() => hideShortsTabMobile(hideYTShortsTab))
             }
             else {
-                hideShortsTab(hideYTShortsTab)
+                hideShortsTabMobile(hideYTShortsTab)
             }
 
+            mainObserverSelector = "#app"
+            mainObserverActive = hideYTShortsTab || hideYTShortsVideos
             combinedSelectorsToQuery += "," + mHidingVideoRenderer.elementTagName
-            hideShortsCallbackInner =
-                hidingShortsTimeoutActive ?
-                    () => { hidingShortsTimeout(executeMethods, hidingShortsTimeoutTimeMs); }
-                    : executeMethods;
-
-            observer = manageObserver("#app",
-                hideYTShortsTab || hideYTShortsVideos,
-                hideShortsCallback,
-                observer,
-                { childList: true, subtree: true });
         }
         else {
             if (hideYTShortsVideos || hideYTPlayables) {
@@ -313,85 +186,32 @@ function setup() {
                 hideShortsDesktop(hideYTShortsVideos)
             }
 
+            setupCloseShelfButtonOnSubscriptionPage();
+            setupHidingNotificationsObserver();
+
+            hideShortsTabDesktop(hideYTShortsTab);
+
+            mainObserverSelector = "#content"
+            mainObserverActive = hideYTShortsVideos
             combinedSelectorsToQuery += "," + dHidingVideoRenderer.elementTagName;
-            waitForElementTimeout("#page-manager", document.body, { timeout_ms: 5000 }).then((wrapperElement1) => {
-                pageManagerNode = wrapperElement1;
-                if (subscriptionShelfCloseButton) {
-                    /* MutationObserver for Subscription page when got opened/closed */
-                    waitForElement("ytd-browse[page-subtype='subscriptions']", pageManagerNode, { childList: true, subtree: false }).then((wrapperElement2) => {
-                        createOpenCloseSubscriptionPageObserver(wrapperElement2);
-                    });
-                }
-            });
-
-            notificationsObserver = manageObserver("ytd-popup-container",
-                hideYTShortsNotifications,
-                (mutationList, observer) => {
-                    for (const mutation of mutationList) {
-                        if (mutation.type === "childList" && mutation.target.tagName.toLowerCase() == DESKTOP_NOTIFICATION_RENDERER) {
-                            if (mutation.target.querySelector(SHORTS_HREF_SELECTOR) != null)
-                                hideElement(true, mutation.target)
-                        }
-                    }
-                },
-                notificationsObserver,
-                { childList: true, subtree: true }
-            )
-
-            const popupContainer = document.querySelector("ytd-popup-container")
-            if (popupContainer != null) {
-                const nRenderers = popupContainer.querySelectorAll(DESKTOP_NOTIFICATION_RENDERER)
-                nRenderers.forEach((v) => {
-                    if (v.querySelector(SHORTS_HREF_SELECTOR) != null)
-                        hideElement(hideYTShortsNotifications, v)
-                })
-            }
-
-            hideShortsCallbackInner =
-                hidingShortsTimeoutActive ?
-                    () => {
-                        hidingShortsTimeout(executeMethods, hidingShortsTimeoutTimeMs);
-                    }
-                    : executeMethods;
-            hideShortsTab(hideYTShortsTab);
-
-            observer = manageObserver("#content",
-                hideYTShortsVideos || hideYTPlayables,
-                hideShortsCallback,
-                observer,
-                { childList: true, subtree: true });
         }
+        
+        hideShortsCallbackInner =
+            hidingShortsTimeoutActive ?
+                () => { hidingShortsTimeout(executeMethods); }
+                : executeMethods;
+
+
+        observer = manageObserver(mainObserverSelector,
+            mainObserverActive || hideYTPlayables,
+            hideShortsCallback,
+            observer,
+            { childList: true, subtree: true });
 
         setupHidingCustomElements();
 
         hideShortsCallbackInner();
     });
-}
-
-function setupHidingCustomElements() {
-    let newHideCustomElements = "";
-    if (isMobile && hideYTPosts) {
-        newHideCustomElements = MOBILE_POSTS_RENDERER;
-    }
-
-    if (newHideCustomElements != "") {
-        hidingMethodsToExecute.push(() => hideCustom(true));
-    }
-    if (newHideCustomElements != hideCustomElements) {
-        if (hideCustomElements != "" && hideCustomElements != "") {
-            hideCustom(false);
-        }
-        hideCustomElements = newHideCustomElements;
-    }
-}
-
-function createOpenCloseSubscriptionPageObserver(node) {
-    addingCloseButtonForShelfOnSubscriptionsPage(node);
-    subscriptionPageOpenObserver = manageObserver("ytd-browse[page-subtype='subscriptions']",
-        true,
-        () => { addingCloseButtonForShelfOnSubscriptionsPage(node); },
-        subscriptionPageOpenObserver,
-        { attributes: true });
 }
 
 function isLocationPathNameToIgnore() {
@@ -403,7 +223,7 @@ function isLocationPathNameToIgnore() {
     return false;
 }
 
-function childrenInPageManagerWithoutKnownOnes() {
+function childrenInPageManagerInUnknownPath() {
     if (pageManagerNode == null) return [document.body];
     let finalNodeList = Array.from(pageManagerNode.children);
 
@@ -425,7 +245,7 @@ function locationPathNameNodes() {
         if (hidingShortsOnPathNames[key].node != null && pathName.match(hidingShortsOnPathNames[key].reg))
             return [hidingShortsOnPathNames[key].node];
     }
-    return childrenInPageManagerWithoutKnownOnes();
+    return childrenInPageManagerInUnknownPath();
 }
 
 function hideShortsDesktop(hide = true) {
@@ -517,112 +337,25 @@ function hideShortsMobile(hide = true) {
     }
 }
 
-function hideNonShorts(element) {
-    // Hide videos that are too short
-    if (hidingShortVideosActive) {
-        hideVideoIfBelowLength(element, hidingShortVideosTimeSeconds)
-    }
-    // Hide videos of type
-    if (hidingVideoTypes.length > 0)
-        hideVideoIfOfType(hidingVideoTypes, element)
-}
-
-function hideVideoIfOfType(types, element) {
-    const timeOverlay = element.querySelector(TIME_OVERLAY_STATUS_TAG)
-    let toHide = false
-    if (timeOverlay === null) {
-        if (types.includes("UPCOMING")) {
-            const foundElement = element.querySelector(`badge-shape.yt-badge-shape--thumbnail-default:has(div.yt-badge-shape__text):not(:has(div.yt-badge-shape__icon))`)
-            const foundElement2 = element.querySelector(`toggle-button-view-model`) // Notification button
-            const timeStatuses = element.querySelectorAll(`badge-shape.yt-badge-shape--thumbnail-default>div.yt-badge-shape__text`)
-            let nonHaveTimeStatus = true
-            timeStatuses.forEach(timeStatus => {
-                if (timeStatus.textContent && timeStatus.textContent.trim().match(/^([0-9]:[0-9]|[0-9])+$/)) {
-                    nonHaveTimeStatus = false
-                    return
-                }
-            })
-            if (foundElement !== null && foundElement2 !== null && timeStatuses.length > 0 && nonHaveTimeStatus) {
-                toHide = true
-            }
-        }
-
-        if (!toHide && types.includes("LIVE")) {
-            // on home/subscription pages, live videos have different tree and tags
-            const liveBadgeOverlay = element.querySelector("yt-thumbnail-badge-view-model>badge-shape.badge-shape-wiz--thumbnail-live,ytd-badge-supported-renderer>div.badge-style-type-live-now-alternate,yt-thumbnail-badge-view-model>badge-shape.yt-badge-shape--thumbnail-live")
-            toHide = liveBadgeOverlay !== null
-        }
-    }
-    else if (timeOverlay.hasAttribute("overlay-style") && types.includes(timeOverlay.getAttribute("overlay-style"))) {
-        toHide = true
-    }
-
-    if (toHide)
-        hideElement(true, element, () => { dRearrangeVideosInGrid.execute(element) });
-}
-
-function hideVideoIfBelowLength(element, minLengthSeconds) {
-    const timeStatus = element.querySelector('.badge-shape-wiz__text')
-    if (timeStatus != null) {
-        const time = timeStatus.textContent.trim().split(':').reverse()
-        const seconds = Number(time[0])
-            + (time.length > 1 ? Number(time[1]) * 60 : 0)
-            + (time.length > 2 ? Number(time[2]) * 3600 : 0)
-        if (seconds != NaN && seconds <= minLengthSeconds) {
-            hideElement(true, element, () => { dRearrangeVideosInGrid.execute(element) });
-        }
-    }
-}
-
-function hideShortsTab(hide) {
-    if (isMobile) {
-        let element = document.querySelector(SHORTS_TAB_SELECTOR);
-        if (element)
-            hideElement(hide, element.parentElement)
-    }
-    else {
-        waitForElement(DESKTOP_GUIDE_WRAPPER_SELECTOR, document.body).then((wrapperElement) => {
-            waitForElement(SHORTS_TAB_SELECTOR, wrapperElement).then((element) => {
-                if (element != null)
-                    hideElement(hide, element)
-            });
+function hideShortsTabDesktop(hide) {
+    waitForElement(DESKTOP_GUIDE_WRAPPER_SELECTOR, document.body).then((wrapperElement) => {
+        waitForElement(SHORTS_TAB_SELECTOR, wrapperElement).then((element) => {
+            if (element != null)
+                hideElement(hide, element)
         });
-        waitForElement(DESKTOP_GUIDE_WRAPPER_MINI_SELECTOR, document.body).then((wrapperElement) => {
-            waitForElement(DESKTOP_SHORTS_MINI_TAB_SELECTOR, wrapperElement).then((element) => {
-                if (element != null)
-                    hideElement(hide, element)
-            });
+    });
+    waitForElement(DESKTOP_GUIDE_WRAPPER_MINI_SELECTOR, document.body).then((wrapperElement) => {
+        waitForElement(DESKTOP_SHORTS_MINI_TAB_SELECTOR, wrapperElement).then((element) => {
+            if (element != null)
+                hideElement(hide, element)
         });
-    }
-}
-
-function hideCustom(hide = true) {
-    document.querySelectorAll(hideCustomElements).forEach((element) => {
-        hideElement(hide, element)
-    })
-}
-
-// the button will temporarly remove shelf from subscription page till next page reload
-function addingCloseButtonForShelfOnSubscriptionsPage(subscriptionNode) {
-    // find one eather on grid mode or list mode
-    waitForElementTimeout("ytd-rich-shelf-renderer, ytd-reel-shelf-renderer", subscriptionNode, { timeout_ms: 5000 }).then((element) => {
-        if (element != null && element.querySelector("div[id='shelfCloseButton']") == null)
-            insertCloseShelfButton(element.querySelector("[id=flexible-item-buttons]"));
     });
 }
 
-function manageObserver(selector, active, callback, aObserver = null, { childList = false, subtree = false, attributes = false } = {}) {
-    if (aObserver === null && active) {
-        waitForElement(selector, document.body).then((node) => {
-            aObserver = new MutationObserver(callback);
-            aObserver.observe(node, { childList: childList, subtree: subtree, attributes: attributes });
-        });
-    }
-    else if (aObserver !== null && !active) {
-        aObserver.disconnect();
-        aObserver = null;
-    }
-    return aObserver;
+function hideShortsTabMobile(hide) {
+    let element = document.querySelector(SHORTS_TAB_SELECTOR);
+    if (element)
+        hideElement(hide, element.parentElement)
 }
 
 chrome.storage.onChanged.addListener(function () {
