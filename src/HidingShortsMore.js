@@ -21,7 +21,7 @@ function hideContainerOfElement(container, element) {
 	}
 }
 
-function showContainerOfElement(container, element) {
+function _showContainerOfElement(container, element) {
 	const parent = _findParentWithElementTag(element.parentElement, container);
 	if (parent == null || !parent.hasAttribute("hidden")) return;
 	parent.removeAttribute("hidden");
@@ -54,7 +54,7 @@ class HidingShortsWithContainer {
 		if (element.querySelector(SHORTS_HREF_SELECTOR) == null) return;
 		if (element.hasAttribute("hidden")) {
 			element.removeAttribute("hidden");
-			showContainerOfElement(this.container, element);
+			_showContainerOfElement(this.container, element);
 		}
 	}
 }

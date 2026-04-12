@@ -17,7 +17,7 @@ jsdom.reconfigure({
 })
 
 
-function hideVideoIfOfType(types, element) {
+function _hideVideoIfOfType(types, element) {
 	const timeOverlay = element.querySelector("ytd-thumbnail-overlay-time-status-renderer")
     let toHide = false
 	if (timeOverlay === null) {
@@ -52,7 +52,7 @@ function hideVideoIfOfType(types, element) {
     return false
 }
 
-function hideVideoIfBelowLength(element, minLengthSeconds) {
+function _hideVideoIfBelowLength(element, minLengthSeconds) {
     const timeStatus = element.querySelector('.badge-shape-wiz__text,.yt-badge-shape__text')
     if (timeStatus != null) {
         const time = timeStatus.textContent.trim().split(':').reverse()
@@ -71,16 +71,16 @@ describe('Hiding UPCOMING type videos', () => {
         document.body.innerHTML = videoElementListUpcoming1
         let element = document.querySelector(VIDEO_ELEMENT_SELECTOR)
 
-        let x = hideVideoIfOfType(["LIVE", "UPCOMING"], element)
+        let x = _hideVideoIfOfType(["LIVE", "UPCOMING"], element)
         expect(x).toBe(true)
 
-        x = hideVideoIfOfType(["LIVE"], element)
+        x = _hideVideoIfOfType(["LIVE"], element)
         expect(x).toBe(false)
 
-        x = hideVideoIfOfType(["UPCOMING"], element)
+        x = _hideVideoIfOfType(["UPCOMING"], element)
         expect(x).toBe(true)
 
-        x = hideVideoIfOfType([], element)
+        x = _hideVideoIfOfType([], element)
         expect(x).toBe(false)
     });
 
@@ -88,16 +88,16 @@ describe('Hiding UPCOMING type videos', () => {
         document.body.innerHTML = videoElementUpcoming1
         let element = document.querySelector(VIDEO_ELEMENT_SELECTOR)
 
-        let x = hideVideoIfOfType(["LIVE", "UPCOMING"], element)
+        let x = _hideVideoIfOfType(["LIVE", "UPCOMING"], element)
         expect(x).toBe(true)
 
-        x = hideVideoIfOfType(["LIVE"], element)
+        x = _hideVideoIfOfType(["LIVE"], element)
         expect(x).toBe(false)
 
-        x = hideVideoIfOfType(["UPCOMING"], element)
+        x = _hideVideoIfOfType(["UPCOMING"], element)
         expect(x).toBe(true)
 
-        x = hideVideoIfOfType([], element)
+        x = _hideVideoIfOfType([], element)
         expect(x).toBe(false)
     });
 
@@ -105,16 +105,16 @@ describe('Hiding UPCOMING type videos', () => {
         document.body.innerHTML = videoElementUpcoming2
         let element = document.querySelector(VIDEO_ELEMENT_SELECTOR)
 
-        let x = hideVideoIfOfType(["LIVE", "UPCOMING"], element)
+        let x = _hideVideoIfOfType(["LIVE", "UPCOMING"], element)
         expect(x).toBe(true)
 
-        x = hideVideoIfOfType(["LIVE"], element)
+        x = _hideVideoIfOfType(["LIVE"], element)
         expect(x).toBe(false)
 
-        x = hideVideoIfOfType(["UPCOMING"], element)
+        x = _hideVideoIfOfType(["UPCOMING"], element)
         expect(x).toBe(true)
 
-        x = hideVideoIfOfType([], element)
+        x = _hideVideoIfOfType([], element)
         expect(x).toBe(false)
     });
 })
@@ -124,16 +124,16 @@ describe('Hiding LIVE type videos', () => {
         document.body.innerHTML = videoElementLive1
         let element = document.querySelector(VIDEO_ELEMENT_SELECTOR)
 
-        let x = hideVideoIfOfType(["LIVE", "UPCOMING"], element)
+        let x = _hideVideoIfOfType(["LIVE", "UPCOMING"], element)
         expect(x).toBe(true)
 
-        x = hideVideoIfOfType(["LIVE"], element)
+        x = _hideVideoIfOfType(["LIVE"], element)
         expect(x).toBe(true)
 
-        x = hideVideoIfOfType(["UPCOMING"], element)
+        x = _hideVideoIfOfType(["UPCOMING"], element)
         expect(x).toBe(false)
 
-        x = hideVideoIfOfType([], element)
+        x = _hideVideoIfOfType([], element)
         expect(x).toBe(false)
     });
 
@@ -141,16 +141,16 @@ describe('Hiding LIVE type videos', () => {
         document.body.innerHTML = videoElementLive2
         let element = document.querySelector(VIDEO_ELEMENT_SELECTOR)
         
-        let x = hideVideoIfOfType(["LIVE", "UPCOMING"], element)
+        let x = _hideVideoIfOfType(["LIVE", "UPCOMING"], element)
         expect(x).toBe(true)
 
-        x = hideVideoIfOfType(["LIVE"], element)
+        x = _hideVideoIfOfType(["LIVE"], element)
         expect(x).toBe(true)
 
-        x = hideVideoIfOfType(["UPCOMING"], element)
+        x = _hideVideoIfOfType(["UPCOMING"], element)
         expect(x).toBe(false)
 
-        x = hideVideoIfOfType([], element)
+        x = _hideVideoIfOfType([], element)
         expect(x).toBe(false)
     });
 });
@@ -159,16 +159,16 @@ test('Dont hide NORMAL video when hiding LIVE and UPCOMING type videos - v1', ()
     document.body.innerHTML = videoElementNormal1
 
     let element = document.querySelector(VIDEO_ELEMENT_SELECTOR)
-    let x = hideVideoIfOfType(["LIVE", "UPCOMING"], element)
+    let x = _hideVideoIfOfType(["LIVE", "UPCOMING"], element)
     expect(x).toBe(false)
 
-    x = hideVideoIfOfType(["LIVE"], element)
+    x = _hideVideoIfOfType(["LIVE"], element)
     expect(x).toBe(false)
 
-    x = hideVideoIfOfType(["UPCOMING"], element)
+    x = _hideVideoIfOfType(["UPCOMING"], element)
     expect(x).toBe(false)
 
-    x = hideVideoIfOfType([], element)
+    x = _hideVideoIfOfType([], element)
     expect(x).toBe(false)
 });
 
@@ -176,16 +176,16 @@ test('Dont hide NORMAL video when hiding LIVE and UPCOMING type videos - v2', ()
     document.body.innerHTML = videoElementNormal2
 
     let element = document.querySelector(VIDEO_ELEMENT_SELECTOR)
-    let x = hideVideoIfOfType(["LIVE", "UPCOMING"], element)
+    let x = _hideVideoIfOfType(["LIVE", "UPCOMING"], element)
     expect(x).toBe(false)
 
-    x = hideVideoIfOfType(["LIVE"], element)
+    x = _hideVideoIfOfType(["LIVE"], element)
     expect(x).toBe(false)
 
-    x = hideVideoIfOfType(["UPCOMING"], element)
+    x = _hideVideoIfOfType(["UPCOMING"], element)
     expect(x).toBe(false)
 
-    x = hideVideoIfOfType([], element)
+    x = _hideVideoIfOfType([], element)
     expect(x).toBe(false)
 });
 
@@ -193,16 +193,16 @@ test('Dont hide NORMAL video when hiding LIVE and UPCOMING type videos - v3', ()
     document.body.innerHTML = videoElementNormal3
 
     let element = document.querySelector(VIDEO_ELEMENT_SELECTOR)
-    let x = hideVideoIfOfType([], element)
+    let x = _hideVideoIfOfType([], element)
     expect(x).toBe(false)
 
-    x = hideVideoIfOfType(["LIVE"], element)
+    x = _hideVideoIfOfType(["LIVE"], element)
     expect(x).toBe(false)
 
-    x = hideVideoIfOfType(["UPCOMING"], element)
+    x = _hideVideoIfOfType(["UPCOMING"], element)
     expect(x).toBe(false)
 
-    x = hideVideoIfOfType(["LIVE", "UPCOMING"], element)
+    x = _hideVideoIfOfType(["LIVE", "UPCOMING"], element)
     expect(x).toBe(false)
 });
 
@@ -210,17 +210,17 @@ test('Dont hide hovered NORMAL video when hiding LIVE and UPCOMING type videos -
     document.body.innerHTML = videoElementNormal3Hovered
 
     let element = document.querySelector(VIDEO_ELEMENT_SELECTOR)
-    let x = hideVideoIfOfType([], element)
+    let x = _hideVideoIfOfType([], element)
     expect(x).toBe(false)
     
-    x = hideVideoIfOfType(["LIVE"], element)
+    x = _hideVideoIfOfType(["LIVE"], element)
     expect(x).toBe(false)
     
-    x = hideVideoIfOfType(["UPCOMING"], element)
+    x = _hideVideoIfOfType(["UPCOMING"], element)
     expect(x).toBe(false)
     
     
-    x = hideVideoIfOfType(["LIVE", "UPCOMING"], element)
+    x = _hideVideoIfOfType(["LIVE", "UPCOMING"], element)
     expect(x).toBe(false)
 });
 
@@ -228,19 +228,19 @@ test("Don't hide playlist element", () => {
     document.body.innerHTML = playlistElement
     let element = document.querySelector(VIDEO_ELEMENT_SELECTOR)
 
-    let x = hideVideoIfOfType(["LIVE", "UPCOMING"], element)
+    let x = _hideVideoIfOfType(["LIVE", "UPCOMING"], element)
     expect(x).toBe(false)
 
-    x = hideVideoIfOfType(["LIVE"], element)
+    x = _hideVideoIfOfType(["LIVE"], element)
     expect(x).toBe(false)
 
-    x = hideVideoIfOfType(["UPCOMING"], element)
+    x = _hideVideoIfOfType(["UPCOMING"], element)
     expect(x).toBe(false)
 
-    x = hideVideoIfOfType([], element)
+    x = _hideVideoIfOfType([], element)
     expect(x).toBe(false)
 
-    x = hideVideoIfBelowLength(element, 60)
+    x = _hideVideoIfBelowLength(element, 60)
     expect(x).toBe(false)
 })
 
@@ -249,7 +249,7 @@ describe('Hiding videos of length', () => {
         document.body.innerHTML = videoElementNormal1
 
         let element = document.querySelector(VIDEO_ELEMENT_SELECTOR)
-        let x = hideVideoIfBelowLength(element, 120)
+        let x = _hideVideoIfBelowLength(element, 120)
 
         expect(x).toBe(true)
     });
@@ -258,7 +258,7 @@ describe('Hiding videos of length', () => {
         document.body.innerHTML = videoElementNormal1
 
         let element = document.querySelector(VIDEO_ELEMENT_SELECTOR)
-        let x = hideVideoIfBelowLength(element, 60)
+        let x = _hideVideoIfBelowLength(element, 60)
 
         expect(x).toBe(false)
     });
@@ -267,7 +267,7 @@ describe('Hiding videos of length', () => {
         document.body.innerHTML = videoElementNormal2
 
         let element = document.querySelector(VIDEO_ELEMENT_SELECTOR)
-        let x = hideVideoIfBelowLength(element, 120)
+        let x = _hideVideoIfBelowLength(element, 120)
 
         expect(x).toBe(true)
     });
@@ -276,7 +276,7 @@ describe('Hiding videos of length', () => {
         document.body.innerHTML = videoElementNormal2
 
         let element = document.querySelector(VIDEO_ELEMENT_SELECTOR)
-        let x = hideVideoIfBelowLength(element, 60)
+        let x = _hideVideoIfBelowLength(element, 60)
 
         expect(x).toBe(false)
     });

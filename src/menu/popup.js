@@ -1,5 +1,28 @@
 window.onload = function () {
+    loadConfigurationFromStorage();
+    setupTextFieldsFromLocales();
+    setTextVersion();
+};
 
+setupTooltips();
+
+
+function setupTooltips() {
+    const tooltips = document.querySelectorAll(".tooltip");
+    const details = document.querySelector("details");
+
+    tooltips.forEach(tooltip => {
+        tooltip.onmouseover = function (e) {
+            const detailsY = details.getBoundingClientRect().bottom;
+            const tooltipRect = tooltip.getBoundingClientRect();
+
+            const tooltipText = tooltip.querySelector(".tooltiptext");
+            tooltipText.style.bottom = (detailsY - tooltipRect.bottom + tooltipRect.height) + 'px';
+        };
+    });
+}
+
+function loadConfigurationFromStorage() {
     chrome.storage.local.get(null, function (value) {
         // hide shorts
         const hideYTShortsInput = document.getElementById("hideYTShortsVideosInput");
@@ -7,7 +30,7 @@ window.onload = function () {
             hideYTShortsInput.checked = value.hideYTShortsVideos;
         hideYTShortsInput.addEventListener("input", function (e) {
             chrome.storage.local.set({ hideYTShortsVideos: e.target.checked });
-        })
+        });
 
         // hide tab
         const hideYTShortsTabInput = document.getElementById("hideYTShortsTabInput");
@@ -15,7 +38,7 @@ window.onload = function () {
             hideYTShortsTabInput.checked = value.hideYTShortsTab;
         hideYTShortsTabInput.addEventListener("input", function (e) {
             chrome.storage.local.set({ hideYTShortsTab: e.target.checked });
-        })
+        });
 
         // hide notifications
         const hideYTShortsNotificationsInput = document.getElementById("hideYTShortsNotificationsInput");
@@ -23,7 +46,7 @@ window.onload = function () {
             hideYTShortsNotificationsInput.checked = value.hideYTShortsNotifications;
         hideYTShortsNotificationsInput.addEventListener("input", function (e) {
             chrome.storage.local.set({ hideYTShortsNotifications: e.target.checked });
-        })
+        });
 
         // hide playables
         const hideYTPlayablesInput = document.getElementById("hideYTPlayablesInput");
@@ -39,28 +62,28 @@ window.onload = function () {
             hideYTShortsHomeInput.checked = value.hideYTShortsHome;
         hideYTShortsHomeInput.addEventListener("input", function (e) {
             chrome.storage.local.set({ hideYTShortsHome: e.target.checked });
-        })
+        });
         // hide shorts Subscription
         const hideYTShortsVideosOnSubscriptionPageInput = document.getElementById("hideYTShortsVideosOnSubscriptionPageInput");
         if (value.hideYTShortsVideosOnSubscriptionPage != undefined)
             hideYTShortsVideosOnSubscriptionPageInput.checked = value.hideYTShortsVideosOnSubscriptionPage;
         hideYTShortsVideosOnSubscriptionPageInput.addEventListener("input", function (e) {
             chrome.storage.local.set({ hideYTShortsVideosOnSubscriptionPage: e.target.checked });
-        })
+        });
         // hide shorts Search
         const hideYTShortsVideosOnSearchPageInput = document.getElementById("hideYTShortsVideosOnSearchPageInput");
         if (value.hideYTShortsVideosOnSearchPage != undefined)
             hideYTShortsVideosOnSearchPageInput.checked = value.hideYTShortsVideosOnSearchPage;
         hideYTShortsVideosOnSearchPageInput.addEventListener("input", function (e) {
             chrome.storage.local.set({ hideYTShortsVideosOnSearchPage: e.target.checked });
-        })
+        });
         // hide shorts Channel
         const hideYTShortsVideosOnChannelPageInput = document.getElementById("hideYTShortsVideosOnChannelPageInput");
         if (value.hideYTShortsVideosOnChannelPage != undefined)
             hideYTShortsVideosOnChannelPageInput.checked = value.hideYTShortsVideosOnChannelPage;
         hideYTShortsVideosOnChannelPageInput.addEventListener("input", function (e) {
             chrome.storage.local.set({ hideYTShortsVideosOnChannelPage: e.target.checked });
-        })
+        });
 
         // close button for shelf on subscription page
         const subscriptionShelfCloseButtonInputCheckbox = document.getElementById("subscriptionShelfCloseButtonInputCheckbox");
@@ -68,15 +91,23 @@ window.onload = function () {
             subscriptionShelfCloseButtonInputCheckbox.checked = value.subscriptionShelfCloseButton;
         subscriptionShelfCloseButtonInputCheckbox.addEventListener("input", function (e) {
             chrome.storage.local.set({ subscriptionShelfCloseButton: e.target.checked });
-        })
+        });
 
         // redirect Url
         const shortsInOriginalVideoPlayerInputCheckbox = document.getElementById("shortsInOriginalVideoPlayerInputCheckbox");
         if (value.shortsInOriginalVideoPlayer != undefined)
             shortsInOriginalVideoPlayerInputCheckbox.checked = value.shortsInOriginalVideoPlayer;
         shortsInOriginalVideoPlayerInputCheckbox.addEventListener("input", function (e) {
-            shortsInOriginalVideoPlayerCheckboxPermission(e)
-        })
+            shortsInOriginalVideoPlayerCheckboxPermission(e);
+        });
+
+        // custom hiding element
+        const customElementsToHideInputText = document.getElementById("customElementsToHideInputText");
+        if (value.userDefinedElementsToHide != undefined)
+            customElementsToHideInputText.value = value.userDefinedElementsToHide;
+        customElementsToHideInputText.addEventListener("input", function (e) {
+            chrome.storage.local.set({ userDefinedElementsToHide: e.target.value });
+        });
 
         // timeout
         const hidingShortsTimeoutTimeMsInput = document.getElementById("hidingShortsTimeoutTimeMsInput");
@@ -90,13 +121,13 @@ window.onload = function () {
             else if (maxAttr < e.target.value)
                 e.target.value = maxAttr;
             chrome.storage.local.set({ hidingShortsTimeoutTimeMs: e.target.value });
-        })
+        });
         const hidingShortsTimeoutTimeMsInputCheckbox = document.getElementById("hidingShortsTimeoutTimeMsInputCheckbox");
         if (value.hidingShortsTimeoutActive != undefined)
             hidingShortsTimeoutTimeMsInputCheckbox.checked = value.hidingShortsTimeoutActive;
         hidingShortsTimeoutTimeMsInputCheckbox.addEventListener("input", function (e) {
             chrome.storage.local.set({ hidingShortsTimeoutActive: e.target.checked });
-        })
+        });
 
         // hiding videos shorter than specified time
         const hidingShortVideosTimeSecondsInput = document.getElementById("hidingShortVideosTimeSecondsInput");
@@ -110,13 +141,13 @@ window.onload = function () {
             else if (maxAttr < e.target.value)
                 e.target.value = maxAttr;
             chrome.storage.local.set({ hidingShortVideosTimeSeconds: e.target.value });
-        })
+        });
         const hidingShortVideosTimeSecondsInputCheckbox = document.getElementById("hidingShortVideosTimeSecondsInputCheckbox");
         if (value.hidingShortVideosActive != undefined)
             hidingShortVideosTimeSecondsInputCheckbox.checked = value.hidingShortVideosActive;
         hidingShortVideosTimeSecondsInputCheckbox.addEventListener("input", function (e) {
             chrome.storage.local.set({ hidingShortVideosActive: e.target.checked });
-        })
+        });
 
 
         // hiding live videos
@@ -125,7 +156,7 @@ window.onload = function () {
             hidingLiveVideosInputCheckbox.checked = value.hidingLiveVideosActive;
         hidingLiveVideosInputCheckbox.addEventListener("input", function (e) {
             chrome.storage.local.set({ hidingLiveVideosActive: e.target.checked });
-        })
+        });
 
         // hiding upcoming videos
         const hidingUpcomingVideosInputCheckbox = document.getElementById("hidingUpcomingVideosInputCheckbox");
@@ -133,7 +164,7 @@ window.onload = function () {
             hidingUpcomingVideosInputCheckbox.checked = value.hidingUpcomingVideosActive;
         hidingUpcomingVideosInputCheckbox.addEventListener("input", function (e) {
             chrome.storage.local.set({ hidingUpcomingVideosActive: e.target.checked });
-        })
+        });
 
         // hiding posts
         const hidingPostsCheckbox = document.getElementById("hidingPostsCheckbox");
@@ -141,11 +172,19 @@ window.onload = function () {
             hidingPostsCheckbox.checked = value.hidingPostsActive;
         hidingPostsCheckbox.addEventListener("input", function (e) {
             chrome.storage.local.set({ hidingPostsActive: e.target.checked });
-        })
+        });
 
+        // hiding custom elements posts
+        const hidingCustomElementsCheckbox = document.getElementById("hidingCustomElementsCheckbox");
+        if (value.hidingCustomElementsActive != undefined)
+            hidingCustomElementsCheckbox.checked = value.hidingCustomElementsActive;
+        hidingCustomElementsCheckbox.addEventListener("input", function (e) {
+            chrome.storage.local.set({ hidingCustomElementsActive: e.target.checked });
+        });
     });
+}
 
-    // Set language
+function setupTextFieldsFromLocales() {
     document.getElementById("hide_videos_text").textContent = chrome.i18n.getMessage("cfg_hide_videos");
     document.getElementById("hide_tab_text").textContent = chrome.i18n.getMessage("cfg_hide_tab");
     document.getElementById("hide_notifications_text").textContent = chrome.i18n.getMessage("cfg_hide_notifications");
@@ -172,21 +211,12 @@ window.onload = function () {
     document.getElementById("hide_upcoming_videos_text").textContent = chrome.i18n.getMessage("cfg_hide_upcoming_videos");
     document.getElementById("shorts_in_original_video_player_text").textContent = chrome.i18n.getMessage("cfg_shorts_in_original_video_player");
     document.getElementById("hide_posts_text").textContent = chrome.i18n.getMessage("cfg_hide_posts");
+    document.getElementById("custom_elements_to_hide_tooltip_text").textContent = chrome.i18n.getMessage("cfg_custom_elements_to_hide_tooltip_text");
+    document.getElementById("custom_elements_to_hide_text").textContent = chrome.i18n.getMessage("cfg_custom_elements_to_hide_text");
+}
 
-    // version
+function setTextVersion() {
     let manifestData = chrome.runtime.getManifest();
     document.getElementById("ext-version").textContent = "v" + manifestData.version;
-};
+}
 
-const tooltips = document.querySelectorAll(".tooltip");
-const details = document.querySelector("details");
-
-tooltips.forEach(tooltip => {
-    tooltip.onmouseover = function (e) {
-        const detailsY = details.getBoundingClientRect().bottom;
-        const tooltipRect = tooltip.getBoundingClientRect()
-
-        const tooltipText = tooltip.querySelector(".tooltiptext");
-        tooltipText.style.bottom = (detailsY - tooltipRect.bottom + tooltipRect.height) + 'px';
-    };
-});
