@@ -2,7 +2,44 @@ window.onload = function () {
     loadConfigurationFromStorage();
     setupTextFieldsFromLocales();
     setTextVersion();
+    applyTheme();
 };
+
+function applyTheme() {
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    
+    // Detect system preference on first load
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+    }
+    
+    // Load saved theme preference
+    chrome.storage.local.get(['theme'], function(result) {
+        const savedTheme = result.theme || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        
+        if (savedTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    });
+    
+    // Theme toggle button event listener
+    themeToggleBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        
+        // Save preference
+        chrome.storage.local.set({ theme: newTheme });
+    });
+}
 
 setupTooltips();
 
