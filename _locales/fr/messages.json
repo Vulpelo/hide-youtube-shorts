@@ -29,5 +29,8 @@
     "cfg_hide_upcoming_videos": {"message": "Masquer les vidéos 'à venir'"},
     "cfg_shorts_in_original_video_player": {"message": "Rediriger vers le lecteur vidéo d'origine"},
     "cfg_hide_posts": {"message": "Masquer les publications"},
-    "cfg_hide_playables": {"message": "Masquer la section Playables"}
+    "cfg_hide_playables": {"message": "Masquer la section Playables"},
+
+    "cfg_custom_elements_to_hide_tooltip_text": {"message": "Masquer les éléments correspondant au sélecteur saisi. Plus d'informations dans le fichier Readme.md du projet."},
+    "cfg_custom_elements_to_hide_text": {"message": "Éléments personnalisés à masquer"}
 }
