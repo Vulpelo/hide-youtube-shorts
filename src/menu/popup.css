@@ -1,17 +1,55 @@
-body {
-	max-width: 14rem;
-	min-width: 12rem;
-    height: 100%;
+html[data-theme="dark"] .sun-icon {
+    opacity: 0.3;
+    color: var(--moon-active-icon);
 }
 
-.bottom {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin-top: 5px;
-    height: 20px;
+html[data-theme="dark"] .moon-icon {
+    opacity: 1.0;
+    color: var(--moon-active-icon);
 }
-.right {
-    text-align: right;
+
+html[data-theme="light"] .sun-icon {
+    opacity: 1.0;
+}
+
+html[data-theme="light"] .moon-icon {
+    opacity: 0.3;
+}
+
+html[data-theme="dark"] #ghlink {
+    color: #ffffff;
+    filter: invert(100%);
+}
+
+body {
+    max-width: 14rem;
+    min-width: 12rem;
+    height: 100%;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --border-color: #e2e8f0;
+    --button-bg: #f1f5f9;
+    --button-text: #475569;
+    --icon-color: #64748b;
+    --underline-color: #000000;
+}
+
+html[data-theme="dark"] {
+    --bg-color: #000000;
+    --text-color: #e2e8f0;
+    --border-color: #363636;
+    --button-bg: #333333;
+    --button-text: #e2e8f0;
+    --icon-color: #ffffff;
+    --moon-active-icon: #d3d3d3;
+    --underline-color: #e2e8f0;
+    --textarea-bg: #1f1f1f;
+    --textarea-text: #e2e8f0;
 }
 
 .setting {
@@ -42,10 +80,12 @@ body {
     text-align: center;
     border-radius: 6px;
     padding: 5px 5px;
+    border: solid thin;
 }
 
 .tooltip {
-    border-bottom: 1px dotted black;
+    border-bottom: 1px dotted var(--underline-color);
+    border-width: thin;
 }
 
 .tooltiptext {
@@ -61,30 +101,110 @@ body {
 }
 
 details {
-	width: 100%;
-	background: #ffffff;
-	border-radius: 8px;
-	position: relative;
+    width: 100%;
+    background: var(--bg-color);
+    border-radius: 8px;
+    position: relative;
+    border: 1px solid var(--border-color);
 }
 
 .summary-title.details {
-	user-select: none;
+    user-select: none;
 }
 
 summary:hover, .details {
-	cursor: pointer;
+    cursor: pointer;
 }
 
+.theme-toggle {
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-toggle:hover {
+    background-color: var(--button-bg);
+}
+
+.theme-toggle button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+
+input[type='number'],
+textarea {
+    background-color: var(--textarea-bg);
+    color: var(--textarea-text);
+}
+
+textarea {
+    resize: vertical
+}
+
+.theme-toggle button:hover {
+    background-color: var(--button-bg);
+}
+
+
 .summary-content.details {
-	border-top: 1px solid #e2e8f0;
-	cursor: default;
-	line-height: 1.5;
+    border-top: 1px solid var(--border-color);
+    cursor: default;
+    line-height: 1.5;
 }
 
 .summary-chevron-up,
 .summary-chevron-down {
-	pointer-events: none;
-	position: absolute;
-	top: 0.75em;
-	background: #ffffff;
+    pointer-events: none;
+    position: absolute;
+    top: 0.75em;
+    background: var(--button-bg);
+}
+
+.bottom a,
+.bottom .theme-toggle,
+.bottom .right {
+    color: var(--text-color);
+}
+
+.bottom a:hover,
+.bottom .theme-toggle:hover,
+.bottom .right:hover {
+    opacity: 1;
+}
+
+.bottom a:hover {
+    opacity: 1;
+}
+
+.bottom .theme-toggle:hover,
+.bottom .right:hover {
+    opacity: 1;
+}
+
+.bottom {
+    align-items: center;
+    margin-top: 5px;
+    height: 20px;
+}
+
+.bottom a.left {
+    float: left;
+}
+
+.bottom a.right {
+    float: right;
+}
+
+.bottom a[href] {
+    text-decoration: none;
+}
+
+.bottom a[href]:hover {
+    text-decoration: underline;
 }

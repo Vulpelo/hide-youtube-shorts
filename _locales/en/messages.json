@@ -31,6 +31,6 @@
     "cfg_hide_posts": {"message": "Hide posts"},
     "cfg_hide_playables": {"message": "Hide Playables shelf"},
 
-    "cfg_custom_elements_to_hide_tooltip_text": {"message": "Custom elements to hide"},
+    "cfg_custom_elements_to_hide_tooltip_text": {"message": "Hide elements matching entered 'selector'"},
     "cfg_custom_elements_to_hide_text": {"message": "Custom elements to hide"}
 }
