@@ -21,12 +21,23 @@ Also allows you to hide "Shorts" tab.
 - Hiding 'Upcoming' videos (experimental, off by default)
 - Redirect shorts to original video player (experimental, off by default)
 - Hiding posts (experimental, off by default)
+- Hiding playables (experimental, off by default)
 - Hide custom elements (off by default)
 
 ### Hide custom elements
 
+Define what elements should get hidden by using a [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Selectors). All results results produced by [querySelectorAll(selector)](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll) method will be hidden. You can enter multiple separated with comma (or new line which will be replaced with comma)
+
 ```
-ytd-guide-entry-renderer>a[href='/feed/subscriptions'],ytd-guide-entry-renderer>a[href='/feed/you']
+// comments are marked with '//'
+// hides 'Subscriptions' button
+ytd-guide-entry-renderer>a[href='/feed/subscriptions']
+
+// hides 'You' button
+ytd-guide-entry-renderer>a[href='/feed/you']
+
+// hides 'Explore' section
+ytd-guide-section-renderer:nth-child(3)
 ```
 
 ## Installation
