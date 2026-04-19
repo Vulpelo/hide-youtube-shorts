@@ -250,6 +250,8 @@ function setupTextFieldsFromLocales() {
     document.getElementById("hide_posts_text").textContent = chrome.i18n.getMessage("cfg_hide_posts");
     document.getElementById("custom_elements_to_hide_tooltip_text").textContent = chrome.i18n.getMessage("cfg_custom_elements_to_hide_tooltip_text");
     document.getElementById("custom_elements_to_hide_text").textContent = chrome.i18n.getMessage("cfg_custom_elements_to_hide_text");
+    document.getElementById("active_text").textContent = chrome.i18n.getMessage("cfg_active_text");
+    document.getElementById("query_selector_textbox_text").textContent = chrome.i18n.getMessage("cfg_query_selector_textbox_text");
 }
 
 function setTextVersion() {
