@@ -32,5 +32,7 @@
     "cfg_hide_playables": {"message": "Masquer la section Playables"},
 
     "cfg_custom_elements_to_hide_tooltip_text": {"message": "Masquer les éléments correspondant au sélecteur saisi. Plus d'informations dans le fichier Readme.md du projet."},
-    "cfg_custom_elements_to_hide_text": {"message": "Éléments personnalisés à masquer"}
+    "cfg_custom_elements_to_hide_text": {"message": "Éléments personnalisés à masquer"},
+    "cfg_active_text": {"message": "Actif"},
+    "cfg_query_selector_textbox_text": {"message": "Sélecteur"}
 }

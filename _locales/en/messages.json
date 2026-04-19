@@ -32,5 +32,7 @@
     "cfg_hide_playables": {"message": "Hide Playables shelf"},
 
     "cfg_custom_elements_to_hide_tooltip_text": {"message": "Hide elements matching entered 'selector'. More information in project Readme.md file."},
-    "cfg_custom_elements_to_hide_text": {"message": "Custom elements to hide"}
+    "cfg_custom_elements_to_hide_text": {"message": "Custom elements to hide"},
+    "cfg_active_text": {"message": "Active"},
+    "cfg_query_selector_textbox_text": {"message": "Selector"}
 }
