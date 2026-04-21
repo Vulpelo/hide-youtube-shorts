@@ -9,7 +9,7 @@ let hidingShortVideosTimeSeconds = 20;
 
 let hideYTPlayables = false
 
-const isMobile = location.hostname == "m.youtube.com";
+//const isMobile = location.hostname == "m.youtube.com";
 
 const hidingShortsOnPathNames = {
     homePage: { active: true, reg: /^\/$/, nodeSelector: "ytd-browse[page-subtype='home']", node: null },
@@ -76,9 +76,7 @@ const PLAYABLES_HREF_SELECTOR = `[href^="/playables"]`;
 const SHELF_TAG_REGEX = /yt[dm]-reel-shelf-renderer/gm
 const SHELF_ITEM_TAG_SELECTOR = isMobile ? "ytm-reel-item-renderer" : "ytd-reel-item-renderer";
 
-// Time overlay status on thumbnail
-const TIME_OVERLAY_STATUS_TAG = isMobile ? 'ytm-thumbnail-overlay-time-status-renderer' : 'ytd-thumbnail-overlay-time-status-renderer';
-const TIME_OVERLAY_STATUS_STYLE_ATTRIBUTE = isMobile ? "data-style" : "overlay-style";
+
 
 /* Selectors used for searching shorts elements */
 let combinedSelectorsToQuery;
