@@ -30,6 +30,7 @@ body {
 }
 
 :root {
+    --color-scheme: light;
     --bg-color: #ffffff;
     --text-color: #000000;
     --border-color: #e2e8f0;
@@ -37,9 +38,12 @@ body {
     --button-text: #475569;
     --icon-color: #64748b;
     --underline-color: #000000;
+
+    color-scheme: var(--color-scheme);
 }
 
 html[data-theme="dark"] {
+    --color-scheme: dark;
     --bg-color: #000000;
     --text-color: #e2e8f0;
     --border-color: #363636;
@@ -144,7 +148,11 @@ textarea {
 }
 
 textarea {
-    resize: vertical
+    resize: vertical;
+    width: 100%;
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: stretch;
 }
 
 .theme-toggle button:hover {
