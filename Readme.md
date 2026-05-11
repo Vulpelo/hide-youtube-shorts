@@ -24,6 +24,7 @@ Also allows you to hide "Shorts" tab.
 - Hiding playables (experimental, off by default)
 - Hide custom elements (off by default)
 
+
 ### Hide custom elements
 
 Define what elements should get hidden by using a [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Selectors). All results results produced by [querySelectorAll(selector)](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll) method will be hidden. You can enter multiple separated with comma (or new line which will be replaced with comma)
@@ -78,3 +79,5 @@ Add the Add-on manually:
     - It is also required to refresh the youtube's page in order for the scripts to load.
 - After a while youtube starts slowing down
     - Extension hides (not removes) shorts and their containers so they still take up some memory. Depending on how many shorts got hidden the website can start slowing down. Refreshing the page will clean up website from leftover elements.
+- The swipe gesture in Shorts still works on mobile  
+    - The extension hides the shorts from the UI, but it doesn't block the swipe gesture as it's controlled by YouTube's interface.
