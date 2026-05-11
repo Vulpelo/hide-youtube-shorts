@@ -79,5 +79,5 @@ Add the Add-on manually:
     - It is also required to refresh the youtube's page in order for the scripts to load.
 - After a while youtube starts slowing down
     - Extension hides (not removes) shorts and their containers so they still take up some memory. Depending on how many shorts got hidden the website can start slowing down. Refreshing the page will clean up website from leftover elements.
-The swipe gesture in Shorts still works on mobile  
+- The swipe gesture in Shorts still works on mobile  
     - The extension hides the shorts from the UI, but it doesn't block the swipe gesture as it's controlled by YouTube's interface.
