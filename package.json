@@ -1,5 +1,8 @@
 {
-  "scripts": {
+    "name": "hide-youtube-shorts",
+    "version": "1.11.0",
+    "private": true,
+    "scripts": {
     "prepare-firefox": "mkdir -p ./build/hys-f; cp -r manifest-firefox.json _locales icons src LICENCE.md Readme.md ./build/hys-f; mv ./build/hys-f/src/background/background-firefox.js ./build/hys-f/src/background/background.js; mv ./build/hys-f/src/menu/permissions-firefox.js ./build/hys-f/src/menu/permissions.js; mv ./build/hys-f/manifest-firefox.json ./build/hys-f/manifest.json; find ./build/hys-f -name \"*-chrome.js\" -type f -delete",
     "prepare-chrome": "mkdir -p ./build/hys-c; cp -r manifest-chrome.json _locales icons src LICENCE.md Readme.md ./build/hys-c; mv ./build/hys-c/src/background/background-chrome.js ./build/hys-c/src/background/background.js; mv ./build/hys-c/src/menu/permissions-chrome.js ./build/hys-c/src/menu/permissions.js; mv ./build/hys-c/manifest-chrome.json ./build/hys-c/manifest.json; find ./build/hys-c -name \"*-firefox.js\" -type f -delete",
     "prepare": "npm run prepare-firefox; npm run prepare-chrome",
