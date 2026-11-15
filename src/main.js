@@ -87,6 +87,16 @@ let hidingMethodsToExecute = []
 let hideShortsCallbackInner = () => { };
 function hideShortsCallback() { hideShortsCallbackInner(); };
 
+let hideShortsRafId = null;
+function scheduleHideShorts() {
+    if (hideShortsRafId == null) {
+        hideShortsRafId = requestAnimationFrame(() => {
+            hideShortsRafId = null;
+            hideShortsCallbackInner();
+        });
+    }
+}
+
 function loadVariables(value) {
     if (value.hideYTShortsVideos == undefined)
         chrome.storage.local.set({ hideYTShortsVideos: hideYTShortsVideos });
@@ -120,6 +130,11 @@ function loadVariables(value) {
         clearShortsTimeout();
         hidingShortsTimeoutActive = value.hidingShortsTimeoutActive;
     }
+
+    if (value.hidingShortsTimeoutTimeMs == undefined)
+        chrome.storage.local.set({ hidingShortsTimeoutTimeMs: hidingShortsTimeoutTimeMs });
+    else
+        hidingShortsTimeoutTimeMs = value.hidingShortsTimeoutTimeMs;
 
     if (value.hidingShortVideosTimeSeconds == undefined)
         chrome.storage.local.set({ hidingShortVideosTimeSeconds: hidingShortVideosTimeSeconds });
@@ -202,7 +217,7 @@ function setup() {
 
         observer = manageObserver(mainObserverSelector,
             mainObserverActive || hideYTPlayables,
-            hideShortsCallback,
+            scheduleHideShorts,
             observer,
             { childList: true, subtree: true });
 
@@ -251,6 +266,9 @@ function hideShortsDesktop(hide = true) {
         return;
 
     const nodes = locationPathNameNodes();
+    const pathname = location.pathname;
+    // path checks hoisted out of the element loop
+    const isOnSubscriptionPage = pathname.match(hidingShortsOnPathNames.subscriptionPage.reg);
     for (let i = 0; i < nodes.length; i++) {
         let elements = nodes[i].querySelectorAll(combinedSelectorsToQuery);
         elements.forEach(element => {
@@ -258,8 +276,8 @@ function hideShortsDesktop(hide = true) {
             const elementTagName = element.tagName.toLowerCase();
 
             // subscription page in list mode
-            if (location.pathname.match(hidingShortsOnPathNames.subscriptionPage.reg)
-                && elementTagName.match(dHideVideoRendererSubscriptionPage.elementTagName)) {
+            if (isOnSubscriptionPage
+                && elementTagName === dHideVideoRendererSubscriptionPage.elementTagName) {
                 if (hide) {
                     if (!dHideVideoRendererSubscriptionPage.hideShort(element)) {
                         hideNonShorts(element)
@@ -270,7 +288,7 @@ function hideShortsDesktop(hide = true) {
                     dHideVideoRendererSubscriptionPage.showShort(element);
             }
             // other pages with containers on search page and channel's search
-            else if (elementTagName.match(dHidingVideoRenderer.elementTagName)) {
+            else if (elementTagName === dHidingVideoRenderer.elementTagName) {
                 if (hide) {
                     if (!dHidingVideoRenderer.hideShort(element)) {
                         hideNonShorts(element)
@@ -303,14 +321,15 @@ function hideShortsMobile(hide = true) {
         return;
 
     const nodes = locationPathNameNodes();
+    const isOnHomePage = location.pathname.match(hidingShortsOnPathNames.homePage.reg);
     for (let i = 0; i < nodes.length; i++) {
         let elements = nodes[i].querySelectorAll(combinedSelectorsToQuery);
         elements.forEach(element => {
 
             const elementTagName = element.tagName.toLowerCase();
 
-            if (location.pathname.match(hidingShortsOnPathNames.homePage.reg)
-                && elementTagName.match(mHidingVideoRenderer.elementTagName)) {
+            if (isOnHomePage
+                && elementTagName === mHidingVideoRenderer.elementTagName) {
                 if (hide) {
                     mHidingVideoRenderer.hideShort(element);
                 }

@@ -75,7 +75,7 @@ function setupHidingCustomElements() {
 }
 
 function formatUserDefinedElements(userDefinedElementsToHide) {
-    formatted = ""
+    let formatted = ""
     let lines = userDefinedElementsToHide.split('\n')
     for (let i = 0; i<lines.length; i += 1) {
         lines[i] = lines[i].trim()
