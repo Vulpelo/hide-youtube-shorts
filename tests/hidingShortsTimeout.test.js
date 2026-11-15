@@ -58,6 +58,8 @@ describe('hidingShortsTimeout', () => {
 
     test('uses the timeout from storage when given', () => {
         chrome._storage.hidingShortsTimeoutTimeMs = 100
+        // the value is loaded once via loadVariables, not per hidingShortsTimeout call
+        t.loadVariables(chrome._storage)
         const callback = jest.fn()
 
         t.hidingShortsTimeout(callback)
@@ -68,12 +70,13 @@ describe('hidingShortsTimeout', () => {
     test('keeps the storage timeout for subsequent calls', () => {
         const callback = jest.fn()
 
-        // first call reads the storage value
-        t.hidingShortsTimeout(callback) // default 500 -> storage default written
+        t.loadVariables(chrome._storage)
+        t.hidingShortsTimeout(callback)
         jest.advanceTimersByTime(500)
         expect(callback).toHaveBeenCalledTimes(1)
 
         chrome._storage.hidingShortsTimeoutTimeMs = 150
+        t.loadVariables(chrome._storage)
         t.hidingShortsTimeout(callback)
         jest.advanceTimersByTime(149)
         expect(callback).toHaveBeenCalledTimes(1)
@@ -83,5 +86,20 @@ describe('hidingShortsTimeout', () => {
         t.hidingShortsTimeout(callback)
         jest.advanceTimersByTime(150)
         expect(callback).toHaveBeenCalledTimes(3)
+    })
+
+    test('does not read the storage on each call', () => {
+        t.loadVariables(chrome._storage)
+        const callback = jest.fn()
+
+        const getSpy = jest.spyOn(chrome.storage.local, 'get')
+        t.hidingShortsTimeout(callback)
+        t.hidingShortsTimeout(callback)
+
+        jest.advanceTimersByTime(500)
+        expect(callback).toHaveBeenCalledTimes(1)
+        expect(getSpy).not.toHaveBeenCalled()
+
+        getSpy.mockRestore()
     })
 })
